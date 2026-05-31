@@ -812,7 +812,6 @@ const TEAMS = [
   {id:"GB",name:"Gauransh Blazers",   emoji:"🔥",color:"#fb923c"},
   {id:"TT",name:"Taran Tranquils",    emoji:"🌊",color:"#38bdf8"},
   {id:"VV",name:"Vivaan Victors",     emoji:"⚡",color:"#facc15"},
-  {id:"SM",name:"Shaurya Mavericks",  emoji:"🦅",color:"#c084fc"},
 ];
 const SQUADS = {
   TT:[{n:1,p:"Sanju Samson",r:"WK"},{n:2,p:"Laura Wolvaardt",r:"BAT"},{n:3,p:"Aiden Markram",r:"BAT"},{n:4,p:"Rassie van der Dussen",r:"BAT"},{n:5,p:"Dewald Brevis",r:"BAT"},{n:6,p:"Yuvraj Singh",r:"C"},{n:7,p:"Hardik Pandya",r:"ALL"},{n:8,p:"Ravi Shastri",r:"ALL"},{n:9,p:"Mohammed Shami",r:"BOWL"},{n:10,p:"Varun Chakravarthy",r:"BOWL"},{n:11,p:"Alzarri Joseph",r:"BOWL"},{n:12,p:"Trevor Singh",r:"SUB"}],
@@ -821,27 +820,26 @@ const SQUADS = {
   AS:[{n:1,p:"Mitchell Marsh",r:"C"},{n:2,p:"Jordan Hermann",r:"BAT"},{n:3,p:"Temba Bavuma",r:"BAT"},{n:4,p:"Josh Inglis",r:"BAT"},{n:5,p:"Alex Carey",r:"WK"},{n:6,p:"David Miller",r:"BAT"},{n:7,p:"Marcus Stoinis",r:"ALL"},{n:8,p:"Michael Bracewell",r:"ALL"},{n:9,p:"Jason Behrendorff",r:"BOWL"},{n:10,p:"Yuzvendra Chahal",r:"BOWL"},{n:11,p:"Alana King",r:"BOWL"},{n:12,p:"Nicholas Pooran",r:"SUB"}],
   HH:[{n:1,p:"Steve Smith",r:"C"},{n:2,p:"Martin Guptill",r:"BAT"},{n:3,p:"Shubman Gill",r:"BAT"},{n:4,p:"Shikhar Dhawan",r:"BAT"},{n:5,p:"Heinrich Klaasen",r:"WK"},{n:6,p:"Washington Sundar",r:"ALL"},{n:7,p:"Krunal Pandya",r:"ALL"},{n:8,p:"Harry Kraft",r:"ALL"},{n:9,p:"Jess Jonassen",r:"BOWL"},{n:10,p:"Fazalhaq Farooqi",r:"BOWL"},{n:11,p:"Mitchell Swepson",r:"BOWL"},{n:12,p:"Rahmanullah Gurbaz",r:"SUB"}],
   VV:[{n:1,p:"KL Rahul",r:"BAT"},{n:2,p:"Rohit Sharma",r:"C"},{n:3,p:"Virat Kohli",r:"BAT"},{n:4,p:"Joe Root",r:"BAT"},{n:5,p:"Vivaan Armstrong",r:"BAT"},{n:6,p:"Alyssa Healy",r:"WK"},{n:7,p:"Rachin Ravindra",r:"ALL"},{n:8,p:"Mitchell Santner",r:"ALL"},{n:9,p:"Kagiso Rabada",r:"BOWL"},{n:10,p:"Trent Boult",r:"BOWL"},{n:11,p:"Matt Henry",r:"BOWL"},{n:12,p:"Yashasvi Jaiswal",r:"SUB"}],
-  SM:[{n:1,p:"Martin Guptill",r:"BAT"},{n:2,p:"Yashasvi Jaiswal",r:"BAT"},{n:3,p:"Shivam Dube",r:"ALL"},{n:4,p:"Sanju Samson",r:"BAT"},{n:5,p:"Andre Russell",r:"ALL"},{n:6,p:"Moeen Ali",r:"ALL"},{n:7,p:"Roston Chase",r:"ALL"},{n:8,p:"Mitchell Starc",r:"BOWL"},{n:9,p:"Liam Dawson",r:"BOWL"},{n:10,p:"Tom Curran",r:"BOWL"},{n:11,p:"Sean Abbott",r:"BOWL"}],
 };
 const SCHEDULE=[
-  {r:1,l:1,b:"SM",m:[{n:1,t1:"HH",t2:"AS"},{n:2,t1:"AA",t2:"GB"},{n:3,t1:"TT",t2:"VV"}]},
-  {r:2,l:1,b:"VV",m:[{n:4,t1:"HH",t2:"AA"},{n:5,t1:"AS",t2:"SM"},{n:6,t1:"GB",t2:"TT"}]},
-  {r:3,l:1,b:"TT",m:[{n:7,t1:"HH",t2:"GB"},{n:8,t1:"AS",t2:"VV"},{n:9,t1:"AA",t2:"SM"}]},
-  {r:4,l:1,b:"GB",m:[{n:10,t1:"HH",t2:"TT"},{n:11,t1:"AS",t2:"AA"},{n:12,t1:"VV",t2:"SM"}]},
-  {r:5,l:1,b:"AS",m:[{n:13,t1:"HH",t2:"VV"},{n:14,t1:"GB",t2:"SM"},{n:15,t1:"TT",t2:"AA"}]},
-  {r:6,l:1,b:"HH",m:[{n:16,t1:"AS",t2:"GB"},{n:17,t1:"TT",t2:"SM"},{n:18,t1:"VV",t2:"AA"}]},
-  {r:7,l:1,b:"AA",m:[{n:19,t1:"HH",t2:"SM"},{n:20,t1:"AS",t2:"TT"},{n:21,t1:"GB",t2:"VV"}]},
-  {r:8,l:2,b:"SM",m:[{n:22,t1:"AS",t2:"HH"},{n:23,t1:"GB",t2:"AA"},{n:24,t1:"VV",t2:"TT"}]},
-  {r:9,l:2,b:"VV",m:[{n:25,t1:"AA",t2:"HH"},{n:26,t1:"SM",t2:"AS"},{n:27,t1:"TT",t2:"GB"}]},
-  {r:10,l:2,b:"TT",m:[{n:28,t1:"GB",t2:"HH"},{n:29,t1:"VV",t2:"AS"},{n:30,t1:"SM",t2:"AA"}]},
-  {r:11,l:2,b:"GB",m:[{n:31,t1:"TT",t2:"HH"},{n:32,t1:"AA",t2:"AS"},{n:33,t1:"SM",t2:"VV"}]},
-  {r:12,l:2,b:"AS",m:[{n:34,t1:"VV",t2:"HH"},{n:35,t1:"SM",t2:"GB"},{n:36,t1:"AA",t2:"TT"}]},
-  {r:13,l:2,b:"HH",m:[{n:37,t1:"GB",t2:"AS"},{n:38,t1:"SM",t2:"TT"},{n:39,t1:"AA",t2:"VV"}]},
-  {r:14,l:2,b:"AA",m:[{n:40,t1:"SM",t2:"HH"},{n:41,t1:"TT",t2:"AS"},{n:42,t1:"VV",t2:"GB"}]},
+  {r:1,l:1,b:[],m:[{n:1,t1:"HH",t2:"AS"},{n:2,t1:"AA",t2:"GB"},{n:3,t1:"TT",t2:"VV"}]},
+  {r:2,l:1,b:["VV","AS"],m:[{n:4,t1:"HH",t2:"AA"},{n:6,t1:"GB",t2:"TT"}]},
+  {r:3,l:1,b:["TT","AA"],m:[{n:7,t1:"HH",t2:"GB"},{n:8,t1:"AS",t2:"VV"}]},
+  {r:4,l:1,b:["GB","VV"],m:[{n:10,t1:"HH",t2:"TT"},{n:11,t1:"AS",t2:"AA"}]},
+  {r:5,l:1,b:["AS","GB"],m:[{n:13,t1:"HH",t2:"VV"},{n:15,t1:"TT",t2:"AA"}]},
+  {r:6,l:1,b:["HH","TT"],m:[{n:16,t1:"AS",t2:"GB"},{n:18,t1:"VV",t2:"AA"}]},
+  {r:7,l:1,b:["AA","HH"],m:[{n:20,t1:"AS",t2:"TT"},{n:21,t1:"GB",t2:"VV"}]},
+  {r:8,l:2,b:[],m:[{n:22,t1:"AS",t2:"HH"},{n:23,t1:"GB",t2:"AA"},{n:24,t1:"VV",t2:"TT"}]},
+  {r:9,l:2,b:["VV","AS"],m:[{n:25,t1:"AA",t2:"HH"},{n:27,t1:"TT",t2:"GB"}]},
+  {r:10,l:2,b:["TT","AA"],m:[{n:28,t1:"GB",t2:"HH"},{n:29,t1:"VV",t2:"AS"}]},
+  {r:11,l:2,b:["GB","VV"],m:[{n:31,t1:"TT",t2:"HH"},{n:32,t1:"AA",t2:"AS"}]},
+  {r:12,l:2,b:["AS","GB"],m:[{n:34,t1:"VV",t2:"HH"},{n:36,t1:"AA",t2:"TT"}]},
+  {r:13,l:2,b:["HH","TT"],m:[{n:37,t1:"GB",t2:"AS"},{n:39,t1:"AA",t2:"VV"}]},
+  {r:14,l:2,b:["AA","HH"],m:[{n:41,t1:"TT",t2:"AS"},{n:42,t1:"VV",t2:"GB"}]},
 ];
 const ROLE_COLORS={C:"#f5c842",WK:"#63b3ed","C/WK":"#f5c842",ALL:"#a78bfa",BAT:"#6ee7b7",BOWL:"#fca5a5",SUB:"#6b7280"};
 const ADMIN_PWD = "bcl7admin";
-const STORE_KEY = "bcl7_data_v5";
+const STORE_KEY = "bcl7_data_v6";
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 const SEED = {
@@ -850,7 +848,6 @@ const SEED = {
     {id:"VV",m:1,w:1,l:0,nr:0,pts:2,nrr:0.241},
     {id:"AA",m:1,w:1,l:0,nr:0,pts:2,nrr:5.150},
     {id:"GB",m:2,w:1,l:1,nr:0,pts:2,nrr:-0.050},
-    {id:"SM",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
     {id:"TT",m:2,w:0,l:2,nr:0,pts:0,nrr:-2.642},
     {id:"HH",m:1,w:0,l:1,nr:0,pts:0,nrr:-0.323},
   ],
@@ -1047,11 +1044,15 @@ function renderSchedule(){
         <span class="m-team">${mt2?.emoji} ${mt2?.name}${s2}</span>
       </div>`;
     }).join('');
-    const bye=byId(round.b);
+    const byes = Array.isArray(round.b) ? round.b : (round.b ? [round.b] : []);
+    const byeStr = byes.map(bid => {
+      const t = byId(bid);
+      return t ? `${t.emoji} ${bid}` : '';
+    }).filter(Boolean).join(', ');
     return `${divider}<div class="round-card">
       <div class="round-hdr">
         <span class="round-title">Leg ${round.l} — Round ${round.r}</span>
-        <span class="round-meta">M${round.m[0].n}–M${round.m[round.m.length-1].n} · BYE: ${bye?.emoji} ${round.b}</span>
+        <span class="round-meta">M${round.m[0].n}–M${round.m[round.m.length-1].n} · BYE: ${byeStr || 'None'}</span>
       </div>
       ${matches}
     </div>`;
