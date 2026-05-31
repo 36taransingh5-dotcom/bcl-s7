@@ -477,6 +477,15 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: inset 0 2px 4p
   .form-row.triple { grid-template-columns: 1fr 1fr; }
   .table-edit-row { grid-template-columns: 1fr; gap: 6px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; }
 }
+.player-link {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.player-link:hover {
+  color: var(--acc) !important;
+  text-shadow: 0 0 8px rgba(245, 208, 97, 0.3);
+  text-decoration: underline;
+}
 </style>
 </head>
 <body>
@@ -505,6 +514,7 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: inset 0 2px 4p
   <button class="tab" onclick="showTab('schedule',this)">Schedule</button>
   <button class="tab" onclick="showTab('squads',this)">Squads</button>
   <button class="tab" onclick="showTab('stats',this)">Stats</button>
+  <button class="tab" onclick="showTab('compare',this)">Compare</button>
 </div>
 
 <!-- POINTS TABLE -->
@@ -580,6 +590,103 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: inset 0 2px 4p
     <div class="st">🏅 Season Milestones</div>
     <div class="milestones" id="milestonesContainer"></div>
   </section>
+</div>
+
+<!-- COMPARE PANEL -->
+<div id="panel-compare" class="panel">
+  <section>
+    <div class="st">Head-to-Head Comparison</div>
+    <div style="display:flex; gap:16px; align-items:center; margin-bottom:20px; flex-wrap:wrap;">
+      <div style="flex:1; min-width:200px;">
+        <label>Team A</label>
+        <select id="c-team1" onchange="renderComparison()"></select>
+      </div>
+      <div style="font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--red); padding-top:16px;">VS</div>
+      <div style="flex:1; min-width:200px;">
+        <label>Team B</label>
+        <select id="c-team2" onchange="renderComparison()"></select>
+      </div>
+    </div>
+    
+    <div class="ko-grid" style="margin-bottom:20px;">
+      <div class="ko-card" style="text-align:center;">
+        <div class="ko-label" id="c-h2h-title">Head-to-Head Split</div>
+        <div class="score-big" id="c-h2h-wins" style="font-size:36px; margin:8px 0;">0 - 0</div>
+        <div class="ko-detail" id="c-h2h-summary">No matches played between them yet.</div>
+      </div>
+      <div class="ko-card" style="text-align:center;">
+        <div class="ko-label">Standings Comparison</div>
+        <div class="ko-detail" id="c-standings-diff" style="line-height:1.8; text-align:left; max-width:280px; margin:0 auto; padding-top:4px;"></div>
+      </div>
+    </div>
+    
+    <div class="round-card" style="padding:16px 20px; margin-bottom:24px;">
+      <div class="round-title" style="margin-bottom:16px; border-bottom:1px solid var(--border); padding-bottom:8px;">Performance Index</div>
+      <div id="c-meters-container" style="display:flex; flex-direction:column; gap:16px;"></div>
+    </div>
+
+    <div class="st" style="font-size:20px;">H2H Match History</div>
+    <div id="c-history-container"></div>
+  </section>
+</div>
+
+<!-- PLAYER PROFILE MODAL -->
+<div class="modal-bg" id="playerModal" style="display:none">
+  <div class="modal" style="max-width:500px;">
+    <div class="modal-hdr" style="border-bottom:none; padding-bottom:0;">
+      <div class="modal-title" style="font-size:16px; color:var(--muted); letter-spacing:1.5px;">Player Profile</div>
+      <button class="modal-close" onclick="closePlayerModal()">✕</button>
+    </div>
+    
+    <div style="padding:10px 24px 20px; display:flex; align-items:center; gap:16px; border-bottom:1px solid var(--border);">
+      <div id="p-card-emoji" style="font-size:42px; background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:8px 12px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.2);">🏏</div>
+      <div>
+        <h2 id="p-card-name" style="font-family:'Bebas Neue',sans-serif; font-size:32px; letter-spacing:1px; line-height:1.1; color:#fff;">Virat Kohli</h2>
+        <div style="display:flex; gap:8px; align-items:center; margin-top:4px;">
+          <span id="p-card-team"></span>
+          <span id="p-card-badge"></span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal-body" style="padding-top:16px;">
+      <div class="round-card" style="padding:16px; margin-bottom:16px; background:rgba(0,0,0,0.2); border-color:rgba(255,255,255,0.03);">
+        <div class="round-title" style="font-size:13px; margin-bottom:12px; border-bottom:1px solid var(--border); padding-bottom:6px; letter-spacing:1px;">MVP Standings</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div><label style="font-size:10px;">MVP Points</label><div id="p-card-mvp-pts" style="font-family:'Bebas Neue',sans-serif; font-size:22px; color:var(--acc);">0 pts</div></div>
+          <div><label style="font-size:10px;">MOM Awards</label><div id="p-card-mvp-mom" style="font-family:'Bebas Neue',sans-serif; font-size:22px; color:#fff;">0 ★</div></div>
+        </div>
+      </div>
+
+      <div id="p-card-batting-sect">
+        <div class="st" style="font-size:18px; margin-bottom:10px;">Batting Records</div>
+        <div class="tbl-wrap" style="margin-bottom:16px; border-radius:6px;">
+          <table style="font-size:12px;">
+            <thead>
+              <tr><th>Inn</th><th>Runs</th><th>HS</th><th>Avg</th><th>SR</th><th>50s</th><th>100s</th><th>Catches</th></tr>
+            </thead>
+            <tbody>
+              <tr id="p-card-batting-row"></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="p-card-bowling-sect">
+        <div class="st" style="font-size:18px; margin-bottom:10px;">Bowling Records</div>
+        <div class="tbl-wrap" style="border-radius:6px;">
+          <table style="font-size:12px;">
+            <thead>
+              <tr><th>Inn</th><th>Wkts</th><th>BBI</th><th>Avg</th><th>Econ</th><th>SR</th><th>4W+</th></tr>
+            </thead>
+            <tbody>
+              <tr id="p-card-bowling-row"></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ADMIN MODAL -->
@@ -908,7 +1015,7 @@ function renderSchedule(){
 
 function renderSquads(){
   document.getElementById('squadsContainer').innerHTML=TEAMS.map(team=>{
-    const players=(SQUADS[team.id]||[]).map(p=>`<li><span class="p-num">${p.n}</span><span class="p-name">${p.p}</span>${badge(p.r)}</li>`).join('');
+    const players=(SQUADS[team.id]||[]).map(p=>`<li><span class="p-num">${p.n}</span><span class="p-name player-link" onclick="openPlayerProfile('${p.p}', '${team.id}')">${p.p}</span>${badge(p.r)}</li>`).join('');
     return `<div class="squad-card">
       <div class="squad-hdr"><span class="squad-emoji">${team.emoji}</span>
         <div><div class="squad-team">${team.name}</div><div class="squad-code" style="color:${team.color}">${team.id}</div></div>
@@ -927,7 +1034,7 @@ function renderStats(){
     const dismissals = p.dismissals !== undefined ? p.dismissals : p.inn;
     return `<tr>
       <td style="color:${i===0?'#f97316':'var(--muted)'};font-weight:${i===0?700:400}">${i+1}</td>
-      <td><strong>${p.name}</strong>${p.note?` <span style="font-size:10px;color:var(--muted)">(${p.note})</span>`:''}${p.mom>0?' <span style="font-size:10px;color:var(--acc)">★</span>':''}</td>
+      <td><strong class="player-link" onclick="openPlayerProfile('${p.name}', '${p.team}')">${p.name}</strong>${p.note?` <span style="font-size:10px;color:var(--muted)">(${p.note})</span>`:''}${p.mom>0?' <span style="font-size:10px;color:var(--acc)">★</span>':''}</td>
       <td>${teamPill(p.team)}</td>
       <td style="color:var(--muted)">${p.inn}</td>
       <td style="color:${i===0?'#f97316':'var(--text)'};font-weight:${i===0?700:400}">${p.runs}</td>
@@ -941,7 +1048,7 @@ function renderStats(){
 
   document.getElementById('bowlingBody').innerHTML=bowl.map((p,i)=>`<tr>
     <td style="color:${i===0?'#a855f7':'var(--muted)'};font-weight:${i===0?700:400}">${i+1}</td>
-    <td><strong>${p.name}</strong></td>
+    <td><strong class="player-link" onclick="openPlayerProfile('${p.name}', '${p.team}')">${p.name}</strong></td>
     <td>${teamPill(p.team)}</td>
     <td style="color:var(--muted)">${p.inn}</td>
     <td style="color:${i===0?'#a855f7':'var(--text)'};font-weight:${i===0?700:400}">${p.wkts}</td>
@@ -954,7 +1061,7 @@ function renderStats(){
 
   document.getElementById('mvpBody').innerHTML=mvp.map((p,i)=>`<tr>
     <td style="color:${i===0?'var(--acc)':'var(--muted)'};font-weight:${i===0?700:400}">${i+1}</td>
-    <td><strong>${p.name}</strong>${p.mom>0?' <span style="font-size:10px;color:var(--acc)">★ MOM</span>':''}</td>
+    <td><strong class="player-link" onclick="openPlayerProfile('${p.name}', '${p.team}')">${p.name}</strong>${p.mom>0?' <span style="font-size:10px;color:var(--acc)">★ MOM</span>':''}</td>
     <td>${teamPill(p.team)}</td>
     <td style="color:var(--muted)">${p.runs}</td>
     <td style="color:var(--muted)">${p.wkts}</td>
@@ -1009,7 +1116,7 @@ function showMTab(id, btn){
 
 function populateTeamSelects(){
   const opts=TEAMS.map(t=>`<option value="${t.id}">${t.emoji} ${t.name}</option>`).join('');
-  ['f-t1','f-t2','f-winner','b-team','w-team'].forEach(id=>{ const el=document.getElementById(id); if(el) el.innerHTML=opts; });
+  ['f-t1','f-t2','f-winner','b-team','w-team','c-team1','c-team2'].forEach(id=>{ const el=document.getElementById(id); if(el) el.innerHTML=opts; });
 }
 
 function buildTableEditRows(){
@@ -1189,7 +1296,226 @@ function resetData() {
   }
 }
 
+// ── NEW FUNCTIONS FOR PLAYER PROFILES & COMPARISON ─────────────────────────────
+function openPlayerProfile(name, teamId) {
+  const team = byId(teamId);
+  const playerInSquad = (SQUADS[teamId] || []).find(p => p.p === name);
+  const role = playerInSquad ? playerInSquad.r : "BAT";
+  
+  document.getElementById('p-card-name').innerText = name;
+  document.getElementById('p-card-emoji').innerText = team ? team.emoji : "🏏";
+  document.getElementById('p-card-team').innerHTML = teamPill(teamId);
+  document.getElementById('p-card-badge').innerHTML = badge(role);
+  
+  const batStats = DB.batting.find(b => b.name === name && b.team === teamId);
+  const bowlStats = DB.bowling.find(b => b.name === name && b.team === teamId);
+  
+  let runs = batStats ? batStats.runs : 0;
+  let wkts = bowlStats ? bowlStats.wkts : 0;
+  let catches = batStats ? batStats.catches : 0;
+  let mom = batStats ? batStats.mom : 0;
+  let fifties = batStats ? batStats.fifties : 0;
+  let hundreds = batStats ? batStats.hundreds : 0;
+  let fourW = bowlStats ? bowlStats.fourW : 0;
+  
+  const mvpPts = runs + wkts * 20 + catches * 10 + mom * 25 + fifties * 10 + hundreds * 25 + fourW * 15;
+  document.getElementById('p-card-mvp-pts').innerText = mvpPts + " pts";
+  document.getElementById('p-card-mvp-mom').innerText = mom + " ★";
+  
+  if (batStats) {
+    document.getElementById('p-card-batting-sect').style.display = 'block';
+    document.getElementById('p-card-batting-row').innerHTML = `
+      <td>${batStats.inn}</td>
+      <td style="color:#fff; font-weight:600;">${batStats.runs}</td>
+      <td>${batStats.hs}</td>
+      <td>${n2(batStats.avg)}</td>
+      <td>${n1(batStats.sr)}</td>
+      <td style="color:var(--green);">${batStats.fifties}</td>
+      <td style="color:var(--acc);">${batStats.hundreds}</td>
+      <td>${batStats.catches}</td>
+    `;
+  } else {
+    document.getElementById('p-card-batting-sect').style.display = 'none';
+  }
+  
+  if (bowlStats) {
+    document.getElementById('p-card-bowling-sect').style.display = 'block';
+    document.getElementById('p-card-bowling-row').innerHTML = `
+      <td>${bowlStats.inn}</td>
+      <td style="color:#fff; font-weight:600;">${bowlStats.wkts}</td>
+      <td>${bowlStats.bbi || '—'}</td>
+      <td>${n2(bowlStats.avg)}</td>
+      <td style="color:${bowlStats.econ < 8 ? 'var(--green)' : bowlStats.econ > 12 ? 'var(--loss)' : 'var(--muted)'};">${n2(bowlStats.econ)}</td>
+      <td>${n1(bowlStats.sr)}</td>
+      <td style="color:var(--acc);">${bowlStats.fourW}</td>
+    `;
+  } else {
+    document.getElementById('p-card-bowling-sect').style.display = 'none';
+  }
+  
+  document.getElementById('playerModal').style.display = 'flex';
+}
+
+function closePlayerModal() {
+  document.getElementById('playerModal').style.display = 'none';
+}
+
+function renderComparison() {
+  const id1 = document.getElementById('c-team1').value;
+  const id2 = document.getElementById('c-team2').value;
+  if (!id1 || !id2) return;
+  
+  const t1 = byId(id1), t2 = byId(id2);
+  
+  const matches = DB.results.filter(r => 
+    (r.team1 === id1 && r.team2 === id2) || (r.team1 === id2 && r.team2 === id1)
+  );
+  
+  const t1Wins = matches.filter(r => r.winner === id1).length;
+  const t2Wins = matches.filter(r => r.winner === id2).length;
+  
+  document.getElementById('c-h2h-wins').innerText = `${t1Wins} - ${t2Wins}`;
+  document.getElementById('c-h2h-wins').style.color = t1Wins > t2Wins ? t1.color : t2Wins > t1Wins ? t2.color : 'var(--acc)';
+  
+  let summaryText = "";
+  if (matches.length === 0) {
+    summaryText = "No head-to-head matches played yet in Season 7.";
+  } else {
+    summaryText = `${t1.emoji} ${id1} has won ${t1Wins} match(es), ${t2.emoji} ${id2} has won ${t2Wins} match(es). (${matches.length} played)`;
+  }
+  document.getElementById('c-h2h-summary').innerText = summaryText;
+  
+  const sortedTable = [...DB.table].sort((a,b)=>b.pts-a.pts||b.nrr-a.nrr);
+  const rank1 = sortedTable.findIndex(r => r.id === id1) + 1;
+  const rank2 = sortedTable.findIndex(r => r.id === id2) + 1;
+  const pts1 = sortedTable.find(r => r.id === id1)?.pts || 0;
+  const pts2 = sortedTable.find(r => r.id === id2)?.pts || 0;
+  const nrr1 = sortedTable.find(r => r.id === id1)?.nrr || 0;
+  const nrr2 = sortedTable.find(r => r.id === id2)?.nrr || 0;
+  
+  document.getElementById('c-standings-diff').innerHTML = `
+    <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+      <span style="color:${t1.color}; font-weight:600;">Rank #${rank1}</span>
+      <span style="color:var(--muted); font-size:10px;">STANDINGS</span>
+      <span style="color:${t2.color}; font-weight:600;">Rank #${rank2}</span>
+    </div>
+    <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+      <span style="color:${t1.color}; font-weight:700;">${pts1} pts</span>
+      <span style="color:var(--muted); font-size:10px;">POINTS</span>
+      <span style="color:${t2.color}; font-weight:700;">${pts2} pts</span>
+    </div>
+    <div style="display:flex; justify-content:space-between;">
+      <span class="${nrrClass(nrr1)}" style="font-weight:500;">${nrrStr(nrr1)}</span>
+      <span style="color:var(--muted); font-size:10px;">NET RUN RATE</span>
+      <span class="${nrrClass(nrr2)}" style="font-weight:500;">${nrrStr(nrr2)}</span>
+    </div>
+  `;
+  
+  const getAvgRuns = (teamId) => {
+    let totals = 0, count = 0;
+    DB.results.forEach(r => {
+      if (r.team1 === teamId) {
+        totals += parseInt(r.score1.split('/')[0]) || 0;
+        count++;
+      } else if (r.team2 === teamId) {
+        totals += parseInt(r.score2.split('/')[0]) || 0;
+        count++;
+      }
+    });
+    return count > 0 ? (totals / count) : 0;
+  };
+  
+  const getHighestScore = (teamId) => {
+    let hs = 0;
+    DB.results.forEach(r => {
+      if (r.team1 === teamId) hs = Math.max(hs, parseInt(r.score1.split('/')[0]) || 0);
+      if (r.team2 === teamId) hs = Math.max(hs, parseInt(r.score2.split('/')[0]) || 0);
+    });
+    return hs;
+  };
+
+  const getAvgWickets = (teamId) => {
+    let totalWkts = 0, count = 0;
+    DB.results.forEach(r => {
+      if (r.team1 === teamId) {
+        const parts = r.score1.split('/');
+        totalWkts += parts.length > 1 ? (parseInt(parts[1]) || 0) : 10;
+        count++;
+      } else if (r.team2 === teamId) {
+        const parts = r.score2.split('/');
+        totalWkts += parts.length > 1 ? (parseInt(parts[1]) || 0) : 10;
+        count++;
+      }
+    });
+    return count > 0 ? (totalWkts / count) : 0;
+  };
+  
+  const avgRuns1 = getAvgRuns(id1);
+  const avgRuns2 = getAvgRuns(id2);
+  const hs1 = getHighestScore(id1);
+  const hs2 = getHighestScore(id2);
+  const avgWkts1 = getAvgWickets(id1);
+  const avgWkts2 = getAvgWickets(id2);
+  
+  const renderBar = (val1, val2, label, decimals=1) => {
+    const sum = val1 + val2;
+    const pct1 = sum > 0 ? (val1 / sum) * 100 : 50;
+    const pct2 = sum > 0 ? (val2 / sum) * 100 : 50;
+    
+    return `
+      <div style="margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; font-weight:600;">
+          <span style="color:${t1.color};">${val1.toFixed(decimals)}</span>
+          <span style="color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:1px;">${label}</span>
+          <span style="color:${t2.color};">${val2.toFixed(decimals)}</span>
+        </div>
+        <div style="height:8px; background:rgba(0,0,0,0.3); border-radius:4px; overflow:hidden; display:flex; border:1px solid var(--border);">
+          <div style="width:${pct1}%; background:${t1.color}; height:100%; transition:width 0.4s ease;"></div>
+          <div style="width:${pct2}%; background:${t2.color}; height:100%; transition:width 0.4s ease;"></div>
+        </div>
+      </div>
+    `;
+  };
+  
+  document.getElementById('c-meters-container').innerHTML = `
+    ${renderBar(avgRuns1, avgRuns2, 'Avg Runs Scored', 1)}
+    ${renderBar(hs1, hs2, 'Highest Total', 0)}
+    ${renderBar(avgWkts1, avgWkts2, 'Avg Wickets Lost', 1)}
+  `;
+  
+  const historyContainer = document.getElementById('c-history-container');
+  if (matches.length === 0) {
+    historyContainer.innerHTML = `
+      <div style="background:var(--card); border:1px solid var(--border); border-radius:8px; padding:30px; text-align:center; color:var(--muted); font-style:italic; font-size:13px;">
+        No fixtures played between these teams yet.
+      </div>
+    `;
+  } else {
+    historyContainer.innerHTML = matches.map(r => {
+      const win = byId(r.winner);
+      return `
+        <div class="result-card" style="border-color:${win?.color}33; padding:12px 16px; margin-bottom:8px; --team-color:${win?.color}; --team-glow:${win?.color}22;">
+          <div style="display:flex; justify-content:space-between; font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:6px;">
+            <span>Match ${r.match}</span>
+            <span style="color:${win?.color}; font-weight:700;">Winner: ${r.winner} (by ${r.margin})</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:600; color:#fff;">
+            <span>${r.team1 === id1 ? t1.emoji + ' ' + t1.name : t2.emoji + ' ' + t2.name}: ${r.team1 === id1 ? r.score1 : r.score2}</span>
+            <span style="font-family:'Bebas Neue',sans-serif; color:var(--red);">VS</span>
+            <span>${r.team2 === id2 ? t2.emoji + ' ' + t2.name : t1.emoji + ' ' + t1.name}: ${r.team2 === id2 ? r.score2 : r.score1}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+}
+
 // ── INIT ──────────────────────────────────────────────────────────────────────
+populateTeamSelects();
+if(document.getElementById('c-team2')) {
+  document.getElementById('c-team2').value = "AS";
+}
+renderComparison();
 renderAll();
 </script>
 </body>
