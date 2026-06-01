@@ -1139,10 +1139,10 @@ function renderAll(){
   renderTable(); renderResults(); renderSchedule(); renderSquads(); renderStats(); renderPlayoffs();
 }
 
-function getTeamFormAndStreak(teamId) {
+function getTeamForm(teamId) {
   const teamMatches = DB.results.filter(r => r.team1 === teamId || r.team2 === teamId).sort((a, b) => a.match - b.match);
   if (teamMatches.length === 0) {
-    return { dots: '<span style="color:var(--muted);font-style:italic;font-size:11px;">No matches</span>', streak: '—' };
+    return '<span style="color:var(--muted);font-style:italic;font-size:11px;">No matches</span>';
   }
   const last5 = teamMatches.slice(-5);
   const dotsHtml = last5.map(m => {
@@ -1167,36 +1167,14 @@ function getTeamFormAndStreak(teamId) {
     }
     return `<span class="form-dot ${resClass}" title="${summary}">${resChar}</span>`;
   }).join('');
-
-  let streakType = null;
-  let streakCount = 0;
-  for (let i = teamMatches.length - 1; i >= 0; i--) {
-    const m = teamMatches[i];
-    let outcome = 'L';
-    if (m.winner === teamId) outcome = 'W';
-    else if (m.winner === 'nr' || m.winner === 'NR' || m.winner === 'tie' || m.winner === 'Tie' || m.winner === 'none') outcome = 'N';
-    
-    if (streakType === null) {
-      streakType = outcome;
-      streakCount = 1;
-    } else if (streakType === outcome) {
-      streakCount++;
-    } else {
-      break;
-    }
-  }
-  const streakText = streakType ? `${streakType}${streakCount}` : '—';
-  return {
-    dots: `<div class="form-dots">${dotsHtml}</div>`,
-    streak: streakText
-  };
+  return `<div class="form-dots">${dotsHtml}</div>`;
 }
 
 function renderTable(){
   const sorted=[...DB.table].sort((a,b)=>b.pts-a.pts||b.nrr-a.nrr);
   document.getElementById('tableBody').innerHTML=sorted.map((row,i)=>{
     const t=byId(row.id);
-    const formInfo = getTeamFormAndStreak(row.id);
+    const formHtml = getTeamForm(row.id);
     return `<tr>
       <td><span class="rank">${i+1}</span>${i<4?'<span class="qualify-bar"></span>':''}${t?.emoji} <strong>${t?.name}</strong></td>
       <td style="color:var(--muted)">${row.m}</td>
@@ -1207,8 +1185,7 @@ function renderTable(){
       <td class="${nrrClass(row.nrr)}">${nrrStr(row.nrr)}</td>
       <td>
         <div style="display:inline-flex; align-items:center; justify-content:center;">
-          ${formInfo.dots}
-          <span class="streak-badge">${formInfo.streak}</span>
+          ${formHtml}
         </div>
       </td>
     </tr>`;
