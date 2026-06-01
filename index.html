@@ -616,6 +616,79 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   color: var(--muted);
   font-weight: 700;
 }
+
+/* Scorecard table specific styling */
+.s-table th {
+  padding: 10px 12px;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+}
+.s-table td {
+  padding: 10px 12px;
+  font-size: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.s-dismissal {
+  font-size: 11px;
+  color: var(--muted);
+  font-style: italic;
+  font-weight: 400;
+  text-align: left;
+}
+.s-runs {
+  font-weight: 800;
+  color: var(--text);
+}
+.s-balls {
+  color: var(--muted);
+}
+.s-sr {
+  color: var(--muted);
+}
+.s-section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: var(--text-light);
+  margin: 18px 0 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+}
+.s-extras-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  background: rgba(0,0,0,0.15);
+  border-radius: 8px;
+  margin-top: 8px;
+}
+.s-fow-container {
+  background: rgba(0,0,0,0.1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-top: 14px;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.s-fow-title {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.s-fow-list {
+  color: var(--text);
+  font-weight: 500;
+}
 </style>
 </head>
 <body>
@@ -812,6 +885,54 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
       </div>
     </div>
   </div>
+<!-- SCORECARD MODAL -->
+<div class="modal-bg" id="scorecardModal" style="display:none">
+  <div class="modal" style="max-width:640px;">
+    <div class="modal-hdr">
+      <div>
+        <div class="modal-title" id="s-modal-title">Match Scorecard</div>
+        <div id="s-modal-subtitle" style="font-size:12px; color:var(--muted); margin-top:4px; font-weight:600; letter-spacing:0.5px;"></div>
+      </div>
+      <button class="modal-close" onclick="closeScorecardModal()">✕</button>
+    </div>
+    
+    <div class="modal-tabs" id="s-modal-tabs">
+      <button class="mtab active" id="s-tab-summary" onclick="showScorecardTab('summary', this)">Summary</button>
+      <button class="mtab" id="s-tab-inn1" onclick="showScorecardTab('inn1', this)">Innings 1</button>
+      <button class="mtab" id="s-tab-inn2" onclick="showScorecardTab('inn2', this)">Innings 2</button>
+    </div>
+    
+    <div class="modal-body" style="padding-top:16px;">
+      <!-- TAB: SUMMARY -->
+      <div id="s-sect-summary">
+        <div class="round-card" style="padding:20px; border-color:var(--border); text-align:center;">
+          <div class="win-badge" id="s-sum-winner" style="font-size:14px; padding:8px 16px; margin:0 auto 16px; display:inline-block;"></div>
+          <div class="scores-grid" style="margin-bottom:16px;">
+            <div class="score-side right">
+              <div class="team-name-sm" id="s-sum-t1-name">Team A</div>
+              <div class="score-big" id="s-sum-t1-score" style="font-size:28px;">0/0 <span class="score-ov" id="s-sum-t1-overs">(0.0)</span></div>
+            </div>
+            <div class="vs-badge">VS</div>
+            <div class="score-side">
+              <div class="team-name-sm" id="s-sum-t2-name">Team B</div>
+              <div class="score-big" id="s-sum-t2-score" style="font-size:28px;">0/0 <span class="score-ov" id="s-sum-t2-overs">(0.0)</span></div>
+            </div>
+          </div>
+          <div id="s-sum-mom" style="font-size:13px; font-weight:600; color:var(--acc); border-top:1px solid var(--border); padding-top:14px;"></div>
+        </div>
+      </div>
+      
+      <!-- TAB: INNINGS 1 -->
+      <div id="s-sect-inn1" style="display:none;">
+        <div id="s-inn1-content"></div>
+      </div>
+      
+      <!-- TAB: INNINGS 2 -->
+      <div id="s-sect-inn2" style="display:none;">
+        <div id="s-inn2-content"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ADMIN MODAL -->
@@ -980,9 +1101,104 @@ const SEED = {
     {match:1,team1:"HH",team2:"AS",venue:"Wanderers Stadium",score1:"201/9",overs1:"20.0",score2:"204/10",overs2:"19.4",winner:"AS",margin:"3 runs",mom:"Marcus Stoinis (AS) — 43 off 30 & 2/38"},
     {match:2,team1:"AA",team2:"GB",venue:"Sheikh Zayed Stadium",score1:"271/5",overs1:"20.0",score2:"168/10",overs2:"16.5",winner:"AA",margin:"103 runs",mom:"Quinton de Kock (AA) — 134* off 53"},
     {match:3,team1:"VV",team2:"TT",venue:"Kingsmead",score1:"220/9",overs1:"19.4",score2:"219/7",overs2:"20.0",winner:"VV",margin:"1 run",mom:"Virat Kohli (VV) — 71 off 33"},
-    {match:4,team1:"HH",team2:"AA",venue:"The Oval",score1:"64/3",overs1:"5.4",score2:"60/10",overs2:"11.5",winner:"HH",margin:"7 wickets",mom:"Fazalhaq Farooqi (HH) — 5/26"},
+    {
+      match:4,team1:"HH",team2:"AA",venue:"The Oval",score1:"64/3",overs1:"5.4",score2:"60/10",overs2:"11.5",winner:"HH",margin:"7 wickets",mom:"Fazalhaq Farooqi (HH) — 5/26",
+      scorecard: {
+        t1Inn: {
+          bat: [
+            { name: "David Warner", dismissal: "c & b Farooqi", runs: 5, balls: 3 },
+            { name: "Travis Head", dismissal: "c Guptill b Farooqi", runs: 0, balls: 1 },
+            { name: "Quinton de Kock", dismissal: "b Jonassen", runs: 15, balls: 15 },
+            { name: "Ben Stokes", dismissal: "c Smith b Farooqi", runs: 12, balls: 7 },
+            { name: "Will Jacks", dismissal: "b Farooqi", runs: 0, balls: 1 },
+            { name: "Aarav Roy", dismissal: "c Klaasen b Jonassen", runs: 0, balls: 1 },
+            { name: "Evin Lewis", dismissal: "c Kraft b Farooqi", runs: 4, balls: 4 },
+            { name: "Tim David", dismissal: "c Pandya b Swepson", runs: 10, balls: 16 },
+            { name: "Jasprit Bumrah", dismissal: "c Klaasen b Sundar", runs: 10, balls: 21 },
+            { name: "Kuldeep Yadav", dismissal: "lbw Sundar", runs: 1, balls: 3 },
+            { name: "Ravi Bishnoi", dismissal: "not out", runs: 1, balls: 1 }
+          ],
+          bowl: [
+            { name: "Fazalhaq Farooqi", overs: "4.0", dots: 11, runs: 26, wkts: 5 },
+            { name: "Jess Jonassen", overs: "4.0", dots: 9, runs: 17, wkts: 2 },
+            { name: "Mitchell Swepson", overs: "2.0", dots: 6, runs: 6, wkts: 1 },
+            { name: "Krunal Pandya", overs: "1.0", dots: 0, runs: 7, wkts: 0 },
+            { name: "Washington Sundar", overs: "1.0", dots: 3, runs: 3, wkts: 2 }
+          ],
+          extras: 2,
+          fow: [1, 6, 26, 26, 27, 36, 38, 57, 59, 60]
+        },
+        t2Inn: {
+          bat: [
+            { name: "Steve Smith", dismissal: "c Roy b Siraj", runs: 25, balls: 9 },
+            { name: "Shubman Gill", dismissal: "c Bishnoi b Bumrah", runs: 4, balls: 3 },
+            { name: "Martin Guptill", dismissal: "c Bumrah b Jacks", runs: 4, balls: 2 },
+            { name: "Ruturaj Gaikwad", dismissal: "not out", runs: 28, balls: 16 },
+            { name: "Shikhar Dhawan", dismissal: "not out", runs: 3, balls: 4 }
+          ],
+          bowl: [
+            { name: "Jasprit Bumrah", overs: "2.0", dots: 4, runs: 23, wkts: 1 },
+            { name: "Will Jacks", overs: "1.0", dots: 1, runs: 16, wkts: 1 },
+            { name: "Mohammed Siraj", overs: "1.0", dots: 3, runs: 6, wkts: 1 },
+            { name: "Kuldeep Yadav", overs: "1.0", dots: 2, runs: 7, wkts: 0 },
+            { name: "Ravi Bishnoi", overs: "0.4", dots: 2, runs: 12, wkts: 0 }
+          ],
+          extras: 0,
+          fow: [5, 20, 39]
+        }
+      }
+    },
     {match:6,team1:"GB",team2:"TT",venue:"Sher-e-Bangla National Cricket Stadium",score1:"218/8",overs1:"20.0",score2:"117/10",overs2:"18.2",winner:"GB",margin:"101 runs",mom:"Ellyse Perry (GB) — 66 off 38"},
-    {match:8,team1:"AS",team2:"VV",venue:"Chinnaswamy",score1:"110/10",overs1:"10.3",score2:"112/8",overs2:"12.1",winner:"VV",margin:"2 wickets",mom:"Rachin Ravindra (VV) — 5/20"},
+    {
+      match:8,team1:"AS",team2:"VV",venue:"Chinnaswamy",score1:"110/10",overs1:"10.3",score2:"112/8",overs2:"12.1",winner:"VV",margin:"2 wickets",mom:"Rachin Ravindra (VV) — 5/20",
+      scorecard: {
+        t1Inn: {
+          bat: [
+            { name: "Mitchell Marsh", dismissal: "lbw Boult", runs: 10, balls: 6 },
+            { name: "Jordan Hermann", dismissal: "lbw Ravindra", runs: 3, balls: 3 },
+            { name: "Nicholas Pooran", dismissal: "b Ravindra", runs: 11, balls: 4 },
+            { name: "Temba Bavuma", dismissal: "c Healy b Ravindra", runs: 27, balls: 10 },
+            { name: "Josh Inglis", dismissal: "b Boult", runs: 0, balls: 2 },
+            { name: "David Miller", dismissal: "c Healy b Ravindra", runs: 2, balls: 2 },
+            { name: "Michael Bracewell", dismissal: "c Armstrong b Henry", runs: 30, balls: 17 },
+            { name: "Alex Carey", dismissal: "run out Kohli", runs: 16, balls: 7 },
+            { name: "Marcus Stoinis", dismissal: "c Healy b Ravindra", runs: 9, balls: 3 },
+            { name: "Ajit Agarkar", dismissal: "not out", runs: 2, balls: 7 },
+            { name: "Alana King", dismissal: "lbw Henry", runs: 0, balls: 1 }
+          ],
+          bowl: [
+            { name: "Trent Boult", overs: "3.0", dots: 0, runs: 30, wkts: 2 },
+            { name: "Rachin Ravindra", overs: "3.0", dots: 0, runs: 20, wkts: 5 },
+            { name: "Matt Henry", overs: "3.0", dots: 0, runs: 40, wkts: 2 },
+            { name: "Kagiso Rabada", overs: "1.3", dots: 0, runs: 20, wkts: 0 }
+          ],
+          extras: 0,
+          fow: [16, 20, 48, 51, 55, 84, 101, 101, 107, 110]
+        },
+        t2Inn: {
+          bat: [
+            { name: "Rohit Sharma", dismissal: "b Stoinis", runs: 19, balls: 8 },
+            { name: "KL Rahul", dismissal: "b Stoinis", runs: 33, balls: 10 },
+            { name: "Virat Kohli", dismissal: "b Stoinis", runs: 16, balls: 15 },
+            { name: "Alyssa Healy", dismissal: "b Stoinis", runs: 0, balls: 1 },
+            { name: "Joe Root", dismissal: "b King", runs: 6, balls: 3 },
+            { name: "Vivaan Armstrong", dismissal: "b King", runs: 0, balls: 1 },
+            { name: "Rachin Ravindra", dismissal: "lbw Stoinis", runs: 0, balls: 1 },
+            { name: "Yashasvi Jaiswal", dismissal: "lbw King", runs: 9, balls: 13 },
+            { name: "Mitchell Santner", dismissal: "not out", runs: 21, balls: 17 },
+            { name: "Kagiso Rabada", dismissal: "not out", runs: 2, balls: 4 }
+          ],
+          bowl: [
+            { name: "Ajit Agarkar", overs: "2.1", dots: 2, runs: 33, wkts: 0 },
+            { name: "Marcus Stoinis", overs: "4.0", dots: 10, runs: 40, wkts: 5 },
+            { name: "Alana King", overs: "4.0", dots: 11, runs: 25, wkts: 3 },
+            { name: "Yuzvendra Chahal", overs: "2.0", dots: 4, runs: 8, wkts: 0 }
+          ],
+          extras: 6,
+          fow: [25, 58, 58, 71, 71, 72, 83, 103]
+        }
+      }
+    },
     {match:20,team1:"AS",team2:"TT",venue:"Sheikh Zayed Stadium",score1:"176/9",overs1:"16.1",score2:"175/8",overs2:"20.0",winner:"AS",margin:"1 wicket",mom:"Nicholas Pooran (AS) — 50 off 18"},
   ],
   batting:[
@@ -1343,7 +1559,7 @@ function renderResults(){
   c.innerHTML=[...DB.results].reverse().map(r=>{
     const t1=byId(r.team1),t2=byId(r.team2),win=byId(r.winner);
     const w1=r.winner===r.team1,w2=r.winner===r.team2;
-    return `<div class="result-card" style="border-color:${win?.color}33; --team-color:${win?.color}; --team-glow:${win?.color}22">
+    return `<div class="result-card" onclick="openScorecardModal(${r.match})" style="cursor:pointer; border-color:${win?.color}33; --team-color:${win?.color}; --team-glow:${win?.color}22">
       <div class="result-header">
         <div class="match-label" style="color:${win?.color}">Match ${r.match}${r.venue?' · '+r.venue:''}</div>
         <div class="win-badge" style="background:${win?.color}22;color:${win?.color}">${win?.emoji} ${win?.name} won by ${r.margin}</div>
@@ -1360,6 +1576,7 @@ function renderResults(){
         </div>
       </div>
       ${r.mom?`<div class="mom-row">⭐ <strong style="color:var(--acc)">MOM:</strong> ${r.mom}</div>`:''}
+      <div style="font-size:10px; color:var(--muted); text-align:right; margin-top:10px; font-weight: 500;">Click to view full scorecard ➔</div>
     </div>`;
   }).join('');
 }
@@ -1739,6 +1956,205 @@ function openPlayerProfile(name, teamId) {
 
 function closePlayerModal() {
   document.getElementById('playerModal').style.display = 'none';
+}
+
+// ── NEW FUNCTIONS FOR SCORECARD MODAL ──────────────────────────────────────────
+function openScorecardModal(matchNum) {
+  const r = DB.results.find(m => m.match === matchNum);
+  if (!r) return;
+  
+  const t1 = byId(r.team1);
+  const t2 = byId(r.team2);
+  const win = byId(r.winner);
+  
+  document.getElementById('s-modal-title').innerText = `Match ${matchNum} Scorecard`;
+  document.getElementById('s-modal-subtitle').innerText = r.venue ? r.venue : '';
+  
+  // Summary Details
+  const sumWinner = document.getElementById('s-sum-winner');
+  if (win) {
+    sumWinner.style.display = 'inline-block';
+    sumWinner.style.background = `${win.color}22`;
+    sumWinner.style.color = win.color;
+    sumWinner.style.border = `1px solid ${win.color}33`;
+    sumWinner.innerText = `${win.emoji} ${win.name} won by ${r.margin}`;
+  } else {
+    sumWinner.style.display = 'none';
+  }
+  
+  document.getElementById('s-sum-t1-name').innerText = t1 ? `${t1.emoji} ${t1.name}` : r.team1;
+  document.getElementById('s-sum-t1-score').innerHTML = `${r.score1} <span class="score-ov">(${r.overs1})</span>`;
+  
+  document.getElementById('s-sum-t2-name').innerText = t2 ? `${t2.emoji} ${t2.name}` : r.team2;
+  document.getElementById('s-sum-t2-score').innerHTML = `${r.score2} <span class="score-ov">(${r.overs2})</span>`;
+  
+  document.getElementById('s-sum-mom').innerHTML = r.mom ? `⭐ <strong style="color:var(--acc)">MOM:</strong> ${r.mom}` : '';
+  
+  // Set Innings Tab Titles
+  const tabInn1 = document.getElementById('s-tab-inn1');
+  const tabInn2 = document.getElementById('s-tab-inn2');
+  tabInn1.innerText = `${r.team1} Innings`;
+  tabInn2.innerText = `${r.team2} Innings`;
+  
+  // Populate Innings Content
+  if (r.scorecard) {
+    document.getElementById('s-inn1-content').innerHTML = buildInningsHTML(r.team1, r.team2, r.scorecard.t1Inn);
+    document.getElementById('s-inn2-content').innerHTML = buildInningsHTML(r.team2, r.team1, r.scorecard.t2Inn);
+  } else {
+    const fallbackHTML = `<div style="background:var(--card); border:1px dashed var(--border); border-radius:8px; padding:40px; text-align:center; color:var(--muted); font-style:italic;">Detailed scorecard not available for this match.</div>`;
+    document.getElementById('s-inn1-content').innerHTML = fallbackHTML;
+    document.getElementById('s-inn2-content').innerHTML = fallbackHTML;
+  }
+  
+  // Default to Summary Tab
+  showScorecardTab('summary', document.getElementById('s-tab-summary'));
+  
+  document.getElementById('scorecardModal').style.display = 'flex';
+}
+
+function closeScorecardModal() {
+  document.getElementById('scorecardModal').style.display = 'none';
+}
+
+function showScorecardTab(tabId, btn) {
+  // Hide all sections
+  document.getElementById('s-sect-summary').style.display = 'none';
+  document.getElementById('s-sect-inn1').style.display = 'none';
+  document.getElementById('s-sect-inn2').style.display = 'none';
+  
+  // Deactivate all tab buttons
+  const buttons = document.querySelectorAll('#s-modal-tabs .mtab');
+  buttons.forEach(b => b.classList.remove('active'));
+  
+  // Show target section and activate button
+  if (tabId === 'summary') {
+    document.getElementById('s-sect-summary').style.display = 'block';
+  } else if (tabId === 'inn1') {
+    document.getElementById('s-sect-inn1').style.display = 'block';
+  } else if (tabId === 'inn2') {
+    document.getElementById('s-sect-inn2').style.display = 'block';
+  }
+  
+  if (btn) btn.classList.add('active');
+}
+
+function buildInningsHTML(batTeamId, bowlTeamId, innData) {
+  if (!innData || !innData.bat) {
+    return `<div style="text-align:center; padding:40px; color:var(--muted); font-style:italic;">No detailed innings data.</div>`;
+  }
+  
+  const batTeam = byId(batTeamId);
+  const bowlTeam = byId(bowlTeamId);
+  
+  // Calculate batting totals
+  let totalRuns = 0;
+  let totalBalls = 0;
+  innData.bat.forEach(b => {
+    totalRuns += b.runs || 0;
+    totalBalls += b.balls || 0;
+  });
+  const totalWkts = innData.bat.filter(b => b.dismissal && b.dismissal.toLowerCase() !== 'not out').length;
+  
+  // Batting Table
+  let batRows = innData.bat.map(b => {
+    const sr = b.balls > 0 ? ((b.runs / b.balls) * 100).toFixed(1) : '0.0';
+    return `
+      <tr>
+        <td style="font-weight:600; color:var(--text);">${b.name}</td>
+        <td class="s-dismissal">${b.dismissal}</td>
+        <td class="s-runs" style="text-align:right; color:${b.runs >= 30 ? 'var(--acc)' : 'var(--text)'};">${b.runs}</td>
+        <td class="s-balls" style="text-align:right;">${b.balls}</td>
+        <td class="s-sr" style="text-align:right;">${sr}</td>
+      </tr>
+    `;
+  }).join('');
+  
+  // Bowling Table
+  let bowlRows = innData.bowl.map(b => {
+    const parts = String(b.overs).split('.');
+    const overs = parseInt(parts[0]) || 0;
+    const balls = parseInt(parts[1]) || 0;
+    const totalBalls = (overs * 6) + balls;
+    const econ = totalBalls > 0 ? ((b.runs / totalBalls) * 6).toFixed(2) : '0.00';
+    return `
+      <tr>
+        <td style="font-weight:600; color:var(--text);">${b.name}</td>
+        <td style="text-align:right; color:var(--text);">${b.overs}</td>
+        <td class="s-balls" style="text-align:right;">${b.dots || 0}</td>
+        <td class="s-runs" style="text-align:right;">${b.runs}</td>
+        <td style="font-weight:700; text-align:right; color:${b.wkts >= 3 ? 'var(--green)' : 'var(--text)'};">${b.wkts}</td>
+        <td class="s-sr" style="text-align:right;">${econ}</td>
+      </tr>
+    `;
+  }).join('');
+  
+  // FOW mapping
+  let fowTexts = [];
+  if (innData.fow && Array.isArray(innData.fow)) {
+    const dismissedBatters = innData.bat.filter(b => b.dismissal && b.dismissal.toLowerCase() !== 'not out');
+    innData.fow.forEach((runs, index) => {
+      const batter = dismissedBatters[index];
+      const batterName = batter ? batter.name : "";
+      fowTexts.push(`<b>${index + 1}-${runs}</b>${batterName ? ` (${batterName})` : ''}`);
+    });
+  }
+  const fowStr = fowTexts.length > 0 ? fowTexts.join(', ') : '—';
+  
+  return `
+    <div style="margin-bottom:16px;">
+      <div class="s-section-title" style="border-bottom-color:${batTeam?.color}">
+        <span>${batTeam?.emoji} ${batTeam?.name} Batting</span>
+        <span style="font-weight:800; font-size:18px; color:${batTeam?.color}">${totalRuns}/${totalWkts}</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="s-table" style="width:100%; border-collapse:collapse;">
+          <thead>
+            <tr>
+              <th style="text-align:left;">Batter</th>
+              <th style="text-align:left;">Dismissal</th>
+              <th style="text-align:right;">R</th>
+              <th style="text-align:right;">B</th>
+              <th style="text-align:right;">SR</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${batRows}
+          </tbody>
+        </table>
+      </div>
+      <div class="s-extras-row">
+        <span>Extras</span>
+        <span>${innData.extras || 0} (wd, nb, lb, b)</span>
+      </div>
+    </div>
+    
+    <div style="margin-top:20px;">
+      <div class="s-section-title" style="border-bottom-color:${bowlTeam?.color}">
+        <span>${bowlTeam?.emoji} ${bowlTeam?.name} Bowling</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="s-table" style="width:100%; border-collapse:collapse;">
+          <thead>
+            <tr>
+              <th style="text-align:left;">Bowler</th>
+              <th style="text-align:right;">O</th>
+              <th style="text-align:right;">D</th>
+              <th style="text-align:right;">R</th>
+              <th style="text-align:right;">W</th>
+              <th style="text-align:right;">Econ</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${bowlRows}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="s-fow-container">
+      <div style="color:var(--muted);"><strong style="color:var(--text); text-transform:uppercase; font-size:10px; letter-spacing:0.5px; display:block; margin-bottom:4px;">Fall of Wickets</strong> ${fowStr}</div>
+    </div>
+  `;
 }
 
 function renderComparison() {
