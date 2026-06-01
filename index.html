@@ -426,6 +426,196 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   color: var(--text) !important;
   text-decoration: underline;
 }
+
+/* Form Guide badging */
+.form-dots {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+.form-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 800;
+  color: #121212;
+  cursor: help;
+  user-select: none;
+  transition: transform 0.15s ease;
+}
+.form-dot:hover {
+  transform: translateY(-2px);
+}
+.form-dot.win {
+  background: var(--green);
+}
+.form-dot.loss {
+  background: var(--loss);
+}
+.form-dot.nr {
+  background: var(--muted);
+}
+.streak-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  padding: 2px 6px;
+  border-radius: 6px;
+  margin-left: 6px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Bracket styling */
+.bracket-container {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 10px 2px 20px;
+  -webkit-overflow-scrolling: touch;
+  align-items: stretch;
+}
+.bracket-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 16px;
+  flex: 1;
+  min-width: 210px;
+}
+.bracket-col-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 15px;
+  letter-spacing: 1px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+  text-transform: uppercase;
+}
+.bracket-match {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 12px 14px;
+  position: relative;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+.bracket-match:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+.bracket-match-hdr {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding-bottom: 4px;
+}
+.bracket-teams {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.bracket-team {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 2px 0;
+}
+.bracket-team-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.bracket-seed {
+  font-size: 9px;
+  color: var(--muted);
+  background: rgba(255,255,255,0.05);
+  padding: 1px 4px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+.bracket-score {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 15px;
+  color: var(--text);
+  letter-spacing: 0.5px;
+}
+.bracket-team.winner {
+  color: var(--acc);
+}
+.bracket-team.winner .bracket-score {
+  color: var(--acc);
+}
+.bracket-team.loser {
+  opacity: 0.5;
+}
+.bracket-info-footer {
+  font-size: 10px;
+  color: var(--muted);
+  border-top: 1px dashed var(--border);
+  padding-top: 6px;
+  font-weight: 500;
+}
+
+/* Champion showcase card */
+.bracket-champ-card {
+  background: linear-gradient(135deg, rgba(217, 249, 157, 0.05) 0%, rgba(52, 211, 153, 0.03) 100%);
+  border: 2px dashed var(--acc);
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 160px;
+}
+.champ-trophy {
+  font-size: 36px;
+  animation: float 3s ease-in-out infinite;
+}
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
+}
+.champ-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 1.5px;
+  line-height: 1.1;
+  color: var(--text);
+}
+.champ-subtitle {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  font-weight: 700;
+}
 </style>
 </head>
 <body>
@@ -462,7 +652,7 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   <section>
     <div class="st">Points Table</div>
     <div class="tbl-wrap"><table>
-      <thead><tr><th># Team</th><th>M</th><th>W</th><th>L</th><th>NR</th><th>Pts</th><th>NRR</th></tr></thead>
+      <thead><tr><th># Team</th><th>M</th><th>W</th><th>L</th><th>NR</th><th>Pts</th><th>NRR</th><th style="text-align:center;">Recent Form</th></tr></thead>
       <tbody id="tableBody"></tbody>
     </table></div>
     <div class="legend"><div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Qualify (Top 4)</div></div>
@@ -477,12 +667,7 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   </section>
   <section>
     <div class="st">Knockout Stage</div>
-    <div class="ko-grid">
-      <div class="ko-card"><div class="ko-label">Semifinal 1 · M43</div><div class="ko-detail">#1 vs #4 — Winner to Final</div></div>
-      <div class="ko-card"><div class="ko-label">Semifinal 2 · M44</div><div class="ko-detail">#2 vs #3 — Winner to Final</div></div>
-      <div class="ko-card"><div class="ko-label">3rd Place · M45</div><div class="ko-detail">SF Losers — Battle for Bronze</div></div>
-      <div class="ko-card final"><div class="ko-label" style="font-size:20px">🏆 The Final · M46</div><div class="ko-detail" style="font-size:13px">BCL Season 7 Champion crowned</div></div>
-    </div>
+    <div id="playoffsContainer"></div>
   </section>
 </div>
 
@@ -934,13 +1119,67 @@ function n1(v){ return Number(v||0).toFixed(1); }
 
 // ── RENDER ────────────────────────────────────────────────────────────────────
 function renderAll(){
-  renderTable(); renderResults(); renderSchedule(); renderSquads(); renderStats();
+  renderTable(); renderResults(); renderSchedule(); renderSquads(); renderStats(); renderPlayoffs();
+}
+
+function getTeamFormAndStreak(teamId) {
+  const teamMatches = DB.results.filter(r => r.team1 === teamId || r.team2 === teamId).sort((a, b) => a.match - b.match);
+  if (teamMatches.length === 0) {
+    return { dots: '<span style="color:var(--muted);font-style:italic;font-size:11px;">No matches</span>', streak: '—' };
+  }
+  const last5 = teamMatches.slice(-5);
+  const dotsHtml = last5.map(m => {
+    const oppId = m.team1 === teamId ? m.team2 : m.team1;
+    const opp = byId(oppId);
+    const oppName = opp ? opp.name : oppId;
+    let resChar = 'N';
+    let resClass = 'nr';
+    let summary = `Match ${m.match} vs ${oppName}: `;
+    if (m.winner === teamId) {
+      resChar = 'W';
+      resClass = 'win';
+      summary += `Won by ${m.margin}`;
+    } else if (m.winner === 'nr' || m.winner === 'NR' || m.winner === 'tie' || m.winner === 'Tie' || m.winner === 'none') {
+      resChar = 'N';
+      resClass = 'nr';
+      summary += `No Result / Tie`;
+    } else {
+      resChar = 'L';
+      resClass = 'loss';
+      summary += `Lost by ${m.margin}`;
+    }
+    return `<span class="form-dot ${resClass}" title="${summary}">${resChar}</span>`;
+  }).join('');
+
+  let streakType = null;
+  let streakCount = 0;
+  for (let i = teamMatches.length - 1; i >= 0; i--) {
+    const m = teamMatches[i];
+    let outcome = 'L';
+    if (m.winner === teamId) outcome = 'W';
+    else if (m.winner === 'nr' || m.winner === 'NR' || m.winner === 'tie' || m.winner === 'Tie' || m.winner === 'none') outcome = 'N';
+    
+    if (streakType === null) {
+      streakType = outcome;
+      streakCount = 1;
+    } else if (streakType === outcome) {
+      streakCount++;
+    } else {
+      break;
+    }
+  }
+  const streakText = streakType ? `${streakType}${streakCount}` : '—';
+  return {
+    dots: `<div class="form-dots">${dotsHtml}</div>`,
+    streak: streakText
+  };
 }
 
 function renderTable(){
   const sorted=[...DB.table].sort((a,b)=>b.pts-a.pts||b.nrr-a.nrr);
   document.getElementById('tableBody').innerHTML=sorted.map((row,i)=>{
     const t=byId(row.id);
+    const formInfo = getTeamFormAndStreak(row.id);
     return `<tr>
       <td><span class="rank">${i+1}</span>${i<4?'<span class="qualify-bar"></span>':''}${t?.emoji} <strong>${t?.name}</strong></td>
       <td style="color:var(--muted)">${row.m}</td>
@@ -949,8 +1188,159 @@ function renderTable(){
       <td style="color:var(--muted)">${row.nr}</td>
       <td class="pts-cell">${row.pts}</td>
       <td class="${nrrClass(row.nrr)}">${nrrStr(row.nrr)}</td>
+      <td>
+        <div style="display:inline-flex; align-items:center; justify-content:center;">
+          ${formInfo.dots}
+          <span class="streak-badge">${formInfo.streak}</span>
+        </div>
+      </td>
     </tr>`;
   }).join('');
+}
+
+function renderPlayoffsMatch(matchNum, team1Id, team2Id, seed1Val, seed2Val, res) {
+  const t1 = byId(team1Id);
+  const t2 = byId(team2Id);
+  
+  const name1 = t1 ? t1.name : team1Id;
+  const emoji1 = t1 ? t1.emoji : "❓";
+  const name2 = t2 ? t2.name : team2Id;
+  const emoji2 = t2 ? t2.emoji : "❓";
+  
+  const score1 = res ? res.score1 : "";
+  const score2 = res ? res.score2 : "";
+  const overs1 = res ? `(${res.overs1})` : "";
+  const overs2 = res ? `(${res.overs2})` : "";
+  
+  const isT1Win = res && res.winner === team1Id;
+  const isT2Win = res && res.winner === team2Id;
+  const isFinished = !!res;
+  
+  const t1Class = isFinished ? (isT1Win ? 'winner' : 'loser') : '';
+  const t2Class = isFinished ? (isT2Win ? 'winner' : 'loser') : '';
+  const activeClass = isFinished ? '' : 'active-match';
+  
+  return `
+    <div class="bracket-match ${activeClass}">
+      <div class="bracket-match-hdr">
+        <span>Match ${matchNum}</span>
+        <span>${res && res.venue ? res.venue : 'Knockout'}</span>
+      </div>
+      <div class="bracket-teams">
+        <div class="bracket-team ${t1Class}">
+          <div class="bracket-team-info">
+            ${seed1Val ? `<span class="bracket-seed">#${seed1Val}</span>` : ''}
+            <span>${emoji1} ${name1}</span>
+          </div>
+          <div class="bracket-score">${score1} <span style="font-size: 10px; opacity: 0.7;">${overs1}</span></div>
+        </div>
+        <div class="bracket-team ${t2Class}">
+          <div class="bracket-team-info">
+            ${seed2Val ? `<span class="bracket-seed">#${seed2Val}</span>` : ''}
+            <span>${emoji2} ${name2}</span>
+          </div>
+          <div class="bracket-score">${score2} <span style="font-size: 10px; opacity: 0.7;">${overs2}</span></div>
+        </div>
+      </div>
+      ${res && res.margin ? `<div class="bracket-info-footer">✓ won by ${res.margin}</div>` : ''}
+    </div>
+  `;
+}
+
+function renderPlayoffs(){
+  const c = document.getElementById('playoffsContainer');
+  if(!c) return;
+  
+  const sortedStandings = [...DB.table].sort((a,b)=>b.pts-a.pts||b.nrr-a.nrr);
+  const rank1 = sortedStandings[0]?.id || "Rank 1";
+  const rank2 = sortedStandings[1]?.id || "Rank 2";
+  const rank3 = sortedStandings[2]?.id || "Rank 3";
+  const rank4 = sortedStandings[3]?.id || "Rank 4";
+  
+  const m43 = DB.results.find(r => r.match === 43); // SF1
+  const m44 = DB.results.find(r => r.match === 44); // SF2
+  const m45 = DB.results.find(r => r.match === 45); // 3rd Place
+  const m46 = DB.results.find(r => r.match === 46); // Final
+  
+  // Semifinal 1 Teams
+  const sf1Team1 = m43 ? m43.team1 : rank1;
+  const sf1Team2 = m43 ? m43.team2 : rank4;
+  
+  // Semifinal 2 Teams
+  const sf2Team1 = m44 ? m44.team1 : rank2;
+  const sf2Team2 = m44 ? m44.team2 : rank3;
+  
+  // Final Teams
+  let finalTeam1 = "Winner SF1";
+  let finalTeam2 = "Winner SF2";
+  if (m43) finalTeam1 = m43.winner;
+  if (m44) finalTeam2 = m44.winner;
+  if (m46) {
+    finalTeam1 = m46.team1;
+    finalTeam2 = m46.team2;
+  }
+  
+  // 3rd Place Teams
+  let thirdTeam1 = "Loser SF1";
+  let thirdTeam2 = "Loser SF2";
+  if (m43) thirdTeam1 = m43.winner === m43.team1 ? m43.team2 : m43.team1;
+  if (m44) thirdTeam2 = m44.winner === m44.team1 ? m44.team2 : m44.team1;
+  if (m45) {
+    thirdTeam1 = m45.team1;
+    thirdTeam2 = m45.team2;
+  }
+  
+  const sf1Html = renderPlayoffsMatch(43, sf1Team1, sf1Team2, 1, 4, m43);
+  const sf2Html = renderPlayoffsMatch(44, sf2Team1, sf2Team2, 2, 3, m44);
+  const finalHtml = renderPlayoffsMatch(46, finalTeam1, finalTeam2, null, null, m46);
+  const thirdHtml = renderPlayoffsMatch(45, thirdTeam1, thirdTeam2, null, null, m45);
+  
+  // Champion Card
+  let champCardHtml = "";
+  if (m46 && m46.winner) {
+    const champ = byId(m46.winner);
+    champCardHtml = `
+      <div class="bracket-champ-card">
+        <div class="champ-trophy">🏆</div>
+        <div class="champ-subtitle">BCL Season 7 Champion</div>
+        <div class="champ-title">${champ ? champ.emoji + ' ' + champ.name : m46.winner}</div>
+        <div style="font-size:12px; color:var(--green); font-weight:700; margin-top:4px;">Won by ${m46.margin}</div>
+      </div>
+    `;
+  } else {
+    champCardHtml = `
+      <div class="bracket-champ-card" style="opacity: 0.6; border-color: var(--border);">
+        <div class="champ-trophy" style="animation: none; opacity: 0.5;">🏆</div>
+        <div class="champ-subtitle">BCL Season 7 Champion</div>
+        <div class="champ-title" style="color: var(--muted);">TBD</div>
+      </div>
+    `;
+  }
+  
+  c.innerHTML = `
+    <div class="bracket-container">
+      <!-- COLUMN 1: SEMIFINALS -->
+      <div class="bracket-col">
+        <div class="bracket-col-title">Semifinals</div>
+        ${sf1Html}
+        ${sf2Html}
+      </div>
+      
+      <!-- COLUMN 2: FINALS -->
+      <div class="bracket-col">
+        <div class="bracket-col-title">The Final</div>
+        ${finalHtml}
+        <div class="bracket-col-title" style="margin-top: 10px; border-bottom-style: dashed;">3rd Place Playoff</div>
+        ${thirdHtml}
+      </div>
+      
+      <!-- COLUMN 3: CHAMPION -->
+      <div class="bracket-col" style="justify-content: center;">
+        <div class="bracket-col-title">Champion</div>
+        ${champCardHtml}
+      </div>
+    </div>
+  `;
 }
 
 function renderResults(){
