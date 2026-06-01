@@ -1559,7 +1559,7 @@ function renderResults(){
   c.innerHTML=[...DB.results].reverse().map(r=>{
     const t1=byId(r.team1),t2=byId(r.team2),win=byId(r.winner);
     const w1=r.winner===r.team1,w2=r.winner===r.team2;
-    return `<div class="result-card" onclick="openScorecardModal(${r.match})" style="cursor:pointer; border-color:${win?.color}33; --team-color:${win?.color}; --team-glow:${win?.color}22">
+    return `<div class="result-card" onclick="openScorecardModal('${r.match}')" style="cursor:pointer; border-color:${win?.color}33; --team-color:${win?.color}; --team-glow:${win?.color}22">
       <div class="result-header">
         <div class="match-label" style="color:${win?.color}">Match ${r.match}${r.venue?' · '+r.venue:''}</div>
         <div class="win-badge" style="background:${win?.color}22;color:${win?.color}">${win?.emoji} ${win?.name} won by ${r.margin}</div>
@@ -1960,8 +1960,11 @@ function closePlayerModal() {
 
 // ── NEW FUNCTIONS FOR SCORECARD MODAL ──────────────────────────────────────────
 function openScorecardModal(matchNum) {
-  const r = DB.results.find(m => m.match === matchNum);
-  if (!r) return;
+  const r = DB.results.find(m => String(m.match) === String(matchNum));
+  if (!r) {
+    console.warn("openScorecardModal: Match not found for matchNum:", matchNum);
+    return;
+  }
   
   const t1 = byId(r.team1);
   const t2 = byId(r.team2);
