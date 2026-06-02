@@ -1086,7 +1086,7 @@ const SCHEDULE=[
 ];
 const ROLE_COLORS={C:"#f5c842",WK:"#63b3ed","C/WK":"#f5c842",ALL:"#a78bfa",BAT:"#6ee7b7",BOWL:"#fca5a5",SUB:"#6b7280"};
 const ADMIN_PWD = "bcl7admin";
-const STORE_KEY = "bcl7_data_v17";
+const STORE_KEY = "bcl7_data_v18";
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 const SEED = {
@@ -3819,20 +3819,7 @@ const SEED = {
       "catches": 0,
       "dismissals": 1
     },
-    {
-      "name": "Ishan Kishan",
-      "team": "AS",
-      "inn": 1,
-      "runs": 163,
-      "hs": 163,
-      "avg": 163,
-      "sr": 0,
-      "fifties": 0,
-      "hundreds": 1,
-      "mom": 0,
-      "catches": 0,
-      "dismissals": 0
-    },
+
     {
       "name": "Smriti Mandhana",
       "team": "AS",
@@ -4634,13 +4621,13 @@ const SEED = {
     {
       "name": "Ishan Kishan",
       "team": "GB",
-      "inn": 1,
-      "runs": 101,
-      "hs": 101,
-      "avg": 101,
+      "inn": 2,
+      "runs": 264,
+      "hs": 163,
+      "avg": 264,
       "sr": 0,
       "fifties": 0,
-      "hundreds": 1,
+      "hundreds": 2,
       "mom": 0,
       "catches": 0,
       "dismissals": 1
@@ -5827,7 +5814,7 @@ function renderStats(){
   const topBat=bat[0], topBowl=bowl[0], topMVP=mvp[0];
   const momLeader=[...DB.batting].filter(x=>x.mom>0).sort((a,b)=>b.mom-a.mom)[0];
   document.getElementById('milestonesContainer').innerHTML=[
-    {icon:"🟠",label:"Orange Cap",  val:topBat?.name.split(" ").pop()??"TBD",   sub:topBat?`${topBat.runs} runs`:"—"},
+    {icon:"🟠",label:"Orange Cap",  val:topBat?.name??"TBD",   sub:topBat?`${topBat.runs} runs`:"—"},
     {icon:"🟣",label:"Purple Cap",  val:topBowl?.name.split(" ").pop()??"TBD",  sub:topBowl?`${topBowl.wkts} wkts`:"—"},
     {icon:"⭐",label:"Season MVP",  val:topMVP?.name.split(" ").pop()??"TBD",   sub:topMVP?`${topMVP.pts} pts`:"—"},
     {icon:"🏏",label:"Highest Score",val:topBat?.hs??"TBD",                     sub:topBat?.name??"—"},
