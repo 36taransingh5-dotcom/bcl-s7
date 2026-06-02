@@ -1086,278 +1086,2960 @@ const SCHEDULE=[
 ];
 const ROLE_COLORS={C:"#f5c842",WK:"#63b3ed","C/WK":"#f5c842",ALL:"#a78bfa",BAT:"#6ee7b7",BOWL:"#fca5a5",SUB:"#6b7280"};
 const ADMIN_PWD = "bcl7admin";
-const STORE_KEY = "bcl7_data_v11";
+const STORE_KEY = "bcl7_data_v12";
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 const SEED = {
-  table:[
-    {id:"HH",m:3,w:2,l:1,nr:0,pts:4,nrr:5.191},
-    {id:"VV",m:3,w:2,l:1,nr:0,pts:4,nrr:-1.492},
-    {id:"AS",m:3,w:2,l:1,nr:0,pts:4,nrr:-0.631},
-    {id:"AA",m:2,w:1,l:1,nr:0,pts:2,nrr:-0.764},
-    {id:"GB",m:2,w:1,l:1,nr:0,pts:2,nrr:-0.050},
-    {id:"TT",m:3,w:0,l:3,nr:0,pts:0,nrr:-2.480},
-  ],
-  results:[
-    {match:1,team1:"HH",team2:"AS",venue:"Wanderers Stadium",score1:"201/9",overs1:"20.0",score2:"204/10",overs2:"19.4",winner:"AS",margin:"3 runs",mom:"Marcus Stoinis (AS) — 43 off 30 & 2/38"},
-    {match:2,team1:"AA",team2:"GB",venue:"Sheikh Zayed Stadium",score1:"271/5",overs1:"20.0",score2:"168/10",overs2:"16.5",winner:"AA",margin:"103 runs",mom:"Quinton de Kock (AA) — 134* off 53"},
-    {match:3,team1:"VV",team2:"TT",venue:"Kingsmead",score1:"220/9",overs1:"19.4",score2:"219/7",overs2:"20.0",winner:"VV",margin:"1 run",mom:"Virat Kohli (VV) — 71 off 33"},
+  "table": [
     {
-      match:4,team1:"HH",team2:"AA",venue:"The Oval",score1:"64/3",overs1:"5.4",score2:"60/10",overs2:"11.5",winner:"HH",margin:"7 wickets",mom:"Fazalhaq Farooqi (HH) — 5/26",
-      scorecard: {
-        t1Inn: {
-          bat: [
-            { name: "David Warner", dismissal: "c & b Farooqi", runs: 5, balls: 3 },
-            { name: "Travis Head", dismissal: "c Guptill b Farooqi", runs: 0, balls: 1 },
-            { name: "Quinton de Kock", dismissal: "b Jonassen", runs: 15, balls: 15 },
-            { name: "Ben Stokes", dismissal: "c Smith b Farooqi", runs: 12, balls: 7 },
-            { name: "Will Jacks", dismissal: "b Farooqi", runs: 0, balls: 1 },
-            { name: "Aarav Roy", dismissal: "c Klaasen b Jonassen", runs: 0, balls: 1 },
-            { name: "Evin Lewis", dismissal: "c Kraft b Farooqi", runs: 4, balls: 4 },
-            { name: "Tim David", dismissal: "c Pandya b Swepson", runs: 10, balls: 16 },
-            { name: "Jasprit Bumrah", dismissal: "c Klaasen b Sundar", runs: 10, balls: 21 },
-            { name: "Kuldeep Yadav", dismissal: "lbw Sundar", runs: 1, balls: 3 },
-            { name: "Ravi Bishnoi", dismissal: "not out", runs: 1, balls: 1 }
+      "id": "HH",
+      "m": 3,
+      "w": 2,
+      "l": 1,
+      "nr": 0,
+      "pts": 4,
+      "nrr": 5.191
+    },
+    {
+      "id": "AS",
+      "m": 5,
+      "w": 2,
+      "l": 3,
+      "nr": 0,
+      "pts": 4,
+      "nrr": -2.109
+    },
+    {
+      "id": "AA",
+      "m": 3,
+      "w": 2,
+      "l": 1,
+      "nr": 0,
+      "pts": 4,
+      "nrr": 1.759
+    },
+    {
+      "id": "GB",
+      "m": 3,
+      "w": 2,
+      "l": 1,
+      "nr": 0,
+      "pts": 4,
+      "nrr": 0.449
+    },
+    {
+      "id": "TT",
+      "m": 4,
+      "w": 1,
+      "l": 3,
+      "nr": 0,
+      "pts": 2,
+      "nrr": -0.754
+    },
+    {
+      "id": "VV",
+      "m": 4,
+      "w": 2,
+      "l": 2,
+      "nr": 0,
+      "pts": 4,
+      "nrr": -2.225
+    }
+  ],
+  "results": [
+    {
+      "match": 1,
+      "team1": "HH",
+      "team2": "AS",
+      "venue": "Wanderers Stadium",
+      "score1": "201/9",
+      "overs1": "20.0",
+      "score2": "204/10",
+      "overs2": "19.4",
+      "winner": "AS",
+      "margin": "3 runs",
+      "mom": "Marcus Stoinis (AS) — 43 off 30 & 2/38"
+    },
+    {
+      "match": 2,
+      "team1": "AA",
+      "team2": "GB",
+      "venue": "Sheikh Zayed Stadium",
+      "score1": "271/5",
+      "overs1": "20.0",
+      "score2": "168/10",
+      "overs2": "16.5",
+      "winner": "AA",
+      "margin": "103 runs",
+      "mom": "Quinton de Kock (AA) — 134* off 53"
+    },
+    {
+      "match": 3,
+      "team1": "VV",
+      "team2": "TT",
+      "venue": "Kingsmead",
+      "score1": "220/9",
+      "overs1": "19.4",
+      "score2": "219/7",
+      "overs2": "20.0",
+      "winner": "VV",
+      "margin": "1 run",
+      "mom": "Virat Kohli (VV) — 71 off 33"
+    },
+    {
+      "match": 4,
+      "team1": "HH",
+      "team2": "AA",
+      "venue": "The Oval",
+      "score1": "64/3",
+      "overs1": "5.4",
+      "score2": "60/10",
+      "overs2": "11.5",
+      "winner": "HH",
+      "margin": "7 wickets",
+      "mom": "Fazalhaq Farooqi (HH) — 5/26",
+      "scorecard": {
+        "t1Inn": {
+          "bat": [
+            {
+              "name": "David Warner",
+              "dismissal": "c & b Farooqi",
+              "runs": 5,
+              "balls": 3
+            },
+            {
+              "name": "Travis Head",
+              "dismissal": "c Guptill b Farooqi",
+              "runs": 0,
+              "balls": 1
+            },
+            {
+              "name": "Quinton de Kock",
+              "dismissal": "b Jonassen",
+              "runs": 15,
+              "balls": 15
+            },
+            {
+              "name": "Ben Stokes",
+              "dismissal": "c Smith b Farooqi",
+              "runs": 12,
+              "balls": 7
+            },
+            {
+              "name": "Will Jacks",
+              "dismissal": "b Farooqi",
+              "runs": 0,
+              "balls": 1
+            },
+            {
+              "name": "Aarav Roy",
+              "dismissal": "c Klaasen b Jonassen",
+              "runs": 0,
+              "balls": 1
+            },
+            {
+              "name": "Evin Lewis",
+              "dismissal": "c Kraft b Farooqi",
+              "runs": 4,
+              "balls": 4
+            },
+            {
+              "name": "Tim David",
+              "dismissal": "c Pandya b Swepson",
+              "runs": 10,
+              "balls": 16
+            },
+            {
+              "name": "Jasprit Bumrah",
+              "dismissal": "c Klaasen b Sundar",
+              "runs": 10,
+              "balls": 21
+            },
+            {
+              "name": "Kuldeep Yadav",
+              "dismissal": "lbw Sundar",
+              "runs": 1,
+              "balls": 3
+            },
+            {
+              "name": "Ravi Bishnoi",
+              "dismissal": "not out",
+              "runs": 1,
+              "balls": 1
+            }
           ],
-          bowl: [
-            { name: "Fazalhaq Farooqi", overs: "4.0", dots: 11, runs: 26, wkts: 5 },
-            { name: "Jess Jonassen", overs: "4.0", dots: 9, runs: 17, wkts: 2 },
-            { name: "Mitchell Swepson", overs: "2.0", dots: 6, runs: 6, wkts: 1 },
-            { name: "Krunal Pandya", overs: "1.0", dots: 0, runs: 7, wkts: 0 },
-            { name: "Washington Sundar", overs: "1.0", dots: 3, runs: 3, wkts: 2 }
+          "bowl": [
+            {
+              "name": "Fazalhaq Farooqi",
+              "overs": "4.0",
+              "dots": 11,
+              "runs": 26,
+              "wkts": 5
+            },
+            {
+              "name": "Jess Jonassen",
+              "overs": "4.0",
+              "dots": 9,
+              "runs": 17,
+              "wkts": 2
+            },
+            {
+              "name": "Mitchell Swepson",
+              "overs": "2.0",
+              "dots": 6,
+              "runs": 6,
+              "wkts": 1
+            },
+            {
+              "name": "Krunal Pandya",
+              "overs": "1.0",
+              "dots": 0,
+              "runs": 7,
+              "wkts": 0
+            },
+            {
+              "name": "Washington Sundar",
+              "overs": "1.0",
+              "dots": 3,
+              "runs": 3,
+              "wkts": 2
+            }
           ],
-          extras: 2,
-          fow: [1, 6, 26, 26, 27, 36, 38, 57, 59, 60]
+          "extras": 2,
+          "fow": [
+            1,
+            6,
+            26,
+            26,
+            27,
+            36,
+            38,
+            57,
+            59,
+            60
+          ]
         },
-        t2Inn: {
-          bat: [
-            { name: "Steve Smith", dismissal: "c Roy b Siraj", runs: 25, balls: 9 },
-            { name: "Shubman Gill", dismissal: "c Bishnoi b Bumrah", runs: 4, balls: 3 },
-            { name: "Martin Guptill", dismissal: "c Bumrah b Jacks", runs: 4, balls: 2 },
-            { name: "Ruturaj Gaikwad", dismissal: "not out", runs: 28, balls: 16 },
-            { name: "Shikhar Dhawan", dismissal: "not out", runs: 3, balls: 4 }
+        "t2Inn": {
+          "bat": [
+            {
+              "name": "Steve Smith",
+              "dismissal": "c Roy b Siraj",
+              "runs": 25,
+              "balls": 9
+            },
+            {
+              "name": "Shubman Gill",
+              "dismissal": "c Bishnoi b Bumrah",
+              "runs": 4,
+              "balls": 3
+            },
+            {
+              "name": "Martin Guptill",
+              "dismissal": "c Bumrah b Jacks",
+              "runs": 4,
+              "balls": 2
+            },
+            {
+              "name": "Ruturaj Gaikwad",
+              "dismissal": "not out",
+              "runs": 28,
+              "balls": 16
+            },
+            {
+              "name": "Shikhar Dhawan",
+              "dismissal": "not out",
+              "runs": 3,
+              "balls": 4
+            }
           ],
-          bowl: [
-            { name: "Jasprit Bumrah", overs: "2.0", dots: 4, runs: 23, wkts: 1 },
-            { name: "Will Jacks", overs: "1.0", dots: 1, runs: 16, wkts: 1 },
-            { name: "Mohammed Siraj", overs: "1.0", dots: 3, runs: 6, wkts: 1 },
-            { name: "Kuldeep Yadav", overs: "1.0", dots: 2, runs: 7, wkts: 0 },
-            { name: "Ravi Bishnoi", overs: "0.4", dots: 2, runs: 12, wkts: 0 }
+          "bowl": [
+            {
+              "name": "Jasprit Bumrah",
+              "overs": "2.0",
+              "dots": 4,
+              "runs": 23,
+              "wkts": 1
+            },
+            {
+              "name": "Will Jacks",
+              "overs": "1.0",
+              "dots": 1,
+              "runs": 16,
+              "wkts": 1
+            },
+            {
+              "name": "Mohammed Siraj",
+              "overs": "1.0",
+              "dots": 3,
+              "runs": 6,
+              "wkts": 1
+            },
+            {
+              "name": "Kuldeep Yadav",
+              "overs": "1.0",
+              "dots": 2,
+              "runs": 7,
+              "wkts": 0
+            },
+            {
+              "name": "Ravi Bishnoi",
+              "overs": "0.4",
+              "dots": 2,
+              "runs": 12,
+              "wkts": 0
+            }
           ],
-          extras: 0,
-          fow: [5, 20, 39]
+          "extras": 0,
+          "fow": [
+            5,
+            20,
+            39
+          ]
         }
       }
     },
-    {match:6,team1:"GB",team2:"TT",venue:"Sher-e-Bangla National Cricket Stadium",score1:"218/8",overs1:"20.0",score2:"117/10",overs2:"18.2",winner:"GB",margin:"101 runs",mom:"Ellyse Perry (GB) — 66 off 38"},
     {
-      match:8,team1:"AS",team2:"VV",venue:"Chinnaswamy",score1:"110/10",overs1:"10.3",score2:"112/8",overs2:"12.1",winner:"VV",margin:"2 wickets",mom:"Rachin Ravindra (VV) — 5/20",
-      scorecard: {
-        t1Inn: {
-          bat: [
-            { name: "Mitchell Marsh", dismissal: "lbw Boult", runs: 10, balls: 6 },
-            { name: "Jordan Hermann", dismissal: "lbw Ravindra", runs: 3, balls: 3 },
-            { name: "Nicholas Pooran", dismissal: "b Ravindra", runs: 11, balls: 4 },
-            { name: "Temba Bavuma", dismissal: "c Healy b Ravindra", runs: 27, balls: 10 },
-            { name: "Josh Inglis", dismissal: "b Boult", runs: 0, balls: 2 },
-            { name: "David Miller", dismissal: "c Healy b Ravindra", runs: 2, balls: 2 },
-            { name: "Michael Bracewell", dismissal: "c Armstrong b Henry", runs: 30, balls: 17 },
-            { name: "Alex Carey", dismissal: "run out Kohli", runs: 16, balls: 7 },
-            { name: "Marcus Stoinis", dismissal: "c Healy b Ravindra", runs: 9, balls: 3 },
-            { name: "Ajit Agarkar", dismissal: "not out", runs: 2, balls: 7 },
-            { name: "Alana King", dismissal: "lbw Henry", runs: 0, balls: 1 }
+      "match": 6,
+      "team1": "GB",
+      "team2": "TT",
+      "venue": "Sher-e-Bangla National Cricket Stadium",
+      "score1": "218/8",
+      "overs1": "20.0",
+      "score2": "117/10",
+      "overs2": "18.2",
+      "winner": "GB",
+      "margin": "101 runs",
+      "mom": "Ellyse Perry (GB) — 66 off 38"
+    },
+    {
+      "match": 8,
+      "team1": "AS",
+      "team2": "VV",
+      "venue": "Chinnaswamy",
+      "score1": "110/10",
+      "overs1": "10.3",
+      "score2": "112/8",
+      "overs2": "12.1",
+      "winner": "VV",
+      "margin": "2 wickets",
+      "mom": "Rachin Ravindra (VV) — 5/20",
+      "scorecard": {
+        "t1Inn": {
+          "bat": [
+            {
+              "name": "Mitchell Marsh",
+              "dismissal": "lbw Boult",
+              "runs": 10,
+              "balls": 6
+            },
+            {
+              "name": "Jordan Hermann",
+              "dismissal": "lbw Ravindra",
+              "runs": 3,
+              "balls": 3
+            },
+            {
+              "name": "Nicholas Pooran",
+              "dismissal": "b Ravindra",
+              "runs": 11,
+              "balls": 4
+            },
+            {
+              "name": "Temba Bavuma",
+              "dismissal": "c Healy b Ravindra",
+              "runs": 27,
+              "balls": 10
+            },
+            {
+              "name": "Josh Inglis",
+              "dismissal": "b Boult",
+              "runs": 0,
+              "balls": 2
+            },
+            {
+              "name": "David Miller",
+              "dismissal": "c Healy b Ravindra",
+              "runs": 2,
+              "balls": 2
+            },
+            {
+              "name": "Michael Bracewell",
+              "dismissal": "c Armstrong b Henry",
+              "runs": 30,
+              "balls": 17
+            },
+            {
+              "name": "Alex Carey",
+              "dismissal": "run out Kohli",
+              "runs": 16,
+              "balls": 7
+            },
+            {
+              "name": "Marcus Stoinis",
+              "dismissal": "c Healy b Ravindra",
+              "runs": 9,
+              "balls": 3
+            },
+            {
+              "name": "Ajit Agarkar",
+              "dismissal": "not out",
+              "runs": 2,
+              "balls": 7
+            },
+            {
+              "name": "Alana King",
+              "dismissal": "lbw Henry",
+              "runs": 0,
+              "balls": 1
+            }
           ],
-          bowl: [
-            { name: "Trent Boult", overs: "3.0", dots: 0, runs: 30, wkts: 2 },
-            { name: "Rachin Ravindra", overs: "3.0", dots: 0, runs: 20, wkts: 5 },
-            { name: "Matt Henry", overs: "3.0", dots: 0, runs: 40, wkts: 2 },
-            { name: "Kagiso Rabada", overs: "1.3", dots: 0, runs: 20, wkts: 0 }
+          "bowl": [
+            {
+              "name": "Trent Boult",
+              "overs": "3.0",
+              "dots": 0,
+              "runs": 30,
+              "wkts": 2
+            },
+            {
+              "name": "Rachin Ravindra",
+              "overs": "3.0",
+              "dots": 0,
+              "runs": 20,
+              "wkts": 5
+            },
+            {
+              "name": "Matt Henry",
+              "overs": "3.0",
+              "dots": 0,
+              "runs": 40,
+              "wkts": 2
+            },
+            {
+              "name": "Kagiso Rabada",
+              "overs": "1.3",
+              "dots": 0,
+              "runs": 20,
+              "wkts": 0
+            }
           ],
-          extras: 0,
-          fow: [16, 20, 48, 51, 55, 84, 101, 101, 107, 110]
+          "extras": 0,
+          "fow": [
+            16,
+            20,
+            48,
+            51,
+            55,
+            84,
+            101,
+            101,
+            107,
+            110
+          ]
         },
-        t2Inn: {
-          bat: [
-            { name: "Rohit Sharma", dismissal: "b Stoinis", runs: 19, balls: 8 },
-            { name: "KL Rahul", dismissal: "b Stoinis", runs: 33, balls: 10 },
-            { name: "Virat Kohli", dismissal: "b Stoinis", runs: 16, balls: 15 },
-            { name: "Alyssa Healy", dismissal: "b Stoinis", runs: 0, balls: 1 },
-            { name: "Joe Root", dismissal: "b King", runs: 6, balls: 3 },
-            { name: "Vivaan Armstrong", dismissal: "b King", runs: 0, balls: 1 },
-            { name: "Rachin Ravindra", dismissal: "lbw Stoinis", runs: 0, balls: 1 },
-            { name: "Yashasvi Jaiswal", dismissal: "lbw King", runs: 9, balls: 13 },
-            { name: "Mitchell Santner", dismissal: "not out", runs: 21, balls: 17 },
-            { name: "Kagiso Rabada", dismissal: "not out", runs: 2, balls: 4 }
+        "t2Inn": {
+          "bat": [
+            {
+              "name": "Rohit Sharma",
+              "dismissal": "b Stoinis",
+              "runs": 19,
+              "balls": 8
+            },
+            {
+              "name": "KL Rahul",
+              "dismissal": "b Stoinis",
+              "runs": 33,
+              "balls": 10
+            },
+            {
+              "name": "Virat Kohli",
+              "dismissal": "b Stoinis",
+              "runs": 16,
+              "balls": 15
+            },
+            {
+              "name": "Alyssa Healy",
+              "dismissal": "b Stoinis",
+              "runs": 0,
+              "balls": 1
+            },
+            {
+              "name": "Joe Root",
+              "dismissal": "b King",
+              "runs": 6,
+              "balls": 3
+            },
+            {
+              "name": "Vivaan Armstrong",
+              "dismissal": "b King",
+              "runs": 0,
+              "balls": 1
+            },
+            {
+              "name": "Rachin Ravindra",
+              "dismissal": "lbw Stoinis",
+              "runs": 0,
+              "balls": 1
+            },
+            {
+              "name": "Yashasvi Jaiswal",
+              "dismissal": "lbw King",
+              "runs": 9,
+              "balls": 13
+            },
+            {
+              "name": "Mitchell Santner",
+              "dismissal": "not out",
+              "runs": 21,
+              "balls": 17
+            },
+            {
+              "name": "Kagiso Rabada",
+              "dismissal": "not out",
+              "runs": 2,
+              "balls": 4
+            }
           ],
-          bowl: [
-            { name: "Ajit Agarkar", overs: "2.1", dots: 2, runs: 33, wkts: 0 },
-            { name: "Marcus Stoinis", overs: "4.0", dots: 10, runs: 40, wkts: 5 },
-            { name: "Alana King", overs: "4.0", dots: 11, runs: 25, wkts: 3 },
-            { name: "Yuzvendra Chahal", overs: "2.0", dots: 4, runs: 8, wkts: 0 }
+          "bowl": [
+            {
+              "name": "Ajit Agarkar",
+              "overs": "2.1",
+              "dots": 2,
+              "runs": 33,
+              "wkts": 0
+            },
+            {
+              "name": "Marcus Stoinis",
+              "overs": "4.0",
+              "dots": 10,
+              "runs": 40,
+              "wkts": 5
+            },
+            {
+              "name": "Alana King",
+              "overs": "4.0",
+              "dots": 11,
+              "runs": 25,
+              "wkts": 3
+            },
+            {
+              "name": "Yuzvendra Chahal",
+              "overs": "2.0",
+              "dots": 4,
+              "runs": 8,
+              "wkts": 0
+            }
           ],
-          extras: 6,
-          fow: [25, 58, 58, 71, 71, 72, 83, 103]
+          "extras": 6,
+          "fow": [
+            25,
+            58,
+            58,
+            71,
+            71,
+            72,
+            83,
+            103
+          ]
         }
       }
     },
     {
-      match:13,team1:"HH",team2:"VV",venue:"Providence Stadium",score1:"237/10",overs1:"19.1",score2:"82/10",overs2:"9.3",winner:"HH",margin:"155 runs",mom:"Steve Smith (HH) — 92 off 43",
-      scorecard: {
-        t1Inn: {
-          bat: [
-            { name: "Steve Smith", dismissal: "c Rabada b Boult", runs: 92, balls: 43 },
-            { name: "Shikhar Dhawan", dismissal: "b Boult", runs: 6, balls: 2 },
-            { name: "Martin Guptill", dismissal: "c Rahul b Rabada", runs: 0, balls: 1 },
-            { name: "Ruturaj Gaikwad", dismissal: "b Ravindra", runs: 7, balls: 5 },
-            { name: "Shubman Gill", dismissal: "b Santner", runs: 26, balls: 11 },
-            { name: "Krunal Pandya", dismissal: "c Healy b Ravindra", runs: 43, balls: 23 },
-            { name: "Harry Kraft", dismissal: "c Kohli b Henry", runs: 33, balls: 17 },
-            { name: "Heinrich Klaasen", dismissal: "c Ravindra b Henry", runs: 24, balls: 10 },
-            { name: "Washington Sundar", dismissal: "lbw Henry", runs: 0, balls: 1 },
-            { name: "Jess Jonassen", dismissal: "b Rabada", runs: 3, balls: 3 },
-            { name: "Fazalhaq Farooqi", dismissal: "not out", runs: 0, balls: 0 }
+      "match": 13,
+      "team1": "HH",
+      "team2": "VV",
+      "venue": "Providence Stadium",
+      "score1": "237/10",
+      "overs1": "19.1",
+      "score2": "82/10",
+      "overs2": "9.3",
+      "winner": "HH",
+      "margin": "155 runs",
+      "mom": "Steve Smith (HH) — 92 off 43",
+      "scorecard": {
+        "t1Inn": {
+          "bat": [
+            {
+              "name": "Steve Smith",
+              "dismissal": "c Rabada b Boult",
+              "runs": 92,
+              "balls": 43
+            },
+            {
+              "name": "Shikhar Dhawan",
+              "dismissal": "b Boult",
+              "runs": 6,
+              "balls": 2
+            },
+            {
+              "name": "Martin Guptill",
+              "dismissal": "c Rahul b Rabada",
+              "runs": 0,
+              "balls": 1
+            },
+            {
+              "name": "Ruturaj Gaikwad",
+              "dismissal": "b Ravindra",
+              "runs": 7,
+              "balls": 5
+            },
+            {
+              "name": "Shubman Gill",
+              "dismissal": "b Santner",
+              "runs": 26,
+              "balls": 11
+            },
+            {
+              "name": "Krunal Pandya",
+              "dismissal": "c Healy b Ravindra",
+              "runs": 43,
+              "balls": 23
+            },
+            {
+              "name": "Harry Kraft",
+              "dismissal": "c Kohli b Henry",
+              "runs": 33,
+              "balls": 17
+            },
+            {
+              "name": "Heinrich Klaasen",
+              "dismissal": "c Ravindra b Henry",
+              "runs": 24,
+              "balls": 10
+            },
+            {
+              "name": "Washington Sundar",
+              "dismissal": "lbw Henry",
+              "runs": 0,
+              "balls": 1
+            },
+            {
+              "name": "Jess Jonassen",
+              "dismissal": "b Rabada",
+              "runs": 3,
+              "balls": 3
+            },
+            {
+              "name": "Fazalhaq Farooqi",
+              "dismissal": "not out",
+              "runs": 0,
+              "balls": 0
+            }
           ],
-          bowl: [
-            { name: "Trent Boult", overs: "4.0", dots: 9, runs: 46, wkts: 2 },
-            { name: "Kagiso Rabada", overs: "3.2", dots: 5, runs: 45, wkts: 2 },
-            { name: "Rachin Ravindra", overs: "4.0", dots: 4, runs: 52, wkts: 2 },
-            { name: "Mitchell Santner", overs: "4.0", dots: 3, runs: 51, wkts: 1 },
-            { name: "Matt Henry", overs: "4.0", dots: 8, runs: 40, wkts: 3 }
+          "bowl": [
+            {
+              "name": "Trent Boult",
+              "overs": "4.0",
+              "dots": 9,
+              "runs": 46,
+              "wkts": 2
+            },
+            {
+              "name": "Kagiso Rabada",
+              "overs": "3.2",
+              "dots": 5,
+              "runs": 45,
+              "wkts": 2
+            },
+            {
+              "name": "Rachin Ravindra",
+              "overs": "4.0",
+              "dots": 4,
+              "runs": 52,
+              "wkts": 2
+            },
+            {
+              "name": "Mitchell Santner",
+              "overs": "4.0",
+              "dots": 3,
+              "runs": 51,
+              "wkts": 1
+            },
+            {
+              "name": "Matt Henry",
+              "overs": "4.0",
+              "dots": 8,
+              "runs": 40,
+              "wkts": 3
+            }
           ],
-          extras: 3,
-          fow: [11, 14, 51, 94, 166, 200, 230, 230, 235, 237]
+          "extras": 3,
+          "fow": [
+            11,
+            14,
+            51,
+            94,
+            166,
+            200,
+            230,
+            230,
+            235,
+            237
+          ]
         },
-        t2Inn: {
-          bat: [
-            { name: "Rohit Sharma", dismissal: "lbw Farooqi", runs: 0, balls: 4 },
-            { name: "KL Rahul", dismissal: "b Sundar", runs: 0, balls: 1 },
-            { name: "Virat Kohli", dismissal: "c Farooqi b Sundar", runs: 23, balls: 12 },
-            { name: "Yashasvi Jaiswal", dismissal: "b Jonassen", runs: 39, balls: 18 },
-            { name: "Joe Root", dismissal: "b Sundar", runs: 12, balls: 8 },
-            { name: "Vivaan Armstrong", dismissal: "b Jonassen", runs: 1, balls: 2 },
-            { name: "Rachin Ravindra", dismissal: "c Klaasen b Jonassen", runs: 2, balls: 2 },
-            { name: "Mitchell Santner", dismissal: "lbw Jonassen", runs: 0, balls: 1 },
-            { name: "Alyssa Healy", dismissal: "b Swepson", runs: 2, balls: 4 },
-            { name: "Kagiso Rabada", dismissal: "c Klaasen b Swepson", runs: 0, balls: 4 },
-            { name: "Trent Boult", dismissal: "not out", runs: 1, balls: 1 }
+        "t2Inn": {
+          "bat": [
+            {
+              "name": "Rohit Sharma",
+              "dismissal": "lbw Farooqi",
+              "runs": 0,
+              "balls": 4
+            },
+            {
+              "name": "KL Rahul",
+              "dismissal": "b Sundar",
+              "runs": 0,
+              "balls": 1
+            },
+            {
+              "name": "Virat Kohli",
+              "dismissal": "c Farooqi b Sundar",
+              "runs": 23,
+              "balls": 12
+            },
+            {
+              "name": "Yashasvi Jaiswal",
+              "dismissal": "b Jonassen",
+              "runs": 39,
+              "balls": 18
+            },
+            {
+              "name": "Joe Root",
+              "dismissal": "b Sundar",
+              "runs": 12,
+              "balls": 8
+            },
+            {
+              "name": "Vivaan Armstrong",
+              "dismissal": "b Jonassen",
+              "runs": 1,
+              "balls": 2
+            },
+            {
+              "name": "Rachin Ravindra",
+              "dismissal": "c Klaasen b Jonassen",
+              "runs": 2,
+              "balls": 2
+            },
+            {
+              "name": "Mitchell Santner",
+              "dismissal": "lbw Jonassen",
+              "runs": 0,
+              "balls": 1
+            },
+            {
+              "name": "Alyssa Healy",
+              "dismissal": "b Swepson",
+              "runs": 2,
+              "balls": 4
+            },
+            {
+              "name": "Kagiso Rabada",
+              "dismissal": "c Klaasen b Swepson",
+              "runs": 0,
+              "balls": 4
+            },
+            {
+              "name": "Trent Boult",
+              "dismissal": "not out",
+              "runs": 1,
+              "balls": 1
+            }
           ],
-          bowl: [
-            { name: "Fazalhaq Farooqi", overs: "2.0", dots: 6, runs: 24, wkts: 1 },
-            { name: "Washington Sundar", overs: "4.0", dots: 6, runs: 37, wkts: 3 },
-            { name: "Jess Jonassen", overs: "3.0", dots: 7, runs: 18, wkts: 4 },
-            { name: "Mitchell Swepson", overs: "0.3", dots: 2, runs: 1, wkts: 2 }
+          "bowl": [
+            {
+              "name": "Fazalhaq Farooqi",
+              "overs": "2.0",
+              "dots": 6,
+              "runs": 24,
+              "wkts": 1
+            },
+            {
+              "name": "Washington Sundar",
+              "overs": "4.0",
+              "dots": 6,
+              "runs": 37,
+              "wkts": 3
+            },
+            {
+              "name": "Jess Jonassen",
+              "overs": "3.0",
+              "dots": 7,
+              "runs": 18,
+              "wkts": 4
+            },
+            {
+              "name": "Mitchell Swepson",
+              "overs": "0.3",
+              "dots": 2,
+              "runs": 1,
+              "wkts": 2
+            }
           ],
-          extras: 2,
-          fow: [0, 8, 35, 57, 64, 66, 66, 81, 81, 82]
+          "extras": 2,
+          "fow": [
+            0,
+            8,
+            35,
+            57,
+            64,
+            66,
+            66,
+            81,
+            81,
+            82
+          ]
         }
       }
     },
-    {match:20,team1:"AS",team2:"TT",venue:"Sheikh Zayed Stadium",score1:"176/9",overs1:"16.1",score2:"175/8",overs2:"20.0",winner:"AS",margin:"1 wicket",mom:"Nicholas Pooran (AS) — 50 off 18"},
+    {
+      "match": 16,
+      "team1": "AS",
+      "team2": "GB",
+      "venue": "Lord's Cricket Ground",
+      "score1": "222/7",
+      "overs1": "18.0",
+      "score2": "272/7",
+      "overs2": "20.0",
+      "winner": "GB",
+      "margin": "50 runs",
+      "mom": "Ishan Kishan (GB) — 163* off 65",
+      "scorecard": {
+        "t1Inn": {
+          "bat": [
+            {
+              "name": "Abhishek Sharma",
+              "dismissal": "c Carey b Agarkar",
+              "runs": 22,
+              "balls": 12
+            },
+            {
+              "name": "Ishan Kishan",
+              "dismissal": "not out",
+              "runs": 163,
+              "balls": 65
+            },
+            {
+              "name": "Smriti Mandhana",
+              "dismissal": "lbw King",
+              "runs": 17,
+              "balls": 13
+            },
+            {
+              "name": "Ellyse Perry",
+              "dismissal": "c Carey b Bracewell",
+              "runs": 28,
+              "balls": 11
+            },
+            {
+              "name": "Shashank Singh",
+              "dismissal": "c Carey b Chahal",
+              "runs": 20,
+              "balls": 5
+            },
+            {
+              "name": "Rishabh Pant",
+              "dismissal": "b Maxwell",
+              "runs": 10,
+              "balls": 6
+            },
+            {
+              "name": "Marco Jansen",
+              "dismissal": "c & b Chahal",
+              "runs": 0,
+              "balls": 1
+            },
+            {
+              "name": "Axar Patel",
+              "dismissal": "b Agarkar",
+              "runs": 7,
+              "balls": 5
+            },
+            {
+              "name": "Noor Ahmad",
+              "dismissal": "not out",
+              "runs": 4,
+              "balls": 2,
+              "note": "impact"
+            }
+          ],
+          "bowl": [
+            {
+              "name": "Ajit Agarkar",
+              "overs": "4.0",
+              "dots": 11,
+              "runs": 34,
+              "wkts": 2
+            },
+            {
+              "name": "Marcus Stoinis",
+              "overs": "3.0",
+              "dots": 3,
+              "runs": 52,
+              "wkts": 0
+            },
+            {
+              "name": "Alana King",
+              "overs": "4.0",
+              "dots": 7,
+              "runs": 44,
+              "wkts": 1
+            },
+            {
+              "name": "Yuzvendra Chahal",
+              "overs": "4.0",
+              "dots": 7,
+              "runs": 57,
+              "wkts": 2
+            },
+            {
+              "name": "Michael Bracewell",
+              "overs": "3.0",
+              "dots": 3,
+              "runs": 57,
+              "wkts": 1
+            },
+            {
+              "name": "Glenn Maxwell",
+              "overs": "2.0",
+              "dots": 2,
+              "runs": 28,
+              "wkts": 1
+            }
+          ],
+          "extras": 1,
+          "fow": [
+            53,
+            107,
+            182,
+            211,
+            235,
+            238,
+            268
+          ]
+        },
+        "t2Inn": {
+          "bat": [
+            {
+              "name": "Jordan Hermann",
+              "dismissal": "lbw Arshdeep Singh",
+              "runs": 21,
+              "balls": 11
+            },
+            {
+              "name": "Mitchell Marsh",
+              "dismissal": "c Kishan b Kumar",
+              "runs": 34,
+              "balls": 15
+            },
+            {
+              "name": "Josh Inglis",
+              "dismissal": "lbw Arshdeep Singh",
+              "runs": 16,
+              "balls": 10
+            },
+            {
+              "name": "Glenn Maxwell",
+              "dismissal": "c Jansen b Kumar",
+              "runs": 14,
+              "balls": 5
+            },
+            {
+              "name": "David Miller",
+              "dismissal": "b Jansen",
+              "runs": 60,
+              "balls": 31
+            },
+            {
+              "name": "Michael Bracewell",
+              "dismissal": "c Kishan b Jansen",
+              "runs": 39,
+              "balls": 19
+            },
+            {
+              "name": "Alex Carey",
+              "dismissal": "not out",
+              "runs": 27,
+              "balls": 11
+            },
+            {
+              "name": "Marcus Stoinis",
+              "dismissal": "b Arshdeep Singh",
+              "runs": 10,
+              "balls": 5
+            },
+            {
+              "name": "Ajit Agarkar",
+              "dismissal": "not out",
+              "runs": 1,
+              "balls": 1
+            }
+          ],
+          "bowl": [
+            {
+              "name": "Bhuvneshwar Kumar",
+              "overs": "4.0",
+              "dots": 9,
+              "runs": 47,
+              "wkts": 2
+            },
+            {
+              "name": "Arshdeep Singh",
+              "overs": "4.0",
+              "dots": 5,
+              "runs": 51,
+              "wkts": 3
+            },
+            {
+              "name": "Marco Jansen",
+              "overs": "4.0",
+              "dots": 9,
+              "runs": 44,
+              "wkts": 2
+            },
+            {
+              "name": "Noor Ahmad",
+              "overs": "1.0",
+              "dots": 1,
+              "runs": 19,
+              "wkts": 0,
+              "note": "impact"
+            },
+            {
+              "name": "Maheesh Theekshana",
+              "overs": "2.0",
+              "dots": 3,
+              "runs": 31,
+              "wkts": 0
+            },
+            {
+              "name": "Axar Patel",
+              "overs": "3.0",
+              "dots": 6,
+              "runs": 30,
+              "wkts": 0
+            }
+          ],
+          "extras": 0,
+          "fow": [
+            48,
+            58,
+            75,
+            85,
+            165,
+            200,
+            213
+          ]
+        }
+      }
+    },
+    {
+      "match": 20,
+      "team1": "AS",
+      "team2": "TT",
+      "venue": "Sheikh Zayed Stadium",
+      "score1": "176/9",
+      "overs1": "16.1",
+      "score2": "175/8",
+      "overs2": "20.0",
+      "winner": "AS",
+      "margin": "1 wicket",
+      "mom": "Nicholas Pooran (AS) — 50 off 18"
+    },
+    {
+      "match": 24,
+      "team1": "VV",
+      "team2": "TT",
+      "venue": "Narendra Modi Stadium",
+      "score1": "120/10",
+      "overs1": "15.4",
+      "score2": "203/7",
+      "overs2": "20.0",
+      "winner": "TT",
+      "margin": "83 runs",
+      "mom": "Aiden Markram (TT) — 76 off 36",
+      "scorecard": {
+        "t1Inn": {
+          "bat": [
+            {
+              "name": "Laura Wolvaardt",
+              "dismissal": "c Jaiswal b Rabada",
+              "runs": 11,
+              "balls": 10
+            },
+            {
+              "name": "Sanju Samson",
+              "dismissal": "c Healy b Boult",
+              "runs": 11,
+              "balls": 9
+            },
+            {
+              "name": "Yuvraj Singh",
+              "dismissal": "c Healy b Boult",
+              "runs": 4,
+              "balls": 3
+            },
+            {
+              "name": "Dewald Brevis",
+              "dismissal": "c Armstrong b Henry",
+              "runs": 36,
+              "balls": 28
+            },
+            {
+              "name": "Rassie van der Dussen",
+              "dismissal": "c Boult b Ravindra",
+              "runs": 22,
+              "balls": 12
+            },
+            {
+              "name": "Vaibhav Suryavanshi",
+              "dismissal": "b Ravindra",
+              "runs": 5,
+              "balls": 7,
+              "note": "impact"
+            },
+            {
+              "name": "Aiden Markram",
+              "dismissal": "c Rahul b Henry",
+              "runs": 76,
+              "balls": 36
+            },
+            {
+              "name": "Hardik Pandya",
+              "dismissal": "not out",
+              "runs": 30,
+              "balls": 14
+            },
+            {
+              "name": "Ravi Shastri",
+              "dismissal": "not out",
+              "runs": 3,
+              "balls": 1
+            }
+          ],
+          "bowl": [
+            {
+              "name": "Rachin Ravindra",
+              "overs": "4.0",
+              "dots": 6,
+              "runs": 32,
+              "wkts": 2
+            },
+            {
+              "name": "Trent Boult",
+              "overs": "4.0",
+              "dots": 10,
+              "runs": 23,
+              "wkts": 2
+            },
+            {
+              "name": "Kagiso Rabada",
+              "overs": "4.0",
+              "dots": 5,
+              "runs": 44,
+              "wkts": 1
+            },
+            {
+              "name": "Mitchell Santner",
+              "overs": "4.0",
+              "dots": 4,
+              "runs": 52,
+              "wkts": 0
+            },
+            {
+              "name": "Matt Henry",
+              "overs": "4.0",
+              "dots": 7,
+              "runs": 47,
+              "wkts": 2
+            }
+          ],
+          "extras": 5,
+          "fow": [
+            20,
+            27,
+            30,
+            66,
+            84,
+            131,
+            200
+          ]
+        },
+        "t2Inn": {
+          "bat": [
+            {
+              "name": "Rohit Sharma",
+              "dismissal": "c Suryavanshi b Yuvraj Singh",
+              "runs": 0,
+              "balls": 1
+            },
+            {
+              "name": "KL Rahul",
+              "dismissal": "c & b Varun Chakravarthy",
+              "runs": 25,
+              "balls": 15
+            },
+            {
+              "name": "Virat Kohli",
+              "dismissal": "c Wolvaardt b Shami",
+              "runs": 37,
+              "balls": 18
+            },
+            {
+              "name": "Yashasvi Jaiswal",
+              "dismissal": "lbw Shami",
+              "runs": 5,
+              "balls": 5
+            },
+            {
+              "name": "Vivaan Armstrong",
+              "dismissal": "lbw Varun Chakravarthy",
+              "runs": 9,
+              "balls": 6
+            },
+            {
+              "name": "Rachin Ravindra",
+              "dismissal": "b Yuvraj Singh",
+              "runs": 7,
+              "balls": 13
+            },
+            {
+              "name": "Joe Root",
+              "dismissal": "b Yuvraj Singh",
+              "runs": 4,
+              "balls": 7,
+              "note": "impact"
+            },
+            {
+              "name": "Mitchell Santner",
+              "dismissal": "run out Markram",
+              "runs": 26,
+              "balls": 15
+            },
+            {
+              "name": "Alyssa Healy",
+              "dismissal": "lbw Hardik Pandya",
+              "runs": 3,
+              "balls": 4
+            },
+            {
+              "name": "Kagiso Rabada",
+              "dismissal": "c Wolvaardt b Hardik Pandya",
+              "runs": 3,
+              "balls": 8
+            },
+            {
+              "name": "Matt Henry",
+              "dismissal": "not out",
+              "runs": 1,
+              "balls": 2
+            }
+          ],
+          "bowl": [
+            {
+              "name": "Yuvraj Singh",
+              "overs": "4.0",
+              "dots": 7,
+              "runs": 41,
+              "wkts": 3
+            },
+            {
+              "name": "Varun Chakravarthy",
+              "overs": "4.0",
+              "dots": 7,
+              "runs": 29,
+              "wkts": 2
+            },
+            {
+              "name": "Ravi Shastri",
+              "overs": "1.0",
+              "dots": 0,
+              "runs": 17,
+              "wkts": 0
+            },
+            {
+              "name": "Mohammed Shami",
+              "overs": "4.0",
+              "dots": 9,
+              "runs": 24,
+              "wkts": 2
+            },
+            {
+              "name": "Hardik Pandya",
+              "overs": "1.4",
+              "dots": 9,
+              "runs": 1,
+              "wkts": 2
+            },
+            {
+              "name": "Alzarri Joseph",
+              "overs": "1.0",
+              "dots": 0,
+              "runs": 8,
+              "wkts": 0
+            }
+          ],
+          "extras": 0,
+          "fow": [
+            0,
+            62,
+            66,
+            75,
+            79,
+            84,
+            101,
+            111,
+            119,
+            120
+          ]
+        }
+      }
+    },
+    {
+      "match": 32,
+      "team1": "AA",
+      "team2": "AS",
+      "venue": "Queen's Park Oval",
+      "score1": "283/4",
+      "overs1": "20.0",
+      "score2": "155/10",
+      "overs2": "13.5",
+      "winner": "AA",
+      "margin": "128 runs",
+      "mom": "Quinton de Kock (AA) — 136 off 51",
+      "scorecard": {
+        "t1Inn": {
+          "bat": [
+            {
+              "name": "David Warner",
+              "dismissal": "run out Maxwell",
+              "runs": 102,
+              "balls": 48
+            },
+            {
+              "name": "Travis Head",
+              "dismissal": "b Stoinis",
+              "runs": 24,
+              "balls": 12
+            },
+            {
+              "name": "Quinton de Kock",
+              "dismissal": "lbw Bracewell",
+              "runs": 136,
+              "balls": 51
+            },
+            {
+              "name": "Tim David",
+              "dismissal": "c Chahal b Agarkar",
+              "runs": 12,
+              "balls": 8
+            },
+            {
+              "name": "Ben Stokes",
+              "dismissal": "not out",
+              "runs": 3,
+              "balls": 1
+            }
+          ],
+          "bowl": [
+            {
+              "name": "Ajit Agarkar",
+              "overs": "4.0",
+              "dots": 6,
+              "runs": 57,
+              "wkts": 1
+            },
+            {
+              "name": "Marcus Stoinis",
+              "overs": "4.0",
+              "dots": 4,
+              "runs": 55,
+              "wkts": 1
+            },
+            {
+              "name": "Yuzvendra Chahal",
+              "overs": "4.0",
+              "dots": 4,
+              "runs": 62,
+              "wkts": 0
+            },
+            {
+              "name": "Alana King",
+              "overs": "4.0",
+              "dots": 4,
+              "runs": 47,
+              "wkts": 0
+            },
+            {
+              "name": "Michael Bracewell",
+              "overs": "3.0",
+              "dots": 3,
+              "runs": 52,
+              "wkts": 1
+            },
+            {
+              "name": "Glenn Maxwell",
+              "overs": "1.0",
+              "dots": 1,
+              "runs": 9,
+              "wkts": 0
+            }
+          ],
+          "extras": 6,
+          "fow": [
+            44,
+            252,
+            280,
+            283
+          ]
+        },
+        "t2Inn": {
+          "bat": [
+            {
+              "name": "Mitchell Marsh",
+              "dismissal": "b Bumrah",
+              "runs": 3,
+              "balls": 5
+            },
+            {
+              "name": "Jordan Hermann",
+              "dismissal": "c de Kock b Siraj",
+              "runs": 5,
+              "balls": 5
+            },
+            {
+              "name": "Josh Inglis",
+              "dismissal": "lbw Bumrah",
+              "runs": 6,
+              "balls": 2
+            },
+            {
+              "name": "Glenn Maxwell",
+              "dismissal": "c Stokes b Bumrah",
+              "runs": 12,
+              "balls": 8
+            },
+            {
+              "name": "David Miller",
+              "dismissal": "c de Kock b Siraj",
+              "runs": 13,
+              "balls": 8
+            },
+            {
+              "name": "Michael Bracewell",
+              "dismissal": "lbw Bishnoi",
+              "runs": 2,
+              "balls": 3
+            },
+            {
+              "name": "Alex Carey",
+              "dismissal": "lbw Siraj",
+              "runs": 99,
+              "balls": 33
+            },
+            {
+              "name": "Marcus Stoinis",
+              "dismissal": "b Bishnoi",
+              "runs": 2,
+              "balls": 4
+            },
+            {
+              "name": "Arjun Potter",
+              "dismissal": "b Yadav",
+              "runs": 9,
+              "balls": 5,
+              "note": "impact"
+            },
+            {
+              "name": "Ajit Agarkar",
+              "dismissal": "c de Kock b Siraj",
+              "runs": 3,
+              "balls": 9
+            },
+            {
+              "name": "Alana King",
+              "dismissal": "not out",
+              "runs": 1,
+              "balls": 1
+            }
+          ],
+          "bowl": [
+            {
+              "name": "Mohammed Siraj",
+              "overs": "3.5",
+              "dots": 10,
+              "runs": 29,
+              "wkts": 4
+            },
+            {
+              "name": "Jasprit Bumrah",
+              "overs": "2.0",
+              "dots": 6,
+              "runs": 18,
+              "wkts": 3
+            },
+            {
+              "name": "Will Jacks",
+              "overs": "2.0",
+              "dots": 2,
+              "runs": 35,
+              "wkts": 0
+            },
+            {
+              "name": "Kuldeep Yadav",
+              "overs": "2.0",
+              "dots": 5,
+              "runs": 25,
+              "wkts": 1
+            },
+            {
+              "name": "Ravi Bishnoi",
+              "overs": "3.0",
+              "dots": 5,
+              "runs": 37,
+              "wkts": 2
+            },
+            {
+              "name": "Ben Stokes",
+              "overs": "1.0",
+              "dots": 1,
+              "runs": 11,
+              "wkts": 0
+            }
+          ],
+          "extras": 0,
+          "fow": [
+            7,
+            13,
+            19,
+            33,
+            39,
+            77,
+            79,
+            95,
+            154,
+            155
+          ]
+        }
+      }
+    }
   ],
-  batting:[
-    {name:"Virat Kohli",team:"VV",inn:3,runs:110,hs:71,avg:36.67,sr:166.7,fifties:1,hundreds:0,mom:1,catches:0,dismissals:3},
-    {name:"Ruturaj Gaikwad",team:"HH",inn:3,runs:93,hs:58,avg:46.50,sr:189.8,fifties:1,hundreds:0,mom:0,catches:0,dismissals:2,note:"impact"},
-    {name:"Sanju Samson",team:"TT",inn:3,runs:99,hs:58,avg:33.00,sr:137.9,fifties:1,hundreds:0,mom:0,catches:2,dismissals:3},
-    {name:"Joe Root",team:"VV",inn:3,runs:74,hs:56,avg:24.67,sr:211.4,fifties:1,hundreds:0,mom:0,catches:0,dismissals:3,note:"impact"},
-    {name:"Rassie van der Dussen",team:"TT",inn:3,runs:58,hs:53,avg:19.33,sr:101.4,fifties:1,hundreds:0,mom:0,catches:1,dismissals:3},
-    {name:"Jordan Hermann",team:"AS",inn:3,runs:73,hs:49,avg:24.33,sr:181.1,fifties:0,hundreds:0,mom:0,catches:0,dismissals:3},
-    {name:"Marcus Stoinis",team:"AS",inn:3,runs:52,hs:43,avg:17.33,sr:147.8,fifties:0,hundreds:0,mom:1,catches:0,dismissals:3},
-    {name:"Washington Sundar",team:"HH",inn:2,runs:29,hs:29,avg:14.50,sr:161.1,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
-    {name:"Temba Bavuma",team:"AS",inn:3,runs:56,hs:29,avg:18.67,sr:143.7,fifties:0,hundreds:0,mom:0,catches:0,dismissals:3},
-    {name:"Laura Wolvaardt",team:"TT",inn:3,runs:32,hs:29,avg:10.67,sr:67.5,fifties:0,hundreds:0,mom:0,catches:1,dismissals:3},
-    {name:"Krunal Pandya",team:"HH",inn:2,runs:71,hs:43,avg:35.50,sr:191.9,fifties:0,hundreds:0,mom:0,catches:1,dismissals:2},
-    {name:"Alex Carey",team:"AS",inn:3,runs:77,hs:34,avg:25.67,sr:225.9,fifties:0,hundreds:0,mom:0,catches:5,dismissals:3},
-    {name:"Aiden Markram",team:"TT",inn:3,runs:79,hs:37,avg:39.50,sr:184.8,fifties:0,hundreds:0,mom:0,catches:1,dismissals:2},
-    {name:"Josh Inglis",team:"AS",inn:3,runs:71,hs:45,avg:23.67,sr:164.5,fifties:0,hundreds:0,mom:0,catches:1,dismissals:3},
-    {name:"Alyssa Healy",team:"VV",inn:3,runs:26,hs:24,avg:8.67,sr:92.9,fifties:0,hundreds:0,mom:0,catches:6,dismissals:3},
-    {name:"Heinrich Klaasen",team:"HH",inn:2,runs:49,hs:25,avg:24.50,sr:204.2,fifties:0,hundreds:0,mom:0,catches:5,dismissals:2},
-    {name:"Rachin Ravindra",team:"VV",inn:3,runs:22,hs:20,avg:7.33,sr:73.3,fifties:0,hundreds:0,mom:1,catches:1,dismissals:3},
-    {name:"Mitchell Santner",team:"VV",inn:3,runs:38,hs:21,avg:19.00,sr:122.6,fifties:0,hundreds:0,mom:0,catches:1,dismissals:2},
-    {name:"Yuvraj Singh",team:"TT",inn:3,runs:24,hs:16,avg:8.00,sr:100.6,fifties:0,hundreds:0,mom:0,catches:1,dismissals:3},
-    {name:"Dewald Brevis",team:"TT",inn:3,runs:42,hs:18,avg:14.00,sr:181.5,fifties:0,hundreds:0,mom:0,catches:1,dismissals:3},
-    {name:"Hardik Pandya",team:"TT",inn:3,runs:92,hs:70,avg:30.67,sr:178.9,fifties:1,hundreds:0,mom:0,catches:2,dismissals:3},
-    {name:"Steve Smith",team:"HH",inn:3,runs:138,hs:92,avg:46.00,sr:215.6,fifties:1,hundreds:0,mom:1,catches:2,dismissals:3},
-    {name:"Quinton de Kock",team:"AA",inn:2,runs:149,hs:134,avg:149.00,sr:176.4,fifties:0,hundreds:1,mom:1,catches:3,dismissals:1},
-    {name:"Evin Lewis",team:"AA",inn:2,runs:48,hs:44,avg:24.00,sr:141.7,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2,note:"impact"},
-    {name:"Travis Head",team:"AA",inn:2,runs:29,hs:29,avg:14.50,sr:120.9,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
-    {name:"Will Jacks",team:"AA",inn:2,runs:28,hs:28,avg:14.00,sr:87.5,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
-    {name:"David Warner",team:"AA",inn:2,runs:31,hs:26,avg:15.50,sr:201.6,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
-    {name:"Tim David",team:"AA",inn:2,runs:15,hs:10,avg:15.00,sr:114.6,fifties:0,hundreds:0,mom:0,catches:0,dismissals:1},
-    {name:"Ben Stokes",team:"AA",inn:2,runs:12,hs:12,avg:6.00,sr:85.7,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
-    {name:"Ravi Bishnoi",team:"AA",inn:1,runs:1,hs:1,avg:1.00,sr:100.0,fifties:0,hundreds:0,mom:0,catches:2,dismissals:0},
-    {name:"Smriti Mandhana",team:"GB",inn:2,runs:61,hs:43,avg:30.50,sr:179.6,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
-    {name:"Ellyse Perry",team:"GB",inn:2,runs:97,hs:66,avg:48.50,sr:183.8,fifties:1,hundreds:0,mom:1,catches:0,dismissals:2},
-    {name:"Grant Bauer",team:"GB",inn:2,runs:43,hs:29,avg:21.50,sr:160.3,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2,note:"impact"},
-    {name:"Rishabh Pant",team:"GB",inn:2,runs:49,hs:26,avg:24.50,sr:201.7,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
-    {name:"Axar Patel",team:"GB",inn:2,runs:37,hs:24,avg:18.50,sr:212.9,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
-    {name:"Shashank Singh",team:"GB",inn:2,runs:47,hs:36,avg:47.00,sr:167.5,fifties:0,hundreds:0,mom:0,catches:1,dismissals:1},
-    {name:"Abhishek Sharma",team:"GB",inn:2,runs:8,hs:7,avg:4.00,sr:95.0,fifties:0,hundreds:0,mom:0,catches:1,dismissals:2},
-    {name:"Ishan Kishan",team:"GB",inn:2,runs:17,hs:10,avg:8.50,sr:212.5,fifties:0,hundreds:0,mom:0,catches:3,dismissals:2},
-    {name:"Marco Jansen",team:"GB",inn:2,runs:21,hs:21,avg:10.50,sr:75.0,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
-    {name:"Maheesh Theekshana",team:"GB",inn:1,runs:0,hs:0,avg:0.00,sr:0.0,fifties:0,hundreds:0,mom:0,catches:1,dismissals:1},
-    {name:"Bhuvneshwar Kumar",team:"GB",inn:2,runs:4,hs:4,avg:4.00,sr:40.0,fifties:0,hundreds:0,mom:0,catches:0,dismissals:0},
-    {name:"Ravi Shastri",team:"TT",inn:2,runs:33,hs:23,avg:16.50,sr:117.3,fifties:0,hundreds:0,mom:0,catches:1,dismissals:2},
-    {name:"Trevor Singh",team:"TT",inn:2,runs:22,hs:13,avg:11.00,sr:118.5,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2,note:"impact"},
-    {name:"Mohammed Shami",team:"TT",inn:2,runs:11,hs:8,avg:11.00,sr:103.6,fifties:0,hundreds:0,mom:0,catches:1,dismissals:0},
-    {name:"Varun Chakravarthy",team:"TT",inn:2,runs:3,hs:3,avg:3.00,sr:37.5,fifties:0,hundreds:0,mom:0,catches:1,dismissals:1},
-    {name:"Mitchell Marsh",team:"AS",inn:2,runs:14,hs:10,avg:7.00,sr:133.4,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
-    {name:"Nicholas Pooran",team:"AS",inn:2,runs:61,hs:50,avg:30.50,sr:276.4,fifties:1,hundreds:0,mom:1,catches:0,dismissals:2,note:"impact"},
-    {name:"David Miller",team:"AS",inn:2,runs:19,hs:17,avg:19.00,sr:120.9,fifties:0,hundreds:0,mom:0,catches:1,dismissals:1},
-    {name:"Michael Bracewell",team:"AS",inn:2,runs:30,hs:30,avg:15.00,sr:88.3,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
-    {name:"Ajit Agarkar",team:"AS",inn:2,runs:6,hs:4,avg:6.00,sr:64.3,fifties:0,hundreds:0,mom:0,catches:0,dismissals:1},
-    {name:"Alana King",team:"AS",inn:2,runs:1,hs:1,avg:1.00,sr:10.0,fifties:0,hundreds:0,mom:0,catches:0,dismissals:1},
-    {name:"Yuzvendra Chahal",team:"AS",inn:0,runs:0,hs:0,avg:0.00,sr:0.0,fifties:0,hundreds:0,mom:0,catches:1,dismissals:0},
-    {name:"Shubman Gill",team:"HH",inn:2,runs:30,hs:26,avg:15.00,sr:214.3,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
-    {name:"Martin Guptill",team:"HH",inn:2,runs:4,hs:4,avg:2.00,sr:133.3,fifties:0,hundreds:0,mom:0,catches:1,dismissals:2},
-    {name:"Shikhar Dhawan",team:"HH",inn:2,runs:9,hs:6,avg:9.00,sr:150.0,fifties:0,hundreds:0,mom:0,catches:0,dismissals:1},
-    {name:"Aarav Roy",team:"AA",inn:1,runs:0,hs:0,avg:0.00,sr:0.0,fifties:0,hundreds:0,mom:0,catches:1,dismissals:1},
-    {name:"Harry Kraft",team:"HH",inn:1,runs:33,hs:33,avg:33.00,sr:194.1,fifties:0,hundreds:0,mom:0,catches:1,dismissals:1},
-    {name:"Jasprit Bumrah",team:"AA",inn:1,runs:10,hs:10,avg:10.00,sr:47.6,fifties:0,hundreds:0,mom:0,catches:1,dismissals:1},
-    {name:"Kuldeep Yadav",team:"AA",inn:1,runs:1,hs:1,avg:1.00,sr:33.3,fifties:0,hundreds:0,mom:0,catches:0,dismissals:1},
-    {name:"Fazalhaq Farooqi",team:"HH",inn:1,runs:0,hs:0,avg:0.00,sr:0.0,fifties:0,hundreds:0,mom:1,catches:1,dismissals:0},
-    {name:"Rohit Sharma",team:"VV",inn:2,runs:19,hs:19,avg:9.50,sr:158.3,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
-    {name:"KL Rahul",team:"VV",inn:2,runs:33,hs:33,avg:16.50,sr:300.0,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
-    {name:"Vivaan Armstrong",team:"VV",inn:2,runs:1,hs:1,avg:0.50,sr:50.0,fifties:0,hundreds:0,mom:0,catches:1,dismissals:2},
-    {name:"Yashasvi Jaiswal",team:"VV",inn:2,runs:48,hs:39,avg:24.00,sr:154.8,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
-    {name:"Kagiso Rabada",team:"VV",inn:2,runs:2,hs:2,avg:2.00,sr:25.0,fifties:0,hundreds:0,mom:0,catches:1,dismissals:1},
-    {name:"Jess Jonassen",team:"HH",inn:1,runs:3,hs:3,avg:3.00,sr:100.0,fifties:0,hundreds:0,mom:0,catches:0,dismissals:1},
-    {name:"Trent Boult",team:"VV",inn:1,runs:1,hs:1,avg:0.00,sr:100.0,fifties:0,hundreds:0,mom:0,catches:0,dismissals:0},
+  "batting": [
+    {
+      "name": "Virat Kohli",
+      "team": "VV",
+      "inn": 4,
+      "runs": 147,
+      "hs": 71,
+      "avg": 36.75,
+      "sr": 176.4,
+      "fifties": 1,
+      "hundreds": 0,
+      "mom": 1,
+      "catches": 0,
+      "dismissals": 4
+    },
+    {
+      "name": "Ruturaj Gaikwad",
+      "team": "HH",
+      "inn": 3,
+      "runs": 93,
+      "hs": 58,
+      "avg": 46.5,
+      "sr": 189.8,
+      "fifties": 1,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 2,
+      "note": "impact"
+    },
+    {
+      "name": "Sanju Samson",
+      "team": "TT",
+      "inn": 4,
+      "runs": 110,
+      "hs": 58,
+      "avg": 27.5,
+      "sr": 134,
+      "fifties": 1,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 2,
+      "dismissals": 4
+    },
+    {
+      "name": "Joe Root",
+      "team": "VV",
+      "inn": 4,
+      "runs": 78,
+      "hs": 56,
+      "avg": 19.5,
+      "sr": 172.8,
+      "fifties": 1,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 4,
+      "note": "impact"
+    },
+    {
+      "name": "Rassie van der Dussen",
+      "team": "TT",
+      "inn": 4,
+      "runs": 80,
+      "hs": 53,
+      "avg": 20,
+      "sr": 121.9,
+      "fifties": 1,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 4
+    },
+    {
+      "name": "Jordan Hermann",
+      "team": "AS",
+      "inn": 5,
+      "runs": 99,
+      "hs": 49,
+      "avg": 19.8,
+      "sr": 166.8,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 5
+    },
+    {
+      "name": "Marcus Stoinis",
+      "team": "AS",
+      "inn": 5,
+      "runs": 64,
+      "hs": 43,
+      "avg": 12.8,
+      "sr": 138.7,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 1,
+      "catches": 0,
+      "dismissals": 5
+    },
+    {
+      "name": "Washington Sundar",
+      "team": "HH",
+      "inn": 2,
+      "runs": 29,
+      "hs": 29,
+      "avg": 14.5,
+      "sr": 161.1,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 2
+    },
+    {
+      "name": "Temba Bavuma",
+      "team": "AS",
+      "inn": 3,
+      "runs": 56,
+      "hs": 29,
+      "avg": 18.67,
+      "sr": 143.7,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 3
+    },
+    {
+      "name": "Laura Wolvaardt",
+      "team": "TT",
+      "inn": 4,
+      "runs": 43,
+      "hs": 29,
+      "avg": 10.75,
+      "sr": 78.1,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 3,
+      "dismissals": 4
+    },
+    {
+      "name": "Krunal Pandya",
+      "team": "HH",
+      "inn": 2,
+      "runs": 71,
+      "hs": 43,
+      "avg": 35.5,
+      "sr": 191.9,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 2
+    },
+    {
+      "name": "Alex Carey",
+      "team": "AS",
+      "inn": 5,
+      "runs": 203,
+      "hs": 99,
+      "avg": 50.75,
+      "sr": 244.6,
+      "fifties": 1,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 8,
+      "dismissals": 4
+    },
+    {
+      "name": "Aiden Markram",
+      "team": "TT",
+      "inn": 4,
+      "runs": 155,
+      "hs": 76,
+      "avg": 51.67,
+      "sr": 191.4,
+      "fifties": 1,
+      "hundreds": 0,
+      "mom": 1,
+      "catches": 1,
+      "dismissals": 3
+    },
+    {
+      "name": "Josh Inglis",
+      "team": "AS",
+      "inn": 5,
+      "runs": 93,
+      "hs": 45,
+      "avg": 18.6,
+      "sr": 190.7,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 5
+    },
+    {
+      "name": "Alyssa Healy",
+      "team": "VV",
+      "inn": 4,
+      "runs": 29,
+      "hs": 24,
+      "avg": 7.25,
+      "sr": 88.4,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 8,
+      "dismissals": 4
+    },
+    {
+      "name": "Heinrich Klaasen",
+      "team": "HH",
+      "inn": 2,
+      "runs": 49,
+      "hs": 25,
+      "avg": 24.5,
+      "sr": 204.2,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 5,
+      "dismissals": 2
+    },
+    {
+      "name": "Rachin Ravindra",
+      "team": "VV",
+      "inn": 4,
+      "runs": 29,
+      "hs": 20,
+      "avg": 7.25,
+      "sr": 68.4,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 1,
+      "catches": 1,
+      "dismissals": 4
+    },
+    {
+      "name": "Mitchell Santner",
+      "team": "VV",
+      "inn": 4,
+      "runs": 64,
+      "hs": 26,
+      "avg": 21.33,
+      "sr": 135.3,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 3
+    },
+    {
+      "name": "Yuvraj Singh",
+      "team": "TT",
+      "inn": 4,
+      "runs": 28,
+      "hs": 16,
+      "avg": 7,
+      "sr": 108.8,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 4
+    },
+    {
+      "name": "Dewald Brevis",
+      "team": "TT",
+      "inn": 4,
+      "runs": 78,
+      "hs": 36,
+      "avg": 19.5,
+      "sr": 168.3,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 4
+    },
+    {
+      "name": "Hardik Pandya",
+      "team": "TT",
+      "inn": 4,
+      "runs": 122,
+      "hs": 70,
+      "avg": 40.67,
+      "sr": 187.8,
+      "fifties": 1,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 2,
+      "dismissals": 3
+    },
+    {
+      "name": "Steve Smith",
+      "team": "HH",
+      "inn": 3,
+      "runs": 138,
+      "hs": 92,
+      "avg": 46,
+      "sr": 215.6,
+      "fifties": 1,
+      "hundreds": 0,
+      "mom": 1,
+      "catches": 2,
+      "dismissals": 3
+    },
+    {
+      "name": "Quinton de Kock",
+      "team": "AA",
+      "inn": 3,
+      "runs": 285,
+      "hs": 136,
+      "avg": 142.5,
+      "sr": 206.5,
+      "fifties": 0,
+      "hundreds": 2,
+      "mom": 2,
+      "catches": 6,
+      "dismissals": 2
+    },
+    {
+      "name": "Evin Lewis",
+      "team": "AA",
+      "inn": 2,
+      "runs": 48,
+      "hs": 44,
+      "avg": 24,
+      "sr": 141.7,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 2,
+      "note": "impact"
+    },
+    {
+      "name": "Travis Head",
+      "team": "AA",
+      "inn": 3,
+      "runs": 53,
+      "hs": 29,
+      "avg": 17.67,
+      "sr": 147.3,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 3
+    },
+    {
+      "name": "Will Jacks",
+      "team": "AA",
+      "inn": 2,
+      "runs": 28,
+      "hs": 28,
+      "avg": 14,
+      "sr": 87.5,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 2
+    },
+    {
+      "name": "David Warner",
+      "team": "AA",
+      "inn": 3,
+      "runs": 133,
+      "hs": 102,
+      "avg": 44.33,
+      "sr": 205.2,
+      "fifties": 0,
+      "hundreds": 1,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 3
+    },
+    {
+      "name": "Tim David",
+      "team": "AA",
+      "inn": 3,
+      "runs": 27,
+      "hs": 12,
+      "avg": 13.5,
+      "sr": 126.4,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 2
+    },
+    {
+      "name": "Ben Stokes",
+      "team": "AA",
+      "inn": 3,
+      "runs": 15,
+      "hs": 12,
+      "avg": 7.5,
+      "sr": 157.1,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 2
+    },
+    {
+      "name": "Ravi Bishnoi",
+      "team": "AA",
+      "inn": 1,
+      "runs": 1,
+      "hs": 1,
+      "avg": 1,
+      "sr": 100,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 2,
+      "dismissals": 0
+    },
+    {
+      "name": "Smriti Mandhana",
+      "team": "GB",
+      "inn": 3,
+      "runs": 78,
+      "hs": 43,
+      "avg": 26,
+      "sr": 163.3,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 3
+    },
+    {
+      "name": "Ellyse Perry",
+      "team": "GB",
+      "inn": 3,
+      "runs": 125,
+      "hs": 66,
+      "avg": 41.67,
+      "sr": 207.4,
+      "fifties": 1,
+      "hundreds": 0,
+      "mom": 1,
+      "catches": 0,
+      "dismissals": 3
+    },
+    {
+      "name": "Grant Bauer",
+      "team": "GB",
+      "inn": 2,
+      "runs": 43,
+      "hs": 29,
+      "avg": 21.5,
+      "sr": 160.3,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 2,
+      "note": "impact"
+    },
+    {
+      "name": "Rishabh Pant",
+      "team": "GB",
+      "inn": 3,
+      "runs": 59,
+      "hs": 26,
+      "avg": 19.67,
+      "sr": 190,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 3
+    },
+    {
+      "name": "Axar Patel",
+      "team": "GB",
+      "inn": 3,
+      "runs": 44,
+      "hs": 24,
+      "avg": 14.67,
+      "sr": 188.6,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 3
+    },
+    {
+      "name": "Shashank Singh",
+      "team": "GB",
+      "inn": 3,
+      "runs": 67,
+      "hs": 36,
+      "avg": 33.5,
+      "sr": 245,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 2
+    },
+    {
+      "name": "Abhishek Sharma",
+      "team": "GB",
+      "inn": 3,
+      "runs": 30,
+      "hs": 22,
+      "avg": 10,
+      "sr": 124.4,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 3
+    },
+    {
+      "name": "Ishan Kishan",
+      "team": "GB",
+      "inn": 3,
+      "runs": 180,
+      "hs": 163,
+      "avg": 90,
+      "sr": 225.3,
+      "fifties": 0,
+      "hundreds": 1,
+      "mom": 1,
+      "catches": 5,
+      "dismissals": 2
+    },
+    {
+      "name": "Marco Jansen",
+      "team": "GB",
+      "inn": 3,
+      "runs": 21,
+      "hs": 21,
+      "avg": 7,
+      "sr": 75,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 3
+    },
+    {
+      "name": "Maheesh Theekshana",
+      "team": "GB",
+      "inn": 1,
+      "runs": 0,
+      "hs": 0,
+      "avg": 0,
+      "sr": 0,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 1
+    },
+    {
+      "name": "Bhuvneshwar Kumar",
+      "team": "GB",
+      "inn": 2,
+      "runs": 4,
+      "hs": 4,
+      "avg": 4,
+      "sr": 40,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 0
+    },
+    {
+      "name": "Ravi Shastri",
+      "team": "TT",
+      "inn": 3,
+      "runs": 36,
+      "hs": 23,
+      "avg": 18,
+      "sr": 178.2,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 2
+    },
+    {
+      "name": "Trevor Singh",
+      "team": "TT",
+      "inn": 2,
+      "runs": 22,
+      "hs": 13,
+      "avg": 11,
+      "sr": 118.5,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 2,
+      "note": "impact"
+    },
+    {
+      "name": "Mohammed Shami",
+      "team": "TT",
+      "inn": 2,
+      "runs": 11,
+      "hs": 8,
+      "avg": 11,
+      "sr": 103.6,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 0
+    },
+    {
+      "name": "Varun Chakravarthy",
+      "team": "TT",
+      "inn": 2,
+      "runs": 3,
+      "hs": 3,
+      "avg": 3,
+      "sr": 37.5,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 1
+    },
+    {
+      "name": "Mitchell Marsh",
+      "team": "AS",
+      "inn": 4,
+      "runs": 51,
+      "hs": 34,
+      "avg": 12.75,
+      "sr": 138.4,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 4
+    },
+    {
+      "name": "Nicholas Pooran",
+      "team": "AS",
+      "inn": 2,
+      "runs": 61,
+      "hs": 50,
+      "avg": 30.5,
+      "sr": 276.4,
+      "fifties": 1,
+      "hundreds": 0,
+      "mom": 1,
+      "catches": 0,
+      "dismissals": 2,
+      "note": "impact"
+    },
+    {
+      "name": "David Miller",
+      "team": "AS",
+      "inn": 4,
+      "runs": 92,
+      "hs": 60,
+      "avg": 30.67,
+      "sr": 149.5,
+      "fifties": 1,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 3
+    },
+    {
+      "name": "Michael Bracewell",
+      "team": "AS",
+      "inn": 4,
+      "runs": 71,
+      "hs": 39,
+      "avg": 17.75,
+      "sr": 112.2,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 4
+    },
+    {
+      "name": "Ajit Agarkar",
+      "team": "AS",
+      "inn": 4,
+      "runs": 10,
+      "hs": 4,
+      "avg": 5,
+      "sr": 65.5,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 2
+    },
+    {
+      "name": "Alana King",
+      "team": "AS",
+      "inn": 3,
+      "runs": 2,
+      "hs": 1,
+      "avg": 2,
+      "sr": 40,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 1
+    },
+    {
+      "name": "Yuzvendra Chahal",
+      "team": "AS",
+      "inn": 0,
+      "runs": 0,
+      "hs": 0,
+      "avg": 0,
+      "sr": 0,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 0
+    },
+    {
+      "name": "Shubman Gill",
+      "team": "HH",
+      "inn": 2,
+      "runs": 30,
+      "hs": 26,
+      "avg": 15,
+      "sr": 214.3,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 2
+    },
+    {
+      "name": "Martin Guptill",
+      "team": "HH",
+      "inn": 2,
+      "runs": 4,
+      "hs": 4,
+      "avg": 2,
+      "sr": 133.3,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 2
+    },
+    {
+      "name": "Shikhar Dhawan",
+      "team": "HH",
+      "inn": 2,
+      "runs": 9,
+      "hs": 6,
+      "avg": 9,
+      "sr": 150,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 1
+    },
+    {
+      "name": "Aarav Roy",
+      "team": "AA",
+      "inn": 1,
+      "runs": 0,
+      "hs": 0,
+      "avg": 0,
+      "sr": 0,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 1
+    },
+    {
+      "name": "Harry Kraft",
+      "team": "HH",
+      "inn": 1,
+      "runs": 33,
+      "hs": 33,
+      "avg": 33,
+      "sr": 194.1,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 1
+    },
+    {
+      "name": "Jasprit Bumrah",
+      "team": "AA",
+      "inn": 1,
+      "runs": 10,
+      "hs": 10,
+      "avg": 10,
+      "sr": 47.6,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 1
+    },
+    {
+      "name": "Kuldeep Yadav",
+      "team": "AA",
+      "inn": 1,
+      "runs": 1,
+      "hs": 1,
+      "avg": 1,
+      "sr": 33.3,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 1
+    },
+    {
+      "name": "Fazalhaq Farooqi",
+      "team": "HH",
+      "inn": 1,
+      "runs": 0,
+      "hs": 0,
+      "avg": 0,
+      "sr": 0,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 1,
+      "catches": 1,
+      "dismissals": 0
+    },
+    {
+      "name": "Rohit Sharma",
+      "team": "VV",
+      "inn": 3,
+      "runs": 19,
+      "hs": 19,
+      "avg": 6.33,
+      "sr": 158.3,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 3
+    },
+    {
+      "name": "KL Rahul",
+      "team": "VV",
+      "inn": 3,
+      "runs": 58,
+      "hs": 33,
+      "avg": 19.33,
+      "sr": 255.6,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 3
+    },
+    {
+      "name": "Vivaan Armstrong",
+      "team": "VV",
+      "inn": 3,
+      "runs": 10,
+      "hs": 9,
+      "avg": 3.33,
+      "sr": 83.3,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 2,
+      "dismissals": 3
+    },
+    {
+      "name": "Yashasvi Jaiswal",
+      "team": "VV",
+      "inn": 3,
+      "runs": 53,
+      "hs": 39,
+      "avg": 17.67,
+      "sr": 136.5,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 3
+    },
+    {
+      "name": "Kagiso Rabada",
+      "team": "VV",
+      "inn": 3,
+      "runs": 5,
+      "hs": 3,
+      "avg": 2.5,
+      "sr": 29.2,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 2
+    },
+    {
+      "name": "Jess Jonassen",
+      "team": "HH",
+      "inn": 1,
+      "runs": 3,
+      "hs": 3,
+      "avg": 3,
+      "sr": 100,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 1
+    },
+    {
+      "name": "Trent Boult",
+      "team": "VV",
+      "inn": 1,
+      "runs": 1,
+      "hs": 1,
+      "avg": 0,
+      "sr": 100,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 0
+    },
+    {
+      "name": "Glenn Maxwell",
+      "team": "AS",
+      "inn": 2,
+      "runs": 26,
+      "hs": 14,
+      "avg": 13,
+      "sr": 215,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 2
+    },
+    {
+      "name": "Arjun Potter",
+      "team": "AS",
+      "inn": 1,
+      "runs": 9,
+      "hs": 9,
+      "avg": 9,
+      "sr": 180,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 1,
+      "note": "impact"
+    },
+    {
+      "name": "Noor Ahmad",
+      "team": "GB",
+      "inn": 1,
+      "runs": 4,
+      "hs": 4,
+      "avg": 4,
+      "sr": 200,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 0,
+      "note": "impact"
+    },
+    {
+      "name": "Vaibhav Suryavanshi",
+      "team": "TT",
+      "inn": 1,
+      "runs": 5,
+      "hs": 5,
+      "avg": 5,
+      "sr": 71.4,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 1,
+      "dismissals": 1,
+      "note": "impact"
+    },
+    {
+      "name": "Matt Henry",
+      "team": "VV",
+      "inn": 1,
+      "runs": 1,
+      "hs": 1,
+      "avg": 1,
+      "sr": 50,
+      "fifties": 0,
+      "hundreds": 0,
+      "mom": 0,
+      "catches": 0,
+      "dismissals": 0
+    }
   ],
-  bowling:[
-    {name:"Varun Chakravarthy",team:"TT",inn:3,wkts:9,bbi:"4/47",avg:16.25,econ:11.42,sr:8.7,fourW:1},
-    {name:"Mohammed Shami",team:"TT",inn:3,wkts:6,bbi:"3/48",avg:24.17,econ:10.25,sr:14.7,fourW:0},
-    {name:"Alana King",team:"AS",inn:3,wkts:8,bbi:"3/24",avg:10.44,econ:6.58,sr:9.3,fourW:0},
-    {name:"Krunal Pandya",team:"HH",inn:2,wkts:3,bbi:"3/44",avg:14.67,econ:9.24,sr:7.0,fourW:0},
-    {name:"Mitchell Swepson",team:"HH",inn:3,wkts:6,bbi:"3/42",avg:6.83,econ:6.31,sr:6.5,fourW:0},
-    {name:"Washington Sundar",team:"HH",inn:3,wkts:7,bbi:"2/3",avg:11.43,econ:7.50,sr:9.1,fourW:0},
-    {name:"Marcus Stoinis",team:"AS",inn:3,wkts:9,bbi:"5/40",avg:14.50,econ:9.25,sr:9.6,fourW:1},
-    {name:"Yuvraj Singh",team:"TT",inn:3,wkts:4,bbi:"2/36",avg:37.00,econ:12.03,sr:17.7,fourW:0},
-    {name:"Kagiso Rabada",team:"VV",inn:3,wkts:4,bbi:"2/53",avg:24.50,econ:13.67,sr:10.8,fourW:0},
-    {name:"Matt Henry",team:"VV",inn:3,wkts:7,bbi:"2/40",avg:17.57,econ:11.35,sr:9.3,fourW:0},
-    {name:"Trent Boult",team:"VV",inn:3,wkts:5,bbi:"2/30",avg:24.20,econ:10.08,sr:14.4,fourW:0},
-    {name:"Rachin Ravindra",team:"VV",inn:3,wkts:8,bbi:"5/20",avg:24.13,econ:9.57,sr:15.1,fourW:1},
-    {name:"Mitchell Santner",team:"VV",inn:2,wkts:2,bbi:"1/45",avg:48.00,econ:12.00,sr:24.0,fourW:0},
-    {name:"Hardik Pandya",team:"TT",inn:3,wkts:2,bbi:"1/32",avg:37.50,econ:10.25,sr:24.0,fourW:0},
-    {name:"Fazalhaq Farooqi",team:"HH",inn:3,wkts:7,bbi:"5/26",avg:22.00,econ:8.40,sr:15.7,fourW:1},
-    {name:"Jess Jonassen",team:"HH",inn:3,wkts:7,bbi:"4/18",avg:12.14,econ:6.46,sr:11.3,fourW:1},
-    {name:"Yuzvendra Chahal",team:"AS",inn:3,wkts:1,bbi:"1/56",avg:56.00,econ:8.50,sr:24.0,fourW:0},
-    {name:"Michael Bracewell",team:"AS",inn:2,wkts:2,bbi:"1/25",avg:22.50,econ:11.25,sr:12.0,fourW:0},
-    {name:"Mitchell Marsh",team:"AS",inn:2,wkts:1,bbi:"1/17",avg:17.00,econ:10.50,sr:12.0,fourW:0},
-    {name:"Jasprit Bumrah",team:"AA",inn:2,wkts:5,bbi:"4/22",avg:14.25,econ:9.63,sr:8.1,fourW:1},
-    {name:"Mohammed Siraj",team:"AA",inn:2,wkts:3,bbi:"2/38",avg:12.50,econ:7.75,sr:9.0,fourW:0},
-    {name:"Will Jacks",team:"AA",inn:2,wkts:3,bbi:"2/28",avg:15.00,econ:12.67,sr:7.5,fourW:0},
-    {name:"Kuldeep Yadav",team:"AA",inn:2,wkts:1,bbi:"1/32",avg:32.00,econ:7.50,sr:24.0,fourW:0},
-    {name:"Ravi Bishnoi",team:"AA",inn:2,wkts:1,bbi:"1/32",avg:32.00,econ:17.00,sr:12.0,fourW:0},
-    {name:"Ben Stokes",team:"AA",inn:1,wkts:0,bbi:"0/15",avg:0.00,econ:15.00,sr:0.0,fourW:0},
-    {name:"Grant Bauer",team:"GB",inn:1,wkts:1,bbi:"1/13",avg:13.00,econ:13.00,sr:6.0,fourW:0},
-    {name:"Arshdeep Singh",team:"GB",inn:2,wkts:4,bbi:"2/46",avg:15.50,econ:8.15,sr:11.0,fourW:0},
-    {name:"Bhuvneshwar Kumar",team:"GB",inn:2,wkts:2,bbi:"1/53",avg:38.50,econ:10.63,sr:21.0,fourW:0},
-    {name:"Maheesh Theekshana",team:"GB",inn:2,wkts:4,bbi:"3/26",avg:30.84,econ:9.88,sr:16.0,fourW:0},
-    {name:"Axar Patel",team:"GB",inn:2,wkts:2,bbi:"2/31",avg:7.75,econ:9.63,sr:6.0,fourW:0},
-    {name:"Marco Jansen",team:"GB",inn:2,wkts:1,bbi:"1/15",avg:7.50,econ:11.21,sr:12.0,fourW:0},
-    {name:"Ravi Shastri",team:"TT",inn:1,wkts:0,bbi:"0/27",avg:0.00,econ:13.50,sr:0.0,fourW:0},
-    {name:"Alzarri Joseph",team:"TT",inn:2,wkts:4,bbi:"2/11",avg:10.50,econ:7.65,sr:7.8,fourW:0},
-    {name:"Ajit Agarkar",team:"AS",inn:2,wkts:3,bbi:"3/36",avg:12.00,econ:12.12,sr:8.0,fourW:0},
+  "bowling": [
+    {
+      "name": "Varun Chakravarthy",
+      "team": "TT",
+      "inn": 4,
+      "wkts": 11,
+      "bbi": "4/47",
+      "avg": 15.81,
+      "econ": 10.38,
+      "sr": 9.5,
+      "fourW": 1
+    },
+    {
+      "name": "Mohammed Shami",
+      "team": "TT",
+      "inn": 4,
+      "wkts": 8,
+      "bbi": "3/48",
+      "avg": 21.13,
+      "econ": 9.19,
+      "sr": 14,
+      "fourW": 0
+    },
+    {
+      "name": "Alana King",
+      "team": "AS",
+      "inn": 5,
+      "wkts": 9,
+      "bbi": "3/24",
+      "avg": 17.15,
+      "econ": 8.5,
+      "sr": 12.2,
+      "fourW": 0
+    },
+    {
+      "name": "Krunal Pandya",
+      "team": "HH",
+      "inn": 2,
+      "wkts": 3,
+      "bbi": "3/44",
+      "avg": 14.67,
+      "econ": 9.24,
+      "sr": 7,
+      "fourW": 0
+    },
+    {
+      "name": "Mitchell Swepson",
+      "team": "HH",
+      "inn": 3,
+      "wkts": 6,
+      "bbi": "3/42",
+      "avg": 6.83,
+      "econ": 6.31,
+      "sr": 6.5,
+      "fourW": 0
+    },
+    {
+      "name": "Washington Sundar",
+      "team": "HH",
+      "inn": 3,
+      "wkts": 7,
+      "bbi": "2/3",
+      "avg": 11.43,
+      "econ": 7.5,
+      "sr": 9.1,
+      "fourW": 0
+    },
+    {
+      "name": "Marcus Stoinis",
+      "team": "AS",
+      "inn": 5,
+      "wkts": 10,
+      "bbi": "5/40",
+      "avg": 24.63,
+      "econ": 11.77,
+      "sr": 13.2,
+      "fourW": 1
+    },
+    {
+      "name": "Yuvraj Singh",
+      "team": "TT",
+      "inn": 4,
+      "wkts": 7,
+      "bbi": "3/41",
+      "avg": 31.17,
+      "econ": 11.58,
+      "sr": 15.3,
+      "fourW": 0
+    },
+    {
+      "name": "Kagiso Rabada",
+      "team": "VV",
+      "inn": 4,
+      "wkts": 5,
+      "bbi": "2/53",
+      "avg": 29.38,
+      "econ": 13,
+      "sr": 14.1,
+      "fourW": 0
+    },
+    {
+      "name": "Matt Henry",
+      "team": "VV",
+      "inn": 4,
+      "wkts": 9,
+      "bbi": "2/40",
+      "avg": 19.05,
+      "econ": 11.45,
+      "sr": 10,
+      "fourW": 0
+    },
+    {
+      "name": "Trent Boult",
+      "team": "VV",
+      "inn": 4,
+      "wkts": 7,
+      "bbi": "2/23",
+      "avg": 21.02,
+      "econ": 9,
+      "sr": 13.8,
+      "fourW": 0
+    },
+    {
+      "name": "Rachin Ravindra",
+      "team": "VV",
+      "inn": 4,
+      "wkts": 10,
+      "bbi": "5/20",
+      "avg": 22.1,
+      "econ": 9.18,
+      "sr": 14.3,
+      "fourW": 1
+    },
+    {
+      "name": "Mitchell Santner",
+      "team": "VV",
+      "inn": 3,
+      "wkts": 2,
+      "bbi": "1/45",
+      "avg": 48,
+      "econ": 12.33,
+      "sr": 24,
+      "fourW": 0
+    },
+    {
+      "name": "Hardik Pandya",
+      "team": "TT",
+      "inn": 4,
+      "wkts": 4,
+      "bbi": "2/1",
+      "avg": 28.25,
+      "econ": 7.84,
+      "sr": 19.3,
+      "fourW": 0
+    },
+    {
+      "name": "Fazalhaq Farooqi",
+      "team": "HH",
+      "inn": 3,
+      "wkts": 7,
+      "bbi": "5/26",
+      "avg": 22,
+      "econ": 8.4,
+      "sr": 15.7,
+      "fourW": 1
+    },
+    {
+      "name": "Jess Jonassen",
+      "team": "HH",
+      "inn": 3,
+      "wkts": 7,
+      "bbi": "4/18",
+      "avg": 12.14,
+      "econ": 6.46,
+      "sr": 11.3,
+      "fourW": 1
+    },
+    {
+      "name": "Yuzvendra Chahal",
+      "team": "AS",
+      "inn": 5,
+      "wkts": 3,
+      "bbi": "2/57",
+      "avg": 50.5,
+      "econ": 11.05,
+      "sr": 21.6,
+      "fourW": 0
+    },
+    {
+      "name": "Michael Bracewell",
+      "team": "AS",
+      "inn": 4,
+      "wkts": 4,
+      "bbi": "1/25",
+      "avg": 38.5,
+      "econ": 14.71,
+      "sr": 15,
+      "fourW": 0
+    },
+    {
+      "name": "Mitchell Marsh",
+      "team": "AS",
+      "inn": 2,
+      "wkts": 1,
+      "bbi": "1/17",
+      "avg": 17,
+      "econ": 10.5,
+      "sr": 12,
+      "fourW": 0
+    },
+    {
+      "name": "Jasprit Bumrah",
+      "team": "AA",
+      "inn": 3,
+      "wkts": 8,
+      "bbi": "4/22",
+      "avg": 11.5,
+      "econ": 9.42,
+      "sr": 6.7,
+      "fourW": 1
+    },
+    {
+      "name": "Mohammed Siraj",
+      "team": "AA",
+      "inn": 3,
+      "wkts": 7,
+      "bbi": "4/29",
+      "avg": 10.75,
+      "econ": 7.69,
+      "sr": 7.9,
+      "fourW": 1
+    },
+    {
+      "name": "Will Jacks",
+      "team": "AA",
+      "inn": 3,
+      "wkts": 3,
+      "bbi": "2/28",
+      "avg": 15,
+      "econ": 14.28,
+      "sr": 7.5,
+      "fourW": 0
+    },
+    {
+      "name": "Kuldeep Yadav",
+      "team": "AA",
+      "inn": 3,
+      "wkts": 2,
+      "bbi": "1/25",
+      "avg": 29.67,
+      "econ": 9.17,
+      "sr": 20,
+      "fourW": 0
+    },
+    {
+      "name": "Ravi Bishnoi",
+      "team": "AA",
+      "inn": 3,
+      "wkts": 3,
+      "bbi": "2/37",
+      "avg": 27.5,
+      "econ": 15.44,
+      "sr": 11,
+      "fourW": 0
+    },
+    {
+      "name": "Ben Stokes",
+      "team": "AA",
+      "inn": 2,
+      "wkts": 0,
+      "bbi": "0/11",
+      "avg": 0,
+      "econ": 13,
+      "sr": 0,
+      "fourW": 0
+    },
+    {
+      "name": "Grant Bauer",
+      "team": "GB",
+      "inn": 1,
+      "wkts": 1,
+      "bbi": "1/13",
+      "avg": 13,
+      "econ": 13,
+      "sr": 6,
+      "fourW": 0
+    },
+    {
+      "name": "Arshdeep Singh",
+      "team": "GB",
+      "inn": 3,
+      "wkts": 7,
+      "bbi": "3/51",
+      "avg": 16,
+      "econ": 9.68,
+      "sr": 10,
+      "fourW": 0
+    },
+    {
+      "name": "Bhuvneshwar Kumar",
+      "team": "GB",
+      "inn": 3,
+      "wkts": 4,
+      "bbi": "2/47",
+      "avg": 33.5,
+      "econ": 11,
+      "sr": 18,
+      "fourW": 0
+    },
+    {
+      "name": "Maheesh Theekshana",
+      "team": "GB",
+      "inn": 3,
+      "wkts": 4,
+      "bbi": "3/26",
+      "avg": 30.84,
+      "econ": 11.75,
+      "sr": 16,
+      "fourW": 0
+    },
+    {
+      "name": "Axar Patel",
+      "team": "GB",
+      "inn": 3,
+      "wkts": 2,
+      "bbi": "2/31",
+      "avg": 7.75,
+      "econ": 9.75,
+      "sr": 6,
+      "fourW": 0
+    },
+    {
+      "name": "Marco Jansen",
+      "team": "GB",
+      "inn": 3,
+      "wkts": 3,
+      "bbi": "2/44",
+      "avg": 12.33,
+      "econ": 11.14,
+      "sr": 12,
+      "fourW": 0
+    },
+    {
+      "name": "Ravi Shastri",
+      "team": "TT",
+      "inn": 2,
+      "wkts": 0,
+      "bbi": "0/17",
+      "avg": 0,
+      "econ": 15.25,
+      "sr": 0,
+      "fourW": 0
+    },
+    {
+      "name": "Alzarri Joseph",
+      "team": "TT",
+      "inn": 3,
+      "wkts": 4,
+      "bbi": "2/11",
+      "avg": 10.5,
+      "econ": 7.77,
+      "sr": 7.8,
+      "fourW": 0
+    },
+    {
+      "name": "Ajit Agarkar",
+      "team": "AS",
+      "inn": 4,
+      "wkts": 6,
+      "bbi": "3/36",
+      "avg": 24.5,
+      "econ": 11.75,
+      "sr": 13,
+      "fourW": 0
+    },
+    {
+      "name": "Glenn Maxwell",
+      "team": "AS",
+      "inn": 2,
+      "wkts": 1,
+      "bbi": "1/28",
+      "avg": 14,
+      "econ": 11.5,
+      "sr": 6,
+      "fourW": 0
+    },
+    {
+      "name": "Noor Ahmad",
+      "team": "GB",
+      "inn": 1,
+      "wkts": 0,
+      "bbi": "0/19",
+      "avg": 0,
+      "econ": 19,
+      "sr": 0,
+      "fourW": 0
+    }
   ]
 };
 
