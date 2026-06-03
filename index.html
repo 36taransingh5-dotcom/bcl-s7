@@ -10408,28 +10408,17 @@ function renderStories() {
     return;
   }
 
-  // Get Top Batter and Bowler
-  const players = SQUADS[teamId] || [];
-  let topBatter = null, topBowler = null;
-  let maxRuns = -1, maxWkts = -1;
+  // Get Top Batter and Bowler from compiled DB stats
+  const teamBatters = DB.batting.filter(b => b.team === teamId).sort((a,b) => b.runs - a.runs);
+  const teamBowlers = DB.bowling.filter(b => b.team === teamId).sort((a,b) => b.wkts - a.wkts || a.econ - b.econ);
   
-  players.forEach(pName => {
-    let runs = 0, wkts = 0;
-    matches.forEach(m => {
-      const inn1 = m.scorecard?.t1Inn, inn2 = m.scorecard?.t2Inn;
-      const isT1 = m.team1 === teamId;
-      const batInn = isT1 ? inn1 : inn2;
-      const bowlInn = isT1 ? inn2 : inn1;
-      
-      const batStat = batInn?.bat?.find(b => b.name === pName);
-      if(batStat) runs += batStat.runs;
-      
-      const bowlStat = bowlInn?.bowl?.find(b => b.name === pName);
-      if(bowlStat) wkts += bowlStat.wkts;
-    });
-    if(runs > maxRuns) { maxRuns = runs; topBatter = pName; }
-    if(wkts > maxWkts) { maxWkts = wkts; topBowler = pName; }
-  });
+  const topBatterObj = teamBatters[0];
+  const topBatter = topBatterObj ? topBatterObj.name : 'TBD';
+  const maxRuns = topBatterObj ? topBatterObj.runs : 0;
+  
+  const topBowlerObj = teamBowlers[0];
+  const topBowler = topBowlerObj ? topBowlerObj.name : 'TBD';
+  const maxWkts = topBowlerObj ? topBowlerObj.wkts : 0;
 
   // Calculate Win Streak
   let streak = 0;
@@ -10438,17 +10427,53 @@ function renderStories() {
     else break;
   }
 
+  let motto = "";
+  let playstyle = "";
+  let owner = "";
   let narrative = "";
-  if(row.w === 0) {
-    narrative = `The ${team.name} are facing a tough season. They are still searching for their first victory after ${row.m} matches. They need to find their rhythm soon to turn the tide.`;
-  } else if(row.l === 0) {
-    narrative = `The ${team.name} are absolutely unstoppable! An undefeated streak of ${row.w} wins shows their complete dominance in the tournament so far.`;
-  } else if(row.w >= 3 && streak >= 2) {
-    narrative = `The ${team.name} have found brilliant momentum! With ${row.w} wins under their belt and a hot streak of ${streak} consecutive victories, they look like a formidable force.`;
-  } else if(row.w > row.l) {
-    narrative = `A strong showing by the ${team.name} this season! They have more wins than losses, leaning on key performances to stay competitive in the upper half of the table.`;
-  } else {
-    narrative = `It's been a rollercoaster season for the ${team.name}. With ${row.w} wins and ${row.l} losses, they have shown flashes of brilliance but are still seeking consistent form.`;
+
+  switch(teamId) {
+    case 'HH':
+      motto = "Precision in Motion (⚙️ Machina Vincit)";
+      playstyle = "Systematic & Methodical Engineering";
+      owner = "Harshit";
+      narrative = `The Harshit Harmobiles operate like a finely tuned machine, analyzing every micro-tactical element. Harshit's mechanical approach has built a team focused on relentless execution. Currently sitting on ${row.w} wins and ${row.l} losses, ${row.w > row.l ? 'their gears are perfectly aligned as they systematically grind down the competition' : 'they are undergoing a mid-season calibration to optimize their performance'}. With ${topBatter} anchoring the crease with ${maxRuns} runs, and the lethal precision of ${topBowler} spearheading the bowling department with ${maxWkts} wickets, the Harmobiles are a terrifyingly calculated force.`;
+      break;
+    case 'AS':
+      motto = "Strategy Over Force (🗡️ Scientia Potentia Est)";
+      playstyle = "High-IQ Chess & Tactical Masterclass";
+      owner = "Anagh";
+      narrative = `Led by Anagh's chess-like precision, the Anagh Savants are the master tacticians of the league, using clever field placements and sharp batting angles to outwit opponents. They currently stand at ${row.w} wins and ${row.l} losses. ${row.w > row.l ? 'Their analytical strategies have sliced through rival lineups like a scalpel' : 'They have faced a few tactical challenges but are ready to deploy their next strategic masterstroke'}. The anchor ${topBatter} leads from the front with ${maxRuns} runs, supported by the cunning bowler ${topBowler} who has taken ${maxWkts} crucial wickets.`;
+      break;
+    case 'AA':
+      motto = "Shield and Conquer (🛡️ Invictus)";
+      playstyle = "Resilient & Rock-Solid Defense";
+      owner = "Aarnav";
+      narrative = `Guided by Aarnav's defensive steel, the Aarnav Aces boast the most resilient defense in the BCL. Like an unbreakable shield-wall, they absorb pressure and wait for the perfect moment to counter-strike. Holding a record of ${row.w} wins and ${row.l} losses, ${row.w > row.l ? 'their solid defense has successfully parried all rival onslaughts' : 'they have seen their fortress breached a few times but are rebuilding their defenses'}. With ${topBatter} providing a fortress of runs (${maxRuns}), and ${topBowler} shutting down hitters with ${maxWkts} wickets, the Aces remain a tough nut to crack.`;
+      break;
+    case 'GB':
+      motto = "Fear the Flame (🔥 Ignis Aeternus)";
+      playstyle = "Ultra-Aggressive & Explosive Power";
+      owner = "Gauransh";
+      narrative = `The Gauransh Blazers are pure fire! Gauransh's squad is designed for maximum combustion, putting on aggressive, high-risk shows that keep fans on the edge of their seats. With ${row.w} wins and ${row.l} losses, ${row.w > row.l ? 'they have set the tournament alight, leaving rival teams in ashes' : 'they have had some erratic sparks but are one big match away from starting a wildfire'}. Whenever ${topBatter} gets going to amass ${maxRuns} runs, or ${topBowler} turns up the heat to bag ${maxWkts} wickets, the Blazers are absolute box-office entertainment.`;
+      break;
+    case 'TT':
+      motto = "Calm in the Storm (🌊 Aequam Servare Mentem)";
+      playstyle = "Zen Composure & Wave Momentum";
+      owner = "Taran";
+      narrative = `Flowing like water but striking like a tidal wave, the Taran Tranquils represent zen-like composure. Taran has built a group that stays remarkably calm under extreme pressure, absorbing tension and flowing around obstacles. Standing at ${row.w} wins and ${row.l} losses, ${row.w > row.l ? 'their serene composure has swept away all opponents in their path' : 'they have navigated through rough seas but are ready to ride a massive wave back to the top'}. The elegant ${topBatter} has anchored the ship with ${maxRuns} runs, and ${topBowler} has made massive waves with ${maxWkts} wickets.`;
+      break;
+    case 'VV':
+      motto = "Strike Like Lightning (⚡ Fulgor et Tonitru)";
+      playstyle = "Electric Energy & Shock-and-Awe Speed";
+      owner = "Vivaan";
+      narrative = `High voltage and absolute speed define the Vivaan Victors! Vivaan's side is all about electric momentum, shocking their opponents with rapid runs and intense field pressure. Holding a record of ${row.w} wins and ${row.l} losses, ${row.w > row.l ? 'they have triggered a total power surge across the BCL, leaving rivals dazed' : 'they have experienced a few short circuits but their potential to strike like lightning is unmatched'}. The explosive ${topBatter} leads the charge with ${maxRuns} runs, while the lethal ${topBowler} has shocked batters to pick up ${maxWkts} wickets.`;
+      break;
+    default:
+      motto = "Play Hard, Play Fair";
+      playstyle = "Standard BCL Cricket";
+      owner = "Unknown";
+      narrative = `The BCL team ${team.name} is competing hard this season with ${row.w} wins and ${row.l} losses. Led by top batter ${topBatter} and top bowler ${topBowler}, they are looking to cement their legacy in BCL history.`;
   }
 
   const formHtml = matches.map(m => {
@@ -10478,6 +10503,19 @@ function renderStories() {
         </div>
       </div>
       
+      <!-- Motto, Playstyle and Owner Badges -->
+      <div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:24px; position:relative; z-index:1;">
+        <span style="background:${team.color}15; color:${team.color}; border:1px solid ${team.color}33; padding:6px 14px; border-radius:20px; font-size:13px; font-weight:700; display:flex; align-items:center; gap:6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+          <span>🎯</span> Playstyle: ${playstyle}
+        </span>
+        <span style="background:var(--bg); border:1px solid var(--border); color:var(--text); padding:6px 14px; border-radius:20px; font-size:13px; font-weight:700; display:flex; align-items:center; gap:6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+          <span>📜</span> Motto: "${motto}"
+        </span>
+        <span style="background:var(--bg); border:1px solid var(--border); color:var(--text); padding:6px 14px; border-radius:20px; font-size:13px; font-weight:700; display:flex; align-items:center; gap:6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+          <span>👑</span> Owner: ${owner}
+        </span>
+      </div>
+      
       <div style="font-size:17px; line-height:1.7; color:var(--text); opacity:0.95; margin-bottom:32px; padding:20px; background:var(--bg); border-radius:12px; border-left:4px solid ${team.color}; font-style:italic; box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);">
         "${narrative}"
       </div>
@@ -10485,13 +10523,13 @@ function renderStories() {
       <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px; margin-bottom:32px;">
         <div style="background:var(--bg); padding:20px; border-radius:12px; border:1px solid var(--border); text-align:center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.2s ease;">
           <div style="font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; font-weight:700;">🏏 Top Scorer</div>
-          <div style="font-weight:700; font-size:20px; color:var(--text); font-family:'Bebas Neue',sans-serif; letter-spacing:1px;">${topBatter || '-'}</div>
-          <div style="color:var(--accent); font-weight:700; font-size:14px; margin-top:6px;">${maxRuns > -1 ? maxRuns + ' Runs' : ''}</div>
+          <div style="font-weight:700; font-size:20px; color:var(--text); font-family:'Bebas Neue',sans-serif; letter-spacing:1px;">${topBatter}</div>
+          <div style="color:var(--accent); font-weight:700; font-size:14px; margin-top:6px;">${maxRuns} Runs</div>
         </div>
         <div style="background:var(--bg); padding:20px; border-radius:12px; border:1px solid var(--border); text-align:center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.2s ease;">
           <div style="font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; font-weight:700;">🎯 Top Bowler</div>
-          <div style="font-weight:700; font-size:20px; color:var(--text); font-family:'Bebas Neue',sans-serif; letter-spacing:1px;">${topBowler || '-'}</div>
-          <div style="color:var(--accent); font-weight:700; font-size:14px; margin-top:6px;">${maxWkts > -1 ? maxWkts + ' Wickets' : ''}</div>
+          <div style="font-weight:700; font-size:20px; color:var(--text); font-family:'Bebas Neue',sans-serif; letter-spacing:1px;">${topBowler}</div>
+          <div style="color:var(--accent); font-weight:700; font-size:14px; margin-top:6px;">${maxWkts} Wickets</div>
         </div>
         <div style="background:var(--bg); padding:20px; border-radius:12px; border:1px solid var(--border); text-align:center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.2s ease;">
           <div style="font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; font-weight:700;">📈 Form (Last ${matches.length})</div>
