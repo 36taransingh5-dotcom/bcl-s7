@@ -1,0 +1,1312 @@
+
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const TEAMS = [
+  {id:"HH",name:"Harshit Harmobiles",emoji:"⚙️",color:"#60a5fa"},
+  {id:"AS",name:"Anagh Savants",      emoji:"🗡️",color:"#f87171"},
+  {id:"AA",name:"Aarnav Aces",        emoji:"🛡️",color:"#34d399"},
+  {id:"GB",name:"Gauransh Blazers",   emoji:"🔥",color:"#fb923c"},
+  {id:"TT",name:"Taran Tranquils",    emoji:"🌊",color:"#38bdf8"},
+  {id:"VV",name:"Vivaan Victors",     emoji:"⚡",color:"#facc15"},
+];
+const SQUADS = {
+  TT:[{n:1,p:"Sanju Samson",r:"WK"},{n:2,p:"Laura Wolvaardt",r:"BAT"},{n:3,p:"Aiden Markram",r:"BAT"},{n:4,p:"Rassie van der Dussen",r:"BAT"},{n:5,p:"Dewald Brevis",r:"BAT"},{n:6,p:"Yuvraj Singh",r:"C"},{n:7,p:"Hardik Pandya",r:"ALL"},{n:8,p:"Ravi Shastri",r:"ALL"},{n:9,p:"Mohammed Shami",r:"BOWL"},{n:10,p:"Varun Chakravarthy",r:"BOWL"},{n:11,p:"Alzarri Joseph",r:"BOWL"},{n:12,p:"Trevor Singh",r:"SUB"}],
+  AA:[{n:1,p:"David Warner",r:"BAT"},{n:2,p:"Travis Head",r:"BAT"},{n:3,p:"Quinton de Kock",r:"WK"},{n:4,p:"Ben Stokes",r:"C"},{n:5,p:"Will Jacks",r:"ALL"},{n:6,p:"Tim David",r:"BAT"},{n:7,p:"Aarav Roy",r:"BAT"},{n:8,p:"Jasprit Bumrah",r:"BOWL"},{n:9,p:"Mohammed Siraj",r:"BOWL"},{n:10,p:"Kuldeep Yadav",r:"BOWL"},{n:11,p:"Ravi Bishnoi",r:"BOWL"},{n:12,p:"Evin Lewis",r:"SUB"}],
+  GB:[{n:1,p:"Abhishek Sharma",r:"BAT"},{n:2,p:"Ishan Kishan",r:"BAT"},{n:3,p:"Smriti Mandhana",r:"BAT"},{n:4,p:"Ellyse Perry",r:"ALL"},{n:5,p:"Rishabh Pant",r:"C/WK"},{n:6,p:"Shashank Singh",r:"BAT"},{n:7,p:"Axar Patel",r:"ALL"},{n:8,p:"Marco Jansen",r:"ALL"},{n:9,p:"Bhuvneshwar Kumar",r:"BOWL"},{n:10,p:"Maheesh Theekshana",r:"BOWL"},{n:11,p:"Arshdeep Singh",r:"BOWL"},{n:12,p:"Grant Bauer",r:"SUB"}],
+  AS:[{n:1,p:"Mitchell Marsh",r:"C"},{n:2,p:"Jordan Hermann",r:"BAT"},{n:3,p:"Temba Bavuma",r:"BAT"},{n:4,p:"Josh Inglis",r:"BAT"},{n:5,p:"Alex Carey",r:"WK"},{n:6,p:"David Miller",r:"BAT"},{n:7,p:"Marcus Stoinis",r:"ALL"},{n:8,p:"Michael Bracewell",r:"ALL"},{n:9,p:"Jason Behrendorff",r:"BOWL"},{n:10,p:"Yuzvendra Chahal",r:"BOWL"},{n:11,p:"Alana King",r:"BOWL"},{n:12,p:"Nicholas Pooran",r:"SUB"},{n:13,p:"Ajit Agarkar",r:"BOWL"}],
+  HH:[{n:1,p:"Steve Smith",r:"C"},{n:2,p:"Martin Guptill",r:"BAT"},{n:3,p:"Shubman Gill",r:"BAT"},{n:4,p:"Shikhar Dhawan",r:"BAT"},{n:5,p:"Heinrich Klaasen",r:"WK"},{n:6,p:"Washington Sundar",r:"ALL"},{n:7,p:"Krunal Pandya",r:"ALL"},{n:8,p:"Harry Kraft",r:"ALL"},{n:9,p:"Jess Jonassen",r:"BOWL"},{n:10,p:"Fazalhaq Farooqi",r:"BOWL"},{n:11,p:"Mitchell Swepson",r:"BOWL"},{n:12,p:"Rahmanullah Gurbaz",r:"SUB"}],
+  VV:[{n:1,p:"KL Rahul",r:"BAT"},{n:2,p:"Rohit Sharma",r:"C"},{n:3,p:"Virat Kohli",r:"BAT"},{n:4,p:"Joe Root",r:"BAT"},{n:5,p:"Vivaan Armstrong",r:"BAT"},{n:6,p:"Alyssa Healy",r:"WK"},{n:7,p:"Rachin Ravindra",r:"ALL"},{n:8,p:"Mitchell Santner",r:"ALL"},{n:9,p:"Kagiso Rabada",r:"BOWL"},{n:10,p:"Trent Boult",r:"BOWL"},{n:11,p:"Matt Henry",r:"BOWL"},{n:12,p:"Yashasvi Jaiswal",r:"SUB"}],
+};
+const SCHEDULE=[
+  {r:1,l:1,b:[],m:[{n:1,t1:"HH",t2:"AS"},{n:2,t1:"AA",t2:"GB"},{n:3,t1:"TT",t2:"VV"}]},
+  {r:2,l:1,b:["VV","AS"],m:[{n:4,t1:"HH",t2:"AA"},{n:6,t1:"GB",t2:"TT"}]},
+  {r:3,l:1,b:["TT","AA"],m:[{n:7,t1:"HH",t2:"GB"},{n:8,t1:"AS",t2:"VV"}]},
+  {r:4,l:1,b:["GB","VV"],m:[{n:10,t1:"HH",t2:"TT"},{n:11,t1:"AS",t2:"AA"}]},
+  {r:5,l:1,b:["AS","GB"],m:[{n:13,t1:"HH",t2:"VV"},{n:15,t1:"TT",t2:"AA"}]},
+  {r:6,l:1,b:["HH","TT"],m:[{n:16,t1:"AS",t2:"GB"},{n:18,t1:"VV",t2:"AA"}]},
+  {r:7,l:1,b:["AA","HH"],m:[{n:20,t1:"AS",t2:"TT"},{n:21,t1:"GB",t2:"VV"}]},
+  {r:8,l:2,b:[],m:[{n:22,t1:"AS",t2:"HH"},{n:23,t1:"GB",t2:"AA"},{n:24,t1:"VV",t2:"TT"}]},
+  {r:9,l:2,b:["VV","AS"],m:[{n:25,t1:"AA",t2:"HH"},{n:27,t1:"TT",t2:"GB"}]},
+  {r:10,l:2,b:["TT","AA"],m:[{n:28,t1:"GB",t2:"HH"},{n:29,t1:"VV",t2:"AS"}]},
+  {r:11,l:2,b:["GB","VV"],m:[{n:31,t1:"TT",t2:"HH"},{n:32,t1:"AA",t2:"AS"}]},
+  {r:12,l:2,b:["AS","GB"],m:[{n:34,t1:"VV",t2:"HH"},{n:36,t1:"AA",t2:"TT"}]},
+  {r:13,l:2,b:["HH","TT"],m:[{n:37,t1:"GB",t2:"AS"},{n:39,t1:"AA",t2:"VV"}]},
+  {r:14,l:2,b:["AA","HH"],m:[{n:41,t1:"TT",t2:"AS"},{n:42,t1:"VV",t2:"GB"}]},
+];
+const ROLE_COLORS={C:"#f5c842",WK:"#63b3ed","C/WK":"#f5c842",ALL:"#a78bfa",BAT:"#6ee7b7",BOWL:"#fca5a5",SUB:"#6b7280"};
+const ADMIN_PWD = "bcl7admin";
+const STORE_KEY = "bcl7_data_v11";
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+const SEED = {
+  table:[
+    {id:"HH",m:3,w:2,l:1,nr:0,pts:4,nrr:5.191},
+    {id:"VV",m:3,w:2,l:1,nr:0,pts:4,nrr:-1.492},
+    {id:"AS",m:3,w:2,l:1,nr:0,pts:4,nrr:-0.631},
+    {id:"AA",m:2,w:1,l:1,nr:0,pts:2,nrr:-0.764},
+    {id:"GB",m:2,w:1,l:1,nr:0,pts:2,nrr:-0.050},
+    {id:"TT",m:3,w:0,l:3,nr:0,pts:0,nrr:-2.480},
+  ],
+  results:[
+    {match:1,team1:"HH",team2:"AS",venue:"Wanderers Stadium",score1:"201/9",overs1:"20.0",score2:"204/10",overs2:"19.4",winner:"AS",margin:"3 runs",mom:"Marcus Stoinis (AS) — 43 off 30 & 2/38"},
+    {match:2,team1:"AA",team2:"GB",venue:"Sheikh Zayed Stadium",score1:"271/5",overs1:"20.0",score2:"168/10",overs2:"16.5",winner:"AA",margin:"103 runs",mom:"Quinton de Kock (AA) — 134* off 53"},
+    {match:3,team1:"VV",team2:"TT",venue:"Kingsmead",score1:"220/9",overs1:"19.4",score2:"219/7",overs2:"20.0",winner:"VV",margin:"1 run",mom:"Virat Kohli (VV) — 71 off 33"},
+    {
+      match:4,team1:"HH",team2:"AA",venue:"The Oval",score1:"64/3",overs1:"5.4",score2:"60/10",overs2:"11.5",winner:"HH",margin:"7 wickets",mom:"Fazalhaq Farooqi (HH) — 5/26",
+      scorecard: {
+        t1Inn: {
+          bat: [
+            { name: "David Warner", dismissal: "c & b Farooqi", runs: 5, balls: 3 },
+            { name: "Travis Head", dismissal: "c Guptill b Farooqi", runs: 0, balls: 1 },
+            { name: "Quinton de Kock", dismissal: "b Jonassen", runs: 15, balls: 15 },
+            { name: "Ben Stokes", dismissal: "c Smith b Farooqi", runs: 12, balls: 7 },
+            { name: "Will Jacks", dismissal: "b Farooqi", runs: 0, balls: 1 },
+            { name: "Aarav Roy", dismissal: "c Klaasen b Jonassen", runs: 0, balls: 1 },
+            { name: "Evin Lewis", dismissal: "c Kraft b Farooqi", runs: 4, balls: 4 },
+            { name: "Tim David", dismissal: "c Pandya b Swepson", runs: 10, balls: 16 },
+            { name: "Jasprit Bumrah", dismissal: "c Klaasen b Sundar", runs: 10, balls: 21 },
+            { name: "Kuldeep Yadav", dismissal: "lbw Sundar", runs: 1, balls: 3 },
+            { name: "Ravi Bishnoi", dismissal: "not out", runs: 1, balls: 1 }
+          ],
+          bowl: [
+            { name: "Fazalhaq Farooqi", overs: "4.0", dots: 11, runs: 26, wkts: 5 },
+            { name: "Jess Jonassen", overs: "4.0", dots: 9, runs: 17, wkts: 2 },
+            { name: "Mitchell Swepson", overs: "2.0", dots: 6, runs: 6, wkts: 1 },
+            { name: "Krunal Pandya", overs: "1.0", dots: 0, runs: 7, wkts: 0 },
+            { name: "Washington Sundar", overs: "1.0", dots: 3, runs: 3, wkts: 2 }
+          ],
+          extras: 2,
+          fow: [1, 6, 26, 26, 27, 36, 38, 57, 59, 60]
+        },
+        t2Inn: {
+          bat: [
+            { name: "Steve Smith", dismissal: "c Roy b Siraj", runs: 25, balls: 9 },
+            { name: "Shubman Gill", dismissal: "c Bishnoi b Bumrah", runs: 4, balls: 3 },
+            { name: "Martin Guptill", dismissal: "c Bumrah b Jacks", runs: 4, balls: 2 },
+            { name: "Ruturaj Gaikwad", dismissal: "not out", runs: 28, balls: 16 },
+            { name: "Shikhar Dhawan", dismissal: "not out", runs: 3, balls: 4 }
+          ],
+          bowl: [
+            { name: "Jasprit Bumrah", overs: "2.0", dots: 4, runs: 23, wkts: 1 },
+            { name: "Will Jacks", overs: "1.0", dots: 1, runs: 16, wkts: 1 },
+            { name: "Mohammed Siraj", overs: "1.0", dots: 3, runs: 6, wkts: 1 },
+            { name: "Kuldeep Yadav", overs: "1.0", dots: 2, runs: 7, wkts: 0 },
+            { name: "Ravi Bishnoi", overs: "0.4", dots: 2, runs: 12, wkts: 0 }
+          ],
+          extras: 0,
+          fow: [5, 20, 39]
+        }
+      }
+    },
+    {match:6,team1:"GB",team2:"TT",venue:"Sher-e-Bangla National Cricket Stadium",score1:"218/8",overs1:"20.0",score2:"117/10",overs2:"18.2",winner:"GB",margin:"101 runs",mom:"Ellyse Perry (GB) — 66 off 38"},
+    {
+      match:8,team1:"AS",team2:"VV",venue:"Chinnaswamy",score1:"110/10",overs1:"10.3",score2:"112/8",overs2:"12.1",winner:"VV",margin:"2 wickets",mom:"Rachin Ravindra (VV) — 5/20",
+      scorecard: {
+        t1Inn: {
+          bat: [
+            { name: "Mitchell Marsh", dismissal: "lbw Boult", runs: 10, balls: 6 },
+            { name: "Jordan Hermann", dismissal: "lbw Ravindra", runs: 3, balls: 3 },
+            { name: "Nicholas Pooran", dismissal: "b Ravindra", runs: 11, balls: 4 },
+            { name: "Temba Bavuma", dismissal: "c Healy b Ravindra", runs: 27, balls: 10 },
+            { name: "Josh Inglis", dismissal: "b Boult", runs: 0, balls: 2 },
+            { name: "David Miller", dismissal: "c Healy b Ravindra", runs: 2, balls: 2 },
+            { name: "Michael Bracewell", dismissal: "c Armstrong b Henry", runs: 30, balls: 17 },
+            { name: "Alex Carey", dismissal: "run out Kohli", runs: 16, balls: 7 },
+            { name: "Marcus Stoinis", dismissal: "c Healy b Ravindra", runs: 9, balls: 3 },
+            { name: "Ajit Agarkar", dismissal: "not out", runs: 2, balls: 7 },
+            { name: "Alana King", dismissal: "lbw Henry", runs: 0, balls: 1 }
+          ],
+          bowl: [
+            { name: "Trent Boult", overs: "3.0", dots: 0, runs: 30, wkts: 2 },
+            { name: "Rachin Ravindra", overs: "3.0", dots: 0, runs: 20, wkts: 5 },
+            { name: "Matt Henry", overs: "3.0", dots: 0, runs: 40, wkts: 2 },
+            { name: "Kagiso Rabada", overs: "1.3", dots: 0, runs: 20, wkts: 0 }
+          ],
+          extras: 0,
+          fow: [16, 20, 48, 51, 55, 84, 101, 101, 107, 110]
+        },
+        t2Inn: {
+          bat: [
+            { name: "Rohit Sharma", dismissal: "b Stoinis", runs: 19, balls: 8 },
+            { name: "KL Rahul", dismissal: "b Stoinis", runs: 33, balls: 10 },
+            { name: "Virat Kohli", dismissal: "b Stoinis", runs: 16, balls: 15 },
+            { name: "Alyssa Healy", dismissal: "b Stoinis", runs: 0, balls: 1 },
+            { name: "Joe Root", dismissal: "b King", runs: 6, balls: 3 },
+            { name: "Vivaan Armstrong", dismissal: "b King", runs: 0, balls: 1 },
+            { name: "Rachin Ravindra", dismissal: "lbw Stoinis", runs: 0, balls: 1 },
+            { name: "Yashasvi Jaiswal", dismissal: "lbw King", runs: 9, balls: 13 },
+            { name: "Mitchell Santner", dismissal: "not out", runs: 21, balls: 17 },
+            { name: "Kagiso Rabada", dismissal: "not out", runs: 2, balls: 4 }
+          ],
+          bowl: [
+            { name: "Ajit Agarkar", overs: "2.1", dots: 2, runs: 33, wkts: 0 },
+            { name: "Marcus Stoinis", overs: "4.0", dots: 10, runs: 40, wkts: 5 },
+            { name: "Alana King", overs: "4.0", dots: 11, runs: 25, wkts: 3 },
+            { name: "Yuzvendra Chahal", overs: "2.0", dots: 4, runs: 8, wkts: 0 }
+          ],
+          extras: 6,
+          fow: [25, 58, 58, 71, 71, 72, 83, 103]
+        }
+      }
+    },
+    {
+      match:13,team1:"HH",team2:"VV",venue:"Providence Stadium",score1:"237/10",overs1:"19.1",score2:"82/10",overs2:"9.3",winner:"HH",margin:"155 runs",mom:"Steve Smith (HH) — 92 off 43",
+      scorecard: {
+        t1Inn: {
+          bat: [
+            { name: "Steve Smith", dismissal: "c Rabada b Boult", runs: 92, balls: 43 },
+            { name: "Shikhar Dhawan", dismissal: "b Boult", runs: 6, balls: 2 },
+            { name: "Martin Guptill", dismissal: "c Rahul b Rabada", runs: 0, balls: 1 },
+            { name: "Ruturaj Gaikwad", dismissal: "b Ravindra", runs: 7, balls: 5 },
+            { name: "Shubman Gill", dismissal: "b Santner", runs: 26, balls: 11 },
+            { name: "Krunal Pandya", dismissal: "c Healy b Ravindra", runs: 43, balls: 23 },
+            { name: "Harry Kraft", dismissal: "c Kohli b Henry", runs: 33, balls: 17 },
+            { name: "Heinrich Klaasen", dismissal: "c Ravindra b Henry", runs: 24, balls: 10 },
+            { name: "Washington Sundar", dismissal: "lbw Henry", runs: 0, balls: 1 },
+            { name: "Jess Jonassen", dismissal: "b Rabada", runs: 3, balls: 3 },
+            { name: "Fazalhaq Farooqi", dismissal: "not out", runs: 0, balls: 0 }
+          ],
+          bowl: [
+            { name: "Trent Boult", overs: "4.0", dots: 9, runs: 46, wkts: 2 },
+            { name: "Kagiso Rabada", overs: "3.2", dots: 5, runs: 45, wkts: 2 },
+            { name: "Rachin Ravindra", overs: "4.0", dots: 4, runs: 52, wkts: 2 },
+            { name: "Mitchell Santner", overs: "4.0", dots: 3, runs: 51, wkts: 1 },
+            { name: "Matt Henry", overs: "4.0", dots: 8, runs: 40, wkts: 3 }
+          ],
+          extras: 3,
+          fow: [11, 14, 51, 94, 166, 200, 230, 230, 235, 237]
+        },
+        t2Inn: {
+          bat: [
+            { name: "Rohit Sharma", dismissal: "lbw Farooqi", runs: 0, balls: 4 },
+            { name: "KL Rahul", dismissal: "b Sundar", runs: 0, balls: 1 },
+            { name: "Virat Kohli", dismissal: "c Farooqi b Sundar", runs: 23, balls: 12 },
+            { name: "Yashasvi Jaiswal", dismissal: "b Jonassen", runs: 39, balls: 18 },
+            { name: "Joe Root", dismissal: "b Sundar", runs: 12, balls: 8 },
+            { name: "Vivaan Armstrong", dismissal: "b Jonassen", runs: 1, balls: 2 },
+            { name: "Rachin Ravindra", dismissal: "c Klaasen b Jonassen", runs: 2, balls: 2 },
+            { name: "Mitchell Santner", dismissal: "lbw Jonassen", runs: 0, balls: 1 },
+            { name: "Alyssa Healy", dismissal: "b Swepson", runs: 2, balls: 4 },
+            { name: "Kagiso Rabada", dismissal: "c Klaasen b Swepson", runs: 0, balls: 4 },
+            { name: "Trent Boult", dismissal: "not out", runs: 1, balls: 1 }
+          ],
+          bowl: [
+            { name: "Fazalhaq Farooqi", overs: "2.0", dots: 6, runs: 24, wkts: 1 },
+            { name: "Washington Sundar", overs: "4.0", dots: 6, runs: 37, wkts: 3 },
+            { name: "Jess Jonassen", overs: "3.0", dots: 7, runs: 18, wkts: 4 },
+            { name: "Mitchell Swepson", overs: "0.3", dots: 2, runs: 1, wkts: 2 }
+          ],
+          extras: 2,
+          fow: [0, 8, 35, 57, 64, 66, 66, 81, 81, 82]
+        }
+      }
+    },
+    {match:20,team1:"AS",team2:"TT",venue:"Sheikh Zayed Stadium",score1:"176/9",overs1:"16.1",score2:"175/8",overs2:"20.0",winner:"AS",margin:"1 wicket",mom:"Nicholas Pooran (AS) — 50 off 18"},
+  ],
+  batting:[
+    {name:"Virat Kohli",team:"VV",inn:3,runs:110,hs:71,avg:36.67,sr:166.7,fifties:1,hundreds:0,mom:1,catches:0,dismissals:3},
+    {name:"Ruturaj Gaikwad",team:"HH",inn:3,runs:93,hs:58,avg:46.50,sr:189.8,fifties:1,hundreds:0,mom:0,catches:0,dismissals:2,note:"impact"},
+    {name:"Sanju Samson",team:"TT",inn:3,runs:99,hs:58,avg:33.00,sr:137.9,fifties:1,hundreds:0,mom:0,catches:2,dismissals:3},
+    {name:"Joe Root",team:"VV",inn:3,runs:74,hs:56,avg:24.67,sr:211.4,fifties:1,hundreds:0,mom:0,catches:0,dismissals:3,note:"impact"},
+    {name:"Rassie van der Dussen",team:"TT",inn:3,runs:58,hs:53,avg:19.33,sr:101.4,fifties:1,hundreds:0,mom:0,catches:1,dismissals:3},
+    {name:"Jordan Hermann",team:"AS",inn:3,runs:73,hs:49,avg:24.33,sr:181.1,fifties:0,hundreds:0,mom:0,catches:0,dismissals:3},
+    {name:"Marcus Stoinis",team:"AS",inn:3,runs:52,hs:43,avg:17.33,sr:147.8,fifties:0,hundreds:0,mom:1,catches:0,dismissals:3},
+    {name:"Washington Sundar",team:"HH",inn:2,runs:29,hs:29,avg:14.50,sr:161.1,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
+    {name:"Temba Bavuma",team:"AS",inn:3,runs:56,hs:29,avg:18.67,sr:143.7,fifties:0,hundreds:0,mom:0,catches:0,dismissals:3},
+    {name:"Laura Wolvaardt",team:"TT",inn:3,runs:32,hs:29,avg:10.67,sr:67.5,fifties:0,hundreds:0,mom:0,catches:1,dismissals:3},
+    {name:"Krunal Pandya",team:"HH",inn:2,runs:71,hs:43,avg:35.50,sr:191.9,fifties:0,hundreds:0,mom:0,catches:1,dismissals:2},
+    {name:"Alex Carey",team:"AS",inn:3,runs:77,hs:34,avg:25.67,sr:225.9,fifties:0,hundreds:0,mom:0,catches:5,dismissals:3},
+    {name:"Aiden Markram",team:"TT",inn:3,runs:79,hs:37,avg:39.50,sr:184.8,fifties:0,hundreds:0,mom:0,catches:1,dismissals:2},
+    {name:"Josh Inglis",team:"AS",inn:3,runs:71,hs:45,avg:23.67,sr:164.5,fifties:0,hundreds:0,mom:0,catches:1,dismissals:3},
+    {name:"Alyssa Healy",team:"VV",inn:3,runs:26,hs:24,avg:8.67,sr:92.9,fifties:0,hundreds:0,mom:0,catches:6,dismissals:3},
+    {name:"Heinrich Klaasen",team:"HH",inn:2,runs:49,hs:25,avg:24.50,sr:204.2,fifties:0,hundreds:0,mom:0,catches:5,dismissals:2},
+    {name:"Rachin Ravindra",team:"VV",inn:3,runs:22,hs:20,avg:7.33,sr:73.3,fifties:0,hundreds:0,mom:1,catches:1,dismissals:3},
+    {name:"Mitchell Santner",team:"VV",inn:3,runs:38,hs:21,avg:19.00,sr:122.6,fifties:0,hundreds:0,mom:0,catches:1,dismissals:2},
+    {name:"Yuvraj Singh",team:"TT",inn:3,runs:24,hs:16,avg:8.00,sr:100.6,fifties:0,hundreds:0,mom:0,catches:1,dismissals:3},
+    {name:"Dewald Brevis",team:"TT",inn:3,runs:42,hs:18,avg:14.00,sr:181.5,fifties:0,hundreds:0,mom:0,catches:1,dismissals:3},
+    {name:"Hardik Pandya",team:"TT",inn:3,runs:92,hs:70,avg:30.67,sr:178.9,fifties:1,hundreds:0,mom:0,catches:2,dismissals:3},
+    {name:"Steve Smith",team:"HH",inn:3,runs:138,hs:92,avg:46.00,sr:215.6,fifties:1,hundreds:0,mom:1,catches:2,dismissals:3},
+    {name:"Quinton de Kock",team:"AA",inn:2,runs:149,hs:134,avg:149.00,sr:176.4,fifties:0,hundreds:1,mom:1,catches:3,dismissals:1},
+    {name:"Evin Lewis",team:"AA",inn:2,runs:48,hs:44,avg:24.00,sr:141.7,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2,note:"impact"},
+    {name:"Travis Head",team:"AA",inn:2,runs:29,hs:29,avg:14.50,sr:120.9,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
+    {name:"Will Jacks",team:"AA",inn:2,runs:28,hs:28,avg:14.00,sr:87.5,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
+    {name:"David Warner",team:"AA",inn:2,runs:31,hs:26,avg:15.50,sr:201.6,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
+    {name:"Tim David",team:"AA",inn:2,runs:15,hs:10,avg:15.00,sr:114.6,fifties:0,hundreds:0,mom:0,catches:0,dismissals:1},
+    {name:"Ben Stokes",team:"AA",inn:2,runs:12,hs:12,avg:6.00,sr:85.7,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
+    {name:"Ravi Bishnoi",team:"AA",inn:1,runs:1,hs:1,avg:1.00,sr:100.0,fifties:0,hundreds:0,mom:0,catches:2,dismissals:0},
+    {name:"Smriti Mandhana",team:"GB",inn:2,runs:61,hs:43,avg:30.50,sr:179.6,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
+    {name:"Ellyse Perry",team:"GB",inn:2,runs:97,hs:66,avg:48.50,sr:183.8,fifties:1,hundreds:0,mom:1,catches:0,dismissals:2},
+    {name:"Grant Bauer",team:"GB",inn:2,runs:43,hs:29,avg:21.50,sr:160.3,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2,note:"impact"},
+    {name:"Rishabh Pant",team:"GB",inn:2,runs:49,hs:26,avg:24.50,sr:201.7,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
+    {name:"Axar Patel",team:"GB",inn:2,runs:37,hs:24,avg:18.50,sr:212.9,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
+    {name:"Shashank Singh",team:"GB",inn:2,runs:47,hs:36,avg:47.00,sr:167.5,fifties:0,hundreds:0,mom:0,catches:1,dismissals:1},
+    {name:"Abhishek Sharma",team:"GB",inn:2,runs:8,hs:7,avg:4.00,sr:95.0,fifties:0,hundreds:0,mom:0,catches:1,dismissals:2},
+    {name:"Ishan Kishan",team:"GB",inn:2,runs:17,hs:10,avg:8.50,sr:212.5,fifties:0,hundreds:0,mom:0,catches:3,dismissals:2},
+    {name:"Marco Jansen",team:"GB",inn:2,runs:21,hs:21,avg:10.50,sr:75.0,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
+    {name:"Maheesh Theekshana",team:"GB",inn:1,runs:0,hs:0,avg:0.00,sr:0.0,fifties:0,hundreds:0,mom:0,catches:1,dismissals:1},
+    {name:"Bhuvneshwar Kumar",team:"GB",inn:2,runs:4,hs:4,avg:4.00,sr:40.0,fifties:0,hundreds:0,mom:0,catches:0,dismissals:0},
+    {name:"Ravi Shastri",team:"TT",inn:2,runs:33,hs:23,avg:16.50,sr:117.3,fifties:0,hundreds:0,mom:0,catches:1,dismissals:2},
+    {name:"Trevor Singh",team:"TT",inn:2,runs:22,hs:13,avg:11.00,sr:118.5,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2,note:"impact"},
+    {name:"Mohammed Shami",team:"TT",inn:2,runs:11,hs:8,avg:11.00,sr:103.6,fifties:0,hundreds:0,mom:0,catches:1,dismissals:0},
+    {name:"Varun Chakravarthy",team:"TT",inn:2,runs:3,hs:3,avg:3.00,sr:37.5,fifties:0,hundreds:0,mom:0,catches:1,dismissals:1},
+    {name:"Mitchell Marsh",team:"AS",inn:2,runs:14,hs:10,avg:7.00,sr:133.4,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
+    {name:"Nicholas Pooran",team:"AS",inn:2,runs:61,hs:50,avg:30.50,sr:276.4,fifties:1,hundreds:0,mom:1,catches:0,dismissals:2,note:"impact"},
+    {name:"David Miller",team:"AS",inn:2,runs:19,hs:17,avg:19.00,sr:120.9,fifties:0,hundreds:0,mom:0,catches:1,dismissals:1},
+    {name:"Michael Bracewell",team:"AS",inn:2,runs:30,hs:30,avg:15.00,sr:88.3,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
+    {name:"Ajit Agarkar",team:"AS",inn:2,runs:6,hs:4,avg:6.00,sr:64.3,fifties:0,hundreds:0,mom:0,catches:0,dismissals:1},
+    {name:"Alana King",team:"AS",inn:2,runs:1,hs:1,avg:1.00,sr:10.0,fifties:0,hundreds:0,mom:0,catches:0,dismissals:1},
+    {name:"Yuzvendra Chahal",team:"AS",inn:0,runs:0,hs:0,avg:0.00,sr:0.0,fifties:0,hundreds:0,mom:0,catches:1,dismissals:0},
+    {name:"Shubman Gill",team:"HH",inn:2,runs:30,hs:26,avg:15.00,sr:214.3,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
+    {name:"Martin Guptill",team:"HH",inn:2,runs:4,hs:4,avg:2.00,sr:133.3,fifties:0,hundreds:0,mom:0,catches:1,dismissals:2},
+    {name:"Shikhar Dhawan",team:"HH",inn:2,runs:9,hs:6,avg:9.00,sr:150.0,fifties:0,hundreds:0,mom:0,catches:0,dismissals:1},
+    {name:"Aarav Roy",team:"AA",inn:1,runs:0,hs:0,avg:0.00,sr:0.0,fifties:0,hundreds:0,mom:0,catches:1,dismissals:1},
+    {name:"Harry Kraft",team:"HH",inn:1,runs:33,hs:33,avg:33.00,sr:194.1,fifties:0,hundreds:0,mom:0,catches:1,dismissals:1},
+    {name:"Jasprit Bumrah",team:"AA",inn:1,runs:10,hs:10,avg:10.00,sr:47.6,fifties:0,hundreds:0,mom:0,catches:1,dismissals:1},
+    {name:"Kuldeep Yadav",team:"AA",inn:1,runs:1,hs:1,avg:1.00,sr:33.3,fifties:0,hundreds:0,mom:0,catches:0,dismissals:1},
+    {name:"Fazalhaq Farooqi",team:"HH",inn:1,runs:0,hs:0,avg:0.00,sr:0.0,fifties:0,hundreds:0,mom:1,catches:1,dismissals:0},
+    {name:"Rohit Sharma",team:"VV",inn:2,runs:19,hs:19,avg:9.50,sr:158.3,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
+    {name:"KL Rahul",team:"VV",inn:2,runs:33,hs:33,avg:16.50,sr:300.0,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
+    {name:"Vivaan Armstrong",team:"VV",inn:2,runs:1,hs:1,avg:0.50,sr:50.0,fifties:0,hundreds:0,mom:0,catches:1,dismissals:2},
+    {name:"Yashasvi Jaiswal",team:"VV",inn:2,runs:48,hs:39,avg:24.00,sr:154.8,fifties:0,hundreds:0,mom:0,catches:0,dismissals:2},
+    {name:"Kagiso Rabada",team:"VV",inn:2,runs:2,hs:2,avg:2.00,sr:25.0,fifties:0,hundreds:0,mom:0,catches:1,dismissals:1},
+    {name:"Jess Jonassen",team:"HH",inn:1,runs:3,hs:3,avg:3.00,sr:100.0,fifties:0,hundreds:0,mom:0,catches:0,dismissals:1},
+    {name:"Trent Boult",team:"VV",inn:1,runs:1,hs:1,avg:0.00,sr:100.0,fifties:0,hundreds:0,mom:0,catches:0,dismissals:0},
+  ],
+  bowling:[
+    {name:"Varun Chakravarthy",team:"TT",inn:3,wkts:9,bbi:"4/47",avg:16.25,econ:11.42,sr:8.7,fourW:1},
+    {name:"Mohammed Shami",team:"TT",inn:3,wkts:6,bbi:"3/48",avg:24.17,econ:10.25,sr:14.7,fourW:0},
+    {name:"Alana King",team:"AS",inn:3,wkts:8,bbi:"3/24",avg:10.44,econ:6.58,sr:9.3,fourW:0},
+    {name:"Krunal Pandya",team:"HH",inn:2,wkts:3,bbi:"3/44",avg:14.67,econ:9.24,sr:7.0,fourW:0},
+    {name:"Mitchell Swepson",team:"HH",inn:3,wkts:6,bbi:"3/42",avg:6.83,econ:6.31,sr:6.5,fourW:0},
+    {name:"Washington Sundar",team:"HH",inn:3,wkts:7,bbi:"2/3",avg:11.43,econ:7.50,sr:9.1,fourW:0},
+    {name:"Marcus Stoinis",team:"AS",inn:3,wkts:9,bbi:"5/40",avg:14.50,econ:9.25,sr:9.6,fourW:1},
+    {name:"Yuvraj Singh",team:"TT",inn:3,wkts:4,bbi:"2/36",avg:37.00,econ:12.03,sr:17.7,fourW:0},
+    {name:"Kagiso Rabada",team:"VV",inn:3,wkts:4,bbi:"2/53",avg:24.50,econ:13.67,sr:10.8,fourW:0},
+    {name:"Matt Henry",team:"VV",inn:3,wkts:7,bbi:"2/40",avg:17.57,econ:11.35,sr:9.3,fourW:0},
+    {name:"Trent Boult",team:"VV",inn:3,wkts:5,bbi:"2/30",avg:24.20,econ:10.08,sr:14.4,fourW:0},
+    {name:"Rachin Ravindra",team:"VV",inn:3,wkts:8,bbi:"5/20",avg:24.13,econ:9.57,sr:15.1,fourW:1},
+    {name:"Mitchell Santner",team:"VV",inn:2,wkts:2,bbi:"1/45",avg:48.00,econ:12.00,sr:24.0,fourW:0},
+    {name:"Hardik Pandya",team:"TT",inn:3,wkts:2,bbi:"1/32",avg:37.50,econ:10.25,sr:24.0,fourW:0},
+    {name:"Fazalhaq Farooqi",team:"HH",inn:3,wkts:7,bbi:"5/26",avg:22.00,econ:8.40,sr:15.7,fourW:1},
+    {name:"Jess Jonassen",team:"HH",inn:3,wkts:7,bbi:"4/18",avg:12.14,econ:6.46,sr:11.3,fourW:1},
+    {name:"Yuzvendra Chahal",team:"AS",inn:3,wkts:1,bbi:"1/56",avg:56.00,econ:8.50,sr:24.0,fourW:0},
+    {name:"Michael Bracewell",team:"AS",inn:2,wkts:2,bbi:"1/25",avg:22.50,econ:11.25,sr:12.0,fourW:0},
+    {name:"Mitchell Marsh",team:"AS",inn:2,wkts:1,bbi:"1/17",avg:17.00,econ:10.50,sr:12.0,fourW:0},
+    {name:"Jasprit Bumrah",team:"AA",inn:2,wkts:5,bbi:"4/22",avg:14.25,econ:9.63,sr:8.1,fourW:1},
+    {name:"Mohammed Siraj",team:"AA",inn:2,wkts:3,bbi:"2/38",avg:12.50,econ:7.75,sr:9.0,fourW:0},
+    {name:"Will Jacks",team:"AA",inn:2,wkts:3,bbi:"2/28",avg:15.00,econ:12.67,sr:7.5,fourW:0},
+    {name:"Kuldeep Yadav",team:"AA",inn:2,wkts:1,bbi:"1/32",avg:32.00,econ:7.50,sr:24.0,fourW:0},
+    {name:"Ravi Bishnoi",team:"AA",inn:2,wkts:1,bbi:"1/32",avg:32.00,econ:17.00,sr:12.0,fourW:0},
+    {name:"Ben Stokes",team:"AA",inn:1,wkts:0,bbi:"0/15",avg:0.00,econ:15.00,sr:0.0,fourW:0},
+    {name:"Grant Bauer",team:"GB",inn:1,wkts:1,bbi:"1/13",avg:13.00,econ:13.00,sr:6.0,fourW:0},
+    {name:"Arshdeep Singh",team:"GB",inn:2,wkts:4,bbi:"2/46",avg:15.50,econ:8.15,sr:11.0,fourW:0},
+    {name:"Bhuvneshwar Kumar",team:"GB",inn:2,wkts:2,bbi:"1/53",avg:38.50,econ:10.63,sr:21.0,fourW:0},
+    {name:"Maheesh Theekshana",team:"GB",inn:2,wkts:4,bbi:"3/26",avg:30.84,econ:9.88,sr:16.0,fourW:0},
+    {name:"Axar Patel",team:"GB",inn:2,wkts:2,bbi:"2/31",avg:7.75,econ:9.63,sr:6.0,fourW:0},
+    {name:"Marco Jansen",team:"GB",inn:2,wkts:1,bbi:"1/15",avg:7.50,econ:11.21,sr:12.0,fourW:0},
+    {name:"Ravi Shastri",team:"TT",inn:1,wkts:0,bbi:"0/27",avg:0.00,econ:13.50,sr:0.0,fourW:0},
+    {name:"Alzarri Joseph",team:"TT",inn:2,wkts:4,bbi:"2/11",avg:10.50,econ:7.65,sr:7.8,fourW:0},
+    {name:"Ajit Agarkar",team:"AS",inn:2,wkts:3,bbi:"3/36",avg:12.00,econ:12.12,sr:8.0,fourW:0},
+  ]
+};
+
+let DB = JSON.parse(localStorage.getItem(STORE_KEY) || "null") || JSON.parse(JSON.stringify(SEED));
+
+function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(DB)); }
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+const byId = id => TEAMS.find(t=>t.id===id);
+function badge(role){
+  const c=ROLE_COLORS[role]||"#6b7280";
+  return `<span class="badge" style="background:${c}15;color:${c};border:1px solid ${c}33;box-shadow:0 0 6px ${c}10">${role}</span>`;
+}
+function teamPill(id){
+  const t=byId(id); if(!t) return id;
+  return `<span style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;background:${t.color}15;padding:2px 8px;border-radius:12px;border:1px solid ${t.color}22">${t.emoji} <span style="color:${t.color};font-weight:600">${id}</span></span>`;
+}
+function computeMVP(){
+  const map={};
+  DB.batting.forEach(b=>{
+    const k=b.name+"|"+b.team;
+    if(!map[k]) map[k]={name:b.name,team:b.team,runs:0,wkts:0,catches:0,mom:0,fifties:0,hundreds:0,fourW:0};
+    map[k].runs+=b.runs||0; map[k].mom+=b.mom||0;
+    map[k].fifties+=b.fifties||0; map[k].hundreds+=b.hundreds||0; map[k].catches+=b.catches||0;
+  });
+  DB.bowling.forEach(b=>{
+    const k=b.name+"|"+b.team;
+    if(!map[k]) map[k]={name:b.name,team:b.team,runs:0,wkts:0,catches:0,mom:0,fifties:0,hundreds:0,fourW:0};
+    map[k].wkts+=b.wkts||0; map[k].fourW+=b.fourW||0;
+  });
+  return Object.values(map).map(p=>({...p,pts:p.runs+p.wkts*20+p.catches*10+p.mom*25+p.fifties*10+p.hundreds*25+p.fourW*15})).sort((a,b)=>b.pts-a.pts).slice(0,15);
+}
+function nrrClass(v){ return v>0?'nrr-pos':v<0?'nrr-neg':'nrr-zero'; }
+function nrrStr(v){ return (v>0?'+':'')+Number(v||0).toFixed(3); }
+function n2(v){ return Number(v||0).toFixed(2); }
+function n1(v){ return Number(v||0).toFixed(1); }
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function renderAll(){
+  renderTable(); renderResults(); renderSchedule(); renderSquads(); renderStats(); renderPlayoffs();
+}
+
+function getTeamForm(teamId) {
+  const teamMatches = DB.results.filter(r => r.team1 === teamId || r.team2 === teamId).sort((a, b) => a.match - b.match);
+  if (teamMatches.length === 0) {
+    return '<span style="color:var(--muted);font-style:italic;font-size:11px;">No matches</span>';
+  }
+  const last5 = teamMatches.slice(-5);
+  const dotsHtml = last5.map(m => {
+    const oppId = m.team1 === teamId ? m.team2 : m.team1;
+    const opp = byId(oppId);
+    const oppName = opp ? opp.name : oppId;
+    let resChar = 'N';
+    let resClass = 'nr';
+    let summary = `Match ${m.match} vs ${oppName}: `;
+    if (m.winner === teamId) {
+      resChar = 'W';
+      resClass = 'win';
+      summary += `Won by ${m.margin}`;
+    } else if (m.winner === 'nr' || m.winner === 'NR' || m.winner === 'tie' || m.winner === 'Tie' || m.winner === 'none') {
+      resChar = 'N';
+      resClass = 'nr';
+      summary += `No Result / Tie`;
+    } else {
+      resChar = 'L';
+      resClass = 'loss';
+      summary += `Lost by ${m.margin}`;
+    }
+    return `<span class="form-dot ${resClass}" title="${summary}">${resChar}</span>`;
+  }).join('');
+  return `<div class="form-dots">${dotsHtml}</div>`;
+}
+
+function renderTable(){
+  const sorted=[...DB.table].sort((a,b)=>b.pts-a.pts||b.nrr-a.nrr);
+  document.getElementById('tableBody').innerHTML=sorted.map((row,i)=>{
+    const t=byId(row.id);
+    const formHtml = getTeamForm(row.id);
+    return `<tr>
+      <td><span class="rank">${i+1}</span>${i<4?'<span class="qualify-bar"></span>':''}${t?.emoji} <strong>${t?.name}</strong></td>
+      <td style="color:var(--muted)">${row.m}</td>
+      <td style="color:var(--green);font-weight:600">${row.w}</td>
+      <td style="color:var(--loss)">${row.l}</td>
+      <td style="color:var(--muted)">${row.nr}</td>
+      <td class="pts-cell">${row.pts}</td>
+      <td class="${nrrClass(row.nrr)}">${nrrStr(row.nrr)}</td>
+      <td>
+        <div style="display:inline-flex; align-items:center; justify-content:center;">
+          ${formHtml}
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function renderPlayoffsMatch(matchNum, team1Id, team2Id, seed1Val, seed2Val, res) {
+  const t1 = byId(team1Id);
+  const t2 = byId(team2Id);
+  
+  const name1 = t1 ? t1.name : team1Id;
+  const emoji1 = t1 ? t1.emoji : "❓";
+  const name2 = t2 ? t2.name : team2Id;
+  const emoji2 = t2 ? t2.emoji : "❓";
+  
+  const score1 = res ? res.score1 : "";
+  const score2 = res ? res.score2 : "";
+  const overs1 = res ? `(${res.overs1})` : "";
+  const overs2 = res ? `(${res.overs2})` : "";
+  
+  const isT1Win = res && res.winner === team1Id;
+  const isT2Win = res && res.winner === team2Id;
+  const isFinished = !!res;
+  
+  const t1Class = isFinished ? (isT1Win ? 'winner' : 'loser') : '';
+  const t2Class = isFinished ? (isT2Win ? 'winner' : 'loser') : '';
+  const activeClass = isFinished ? '' : 'active-match';
+  
+  return `
+    <div class="bracket-match ${activeClass}">
+      <div class="bracket-match-hdr">
+        <span>Match ${matchNum}</span>
+        <span>${res && res.venue ? res.venue : 'Knockout'}</span>
+      </div>
+      <div class="bracket-teams">
+        <div class="bracket-team ${t1Class}">
+          <div class="bracket-team-info">
+            ${seed1Val ? `<span class="bracket-seed">#${seed1Val}</span>` : ''}
+            <span>${emoji1} ${name1}</span>
+          </div>
+          <div class="bracket-score">${score1} <span style="font-size: 10px; opacity: 0.7;">${overs1}</span></div>
+        </div>
+        <div class="bracket-team ${t2Class}">
+          <div class="bracket-team-info">
+            ${seed2Val ? `<span class="bracket-seed">#${seed2Val}</span>` : ''}
+            <span>${emoji2} ${name2}</span>
+          </div>
+          <div class="bracket-score">${score2} <span style="font-size: 10px; opacity: 0.7;">${overs2}</span></div>
+        </div>
+      </div>
+      ${res && res.margin ? `<div class="bracket-info-footer">✓ won by ${res.margin}</div>` : ''}
+    </div>
+  `;
+}
+
+function renderPlayoffs(){
+  const c = document.getElementById('playoffsContainer');
+  if(!c) return;
+  
+  const sortedStandings = [...DB.table].sort((a,b)=>b.pts-a.pts||b.nrr-a.nrr);
+  const rank1 = sortedStandings[0]?.id || "Rank 1";
+  const rank2 = sortedStandings[1]?.id || "Rank 2";
+  const rank3 = sortedStandings[2]?.id || "Rank 3";
+  const rank4 = sortedStandings[3]?.id || "Rank 4";
+  
+  const m43 = DB.results.find(r => r.match === 43); // SF1
+  const m44 = DB.results.find(r => r.match === 44); // SF2
+  const m45 = DB.results.find(r => r.match === 45); // 3rd Place
+  const m46 = DB.results.find(r => r.match === 46); // Final
+  
+  // Semifinal 1 Teams
+  const sf1Team1 = m43 ? m43.team1 : rank1;
+  const sf1Team2 = m43 ? m43.team2 : rank4;
+  
+  // Semifinal 2 Teams
+  const sf2Team1 = m44 ? m44.team1 : rank2;
+  const sf2Team2 = m44 ? m44.team2 : rank3;
+  
+  // Final Teams
+  let finalTeam1 = "Winner SF1";
+  let finalTeam2 = "Winner SF2";
+  if (m43) finalTeam1 = m43.winner;
+  if (m44) finalTeam2 = m44.winner;
+  if (m46) {
+    finalTeam1 = m46.team1;
+    finalTeam2 = m46.team2;
+  }
+  
+  // 3rd Place Teams
+  let thirdTeam1 = "Loser SF1";
+  let thirdTeam2 = "Loser SF2";
+  if (m43) thirdTeam1 = m43.winner === m43.team1 ? m43.team2 : m43.team1;
+  if (m44) thirdTeam2 = m44.winner === m44.team1 ? m44.team2 : m44.team1;
+  if (m45) {
+    thirdTeam1 = m45.team1;
+    thirdTeam2 = m45.team2;
+  }
+  
+  const sf1Html = renderPlayoffsMatch(43, sf1Team1, sf1Team2, 1, 4, m43);
+  const sf2Html = renderPlayoffsMatch(44, sf2Team1, sf2Team2, 2, 3, m44);
+  const finalHtml = renderPlayoffsMatch(46, finalTeam1, finalTeam2, null, null, m46);
+  const thirdHtml = renderPlayoffsMatch(45, thirdTeam1, thirdTeam2, null, null, m45);
+  
+  // Champion Card
+  let champCardHtml = "";
+  if (m46 && m46.winner) {
+    const champ = byId(m46.winner);
+    champCardHtml = `
+      <div class="bracket-champ-card">
+        <div class="champ-trophy">🏆</div>
+        <div class="champ-subtitle">BCL Season 7 Champion</div>
+        <div class="champ-title">${champ ? champ.emoji + ' ' + champ.name : m46.winner}</div>
+        <div style="font-size:12px; color:var(--green); font-weight:700; margin-top:4px;">Won by ${m46.margin}</div>
+      </div>
+    `;
+  } else {
+    champCardHtml = `
+      <div class="bracket-champ-card" style="opacity: 0.6; border-color: var(--border);">
+        <div class="champ-trophy" style="animation: none; opacity: 0.5;">🏆</div>
+        <div class="champ-subtitle">BCL Season 7 Champion</div>
+        <div class="champ-title" style="color: var(--muted);">TBD</div>
+      </div>
+    `;
+  }
+  
+  c.innerHTML = `
+    <div class="bracket-container">
+      <!-- COLUMN 1: SEMIFINALS -->
+      <div class="bracket-col">
+        <div class="bracket-col-title">Semifinals</div>
+        ${sf1Html}
+        ${sf2Html}
+      </div>
+      
+      <!-- COLUMN 2: FINALS -->
+      <div class="bracket-col">
+        <div class="bracket-col-title">The Final</div>
+        ${finalHtml}
+        <div class="bracket-col-title" style="margin-top: 10px; border-bottom-style: dashed;">3rd Place Playoff</div>
+        ${thirdHtml}
+      </div>
+      
+      <!-- COLUMN 3: CHAMPION -->
+      <div class="bracket-col" style="justify-content: center;">
+        <div class="bracket-col-title">Champion</div>
+        ${champCardHtml}
+      </div>
+    </div>
+  `;
+}
+
+function renderResults(){
+  const c=document.getElementById('resultsContainer');
+  if(!DB.results.length){c.innerHTML='<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:40px;text-align:center;color:var(--muted);font-style:italic">No results yet</div>';return;}
+  c.innerHTML=[...DB.results].reverse().map(r=>{
+    const t1=byId(r.team1),t2=byId(r.team2),win=byId(r.winner);
+    const w1=r.winner===r.team1,w2=r.winner===r.team2;
+    return `<div class="result-card" onclick="openScorecardModal('${r.match}')" style="cursor:pointer; border-color:${win?.color}33; --team-color:${win?.color}; --team-glow:${win?.color}22">
+      <div class="result-header">
+        <div class="match-label" style="color:${win?.color}">Match ${r.match}${r.venue?' · '+r.venue:''}</div>
+        <div class="win-badge" style="background:${win?.color}22;color:${win?.color}">${win?.emoji} ${win?.name} won by ${r.margin}</div>
+      </div>
+      <div class="scores-grid">
+        <div class="score-side right">
+          <div class="team-name-sm">${t1?.emoji} ${t1?.name}</div>
+          <div class="score-big" style="color:${w1?'var(--acc)':'var(--muted)'}">${r.score1} <span class="score-ov">(${r.overs1})</span></div>
+        </div>
+        <div class="vs-badge">VS</div>
+        <div class="score-side">
+          <div class="team-name-sm">${t2?.emoji} ${t2?.name}</div>
+          <div class="score-big" style="color:${w2?'var(--acc)':'var(--muted)'}">${r.score2} <span class="score-ov">(${r.overs2})</span></div>
+        </div>
+      </div>
+      ${r.mom?`<div class="mom-row">⭐ <strong style="color:var(--acc)">MOM:</strong> ${r.mom}</div>`:''}
+      <div style="font-size:10px; color:var(--muted); text-align:right; margin-top:10px; font-weight: 500;">Click to view full scorecard ➔</div>
+    </div>`;
+  }).join('');
+}
+
+function renderSchedule(){
+  const c=document.getElementById('scheduleContainer');
+  c.innerHTML=SCHEDULE.map((round,ri)=>{
+    const divider=ri===7?'<div class="leg-divider">⸻ LEG 2 — REVERSE FIXTURES ⸻</div>':'';
+    const matches=round.m.map(m=>{
+      const res=DB.results.find(r=>r.match===m.n);
+      const mt1=byId(m.t1),mt2=byId(m.t2);
+      const s1=res?`<span class="score-sm" style="color:${res.winner===m.t1?'var(--green)':'var(--loss)'}">${res.score1}</span>`:'';
+      const s2=res?`<span class="score-sm" style="color:${res.winner===m.t2?'var(--green)':'var(--loss)'}">${res.score2}</span>`:'';
+      return `<div class="match-row${res?' done':''}">
+        <span class="m-team r">${mt1?.emoji} ${mt1?.name}${s1}</span>
+        <span class="m-num ${res?'done':'pending'}">${res?'✓':''} M${m.n}</span>
+        <span class="m-team">${mt2?.emoji} ${mt2?.name}${s2}</span>
+      </div>`;
+    }).join('');
+    const byes = Array.isArray(round.b) ? round.b : (round.b ? [round.b] : []);
+    const byeStr = byes.map(bid => {
+      const t = byId(bid);
+      return t ? `${t.emoji} ${bid}` : '';
+    }).filter(Boolean).join(', ');
+    return `${divider}<div class="round-card">
+      <div class="round-hdr">
+        <span class="round-title">Leg ${round.l} — Round ${round.r}</span>
+        <span class="round-meta">M${round.m[0].n}–M${round.m[round.m.length-1].n} · BYE: ${byeStr || 'None'}</span>
+      </div>
+      ${matches}
+    </div>`;
+  }).join('');
+}
+
+function renderSquads(){
+  document.getElementById('squadsContainer').innerHTML=TEAMS.map(team=>{
+    const players=(SQUADS[team.id]||[]).map(p=>`<li><span class="p-num">${p.n}</span><span class="p-name player-link" onclick="openPlayerProfile('${p.p}', '${team.id}')">${p.p}</span>${badge(p.r)}</li>`).join('');
+    return `<div class="squad-card">
+      <div class="squad-hdr"><span class="squad-emoji">${team.emoji}</span>
+        <div><div class="squad-team">${team.name}</div><div class="squad-code" style="color:${team.color}">${team.id}</div></div>
+      </div>
+      <ul class="squad-list">${players}</ul>
+    </div>`;
+  }).join('');
+}
+
+function renderStats(){
+  const bat=[...DB.batting].sort((a,b)=>b.runs-a.runs);
+  const bowl=[...DB.bowling].sort((a,b)=>b.wkts-a.wkts||a.econ-b.econ);
+  const mvp=computeMVP();
+
+  document.getElementById('battingBody').innerHTML=bat.map((p,i)=>{
+    const dismissals = p.dismissals !== undefined ? p.dismissals : p.inn;
+    return `<tr>
+      <td style="color:${i===0?'#f97316':'var(--muted)'};font-weight:${i===0?700:400}">${i+1}</td>
+      <td><strong class="player-link" onclick="openPlayerProfile('${p.name}', '${p.team}')">${p.name}</strong>${p.note?` <span style="font-size:10px;color:var(--muted)">(${p.note})</span>`:''}${p.mom>0?' <span style="font-size:10px;color:var(--acc)">★</span>':''}</td>
+      <td>${teamPill(p.team)}</td>
+      <td style="color:var(--muted)">${p.inn}</td>
+      <td style="color:${i===0?'#f97316':'var(--text)'};font-weight:${i===0?700:400}">${p.runs}</td>
+      <td style="color:var(--muted)">${p.hs}</td>
+      <td style="color:var(--muted)">${n2(p.avg)}</td>
+      <td style="color:var(--muted)">${n1(p.sr)}</td>
+      <td>${p.fifties>0?`<span style="color:var(--green)">${p.fifties}</span>`:'<span style="color:var(--border)">—</span>'}</td>
+      <td>${p.hundreds>0?`<span style="color:var(--acc)">${p.hundreds}</span>`:'<span style="color:var(--border)">—</span>'}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('bowlingBody').innerHTML=bowl.map((p,i)=>`<tr>
+    <td style="color:${i===0?'#a855f7':'var(--muted)'};font-weight:${i===0?700:400}">${i+1}</td>
+    <td><strong class="player-link" onclick="openPlayerProfile('${p.name}', '${p.team}')">${p.name}</strong></td>
+    <td>${teamPill(p.team)}</td>
+    <td style="color:var(--muted)">${p.inn}</td>
+    <td style="color:${i===0?'#a855f7':'var(--text)'};font-weight:${i===0?700:400}">${p.wkts}</td>
+    <td style="color:var(--muted)">${p.bbi||'—'}</td>
+    <td style="color:var(--muted)">${n2(p.avg)}</td>
+    <td style="color:${p.econ<8?'var(--green)':p.econ>12?'var(--loss)':'var(--muted)'}">${n2(p.econ)}</td>
+    <td style="color:var(--muted)">${n1(p.sr)}</td>
+    <td>${p.fourW>0?`<span style="color:var(--acc)">${p.fourW}</span>`:'<span style="color:var(--border)">—</span>'}</td>
+  </tr>`).join('');
+
+  document.getElementById('mvpBody').innerHTML=mvp.map((p,i)=>`<tr>
+    <td style="color:${i===0?'var(--acc)':'var(--muted)'};font-weight:${i===0?700:400}">${i+1}</td>
+    <td><strong class="player-link" onclick="openPlayerProfile('${p.name}', '${p.team}')">${p.name}</strong>${p.mom>0?' <span style="font-size:10px;color:var(--acc)">★ MOM</span>':''}</td>
+    <td>${teamPill(p.team)}</td>
+    <td style="color:var(--muted)">${p.runs}</td>
+    <td style="color:var(--muted)">${p.wkts}</td>
+    <td style="color:var(--muted)">${p.catches}</td>
+    <td style="color:var(--muted)">${p.mom}</td>
+    <td style="color:${i===0?'var(--acc)':'var(--text)'};font-weight:${i===0?700:500};font-size:${i===0?15:13}px">${p.pts}</td>
+  </tr>`).join('');
+
+  const topBat=bat[0], topBowl=bowl[0], topMVP=mvp[0];
+  const momLeader=[...DB.batting].filter(x=>x.mom>0).sort((a,b)=>b.mom-a.mom)[0];
+  document.getElementById('milestonesContainer').innerHTML=[
+    {icon:"🟠",label:"Orange Cap",  val:topBat?.name.split(" ").pop()??"TBD",   sub:topBat?`${topBat.runs} runs`:"—"},
+    {icon:"🟣",label:"Purple Cap",  val:topBowl?.name.split(" ").pop()??"TBD",  sub:topBowl?`${topBowl.wkts} wkts`:"—"},
+    {icon:"⭐",label:"Season MVP",  val:topMVP?.name.split(" ").pop()??"TBD",   sub:topMVP?`${topMVP.pts} pts`:"—"},
+    {icon:"🏏",label:"Highest Score",val:topBat?.hs??"TBD",                     sub:topBat?.name??"—"},
+    {icon:"🎯",label:"Best Bowling",val:topBowl?.bbi??"TBD",                    sub:topBowl?.name??"—"},
+    {icon:"🔥",label:"Most MOM",    val:momLeader?.name.split(" ").pop()??"TBD",sub:momLeader?`${momLeader.mom} award(s)`:"—"},
+  ].map(ms=>`<div class="ms-card">
+    <div class="ms-icon">${ms.icon}</div>
+    <div class="ms-label">${ms.label}</div>
+    <div class="ms-val">${ms.val}</div>
+    <div class="ms-sub">${ms.sub}</div>
+  </div>`).join('');
+}
+
+// ── TABS ──────────────────────────────────────────────────────────────────────
+function showTab(id, btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── ADMIN ─────────────────────────────────────────────────────────────────────
+function showAdminInput(){ document.getElementById('adminBtn').style.display='none'; document.getElementById('adminInputWrap').style.display='flex'; document.getElementById('adminPwd').focus(); }
+function hideAdminInput(){ document.getElementById('adminBtn').style.display=''; document.getElementById('adminInputWrap').style.display='none'; document.getElementById('adminPwd').value=''; }
+function checkPwd(e){ if(e.key==='Enter'){ if(document.getElementById('adminPwd').value===ADMIN_PWD){ openAdmin(); hideAdminInput(); } else { document.getElementById('adminPwd').value=''; } } }
+function openAdmin(){
+  populateTeamSelects();
+  buildTableEditRows();
+  document.getElementById('adminModal').style.display='flex';
+}
+function closeAdmin(){ document.getElementById('adminModal').style.display='none'; }
+function flashSaved(){ const m=document.getElementById('saved-msg'); m.style.display='block'; setTimeout(()=>m.style.display='none',2200); }
+
+function showMTab(id, btn){
+  document.querySelectorAll('[id^="mform-"]').forEach(f=>f.style.display='none');
+  document.querySelectorAll('.mtab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('mform-'+id).style.display='block';
+  btn.classList.add('active');
+}
+
+function populateTeamSelects(){
+  const opts=TEAMS.map(t=>`<option value="${t.id}">${t.emoji} ${t.name}</option>`).join('');
+  ['f-t1','f-t2','f-winner','b-team','w-team','c-team1','c-team2'].forEach(id=>{ const el=document.getElementById(id); if(el) el.innerHTML=opts; });
+}
+
+function buildTableEditRows(){
+  document.getElementById('tableEditRows').innerHTML=DB.table.map((row,i)=>{
+    const t=byId(row.id);
+    return `<div class="table-edit-row">
+      <div class="team-edit-label">${t?.emoji} ${t?.name}</div>
+      ${['m','w','l','nr','pts'].map(k=>`<input type="number" value="${row[k]}" onchange="updateTableCell(${i},'${k}',this.value)" style="padding:5px 8px;text-align:center">`).join('')}
+      <input type="number" step="0.001" value="${row.nrr}" onchange="updateTableCell(${i},'nrr',this.value)" style="padding:5px 8px;text-align:center">
+    </div>`;
+  }).join('');
+}
+
+function updateTableCell(i,k,v){ DB.table[i][k]=parseFloat(v)||0; }
+
+function saveResult(){
+  const mn=parseInt(document.getElementById('f-mnum').value); if(!mn) return;
+  const r={match:mn,team1:document.getElementById('f-t1').value,team2:document.getElementById('f-t2').value,venue:document.getElementById('f-venue').value,score1:document.getElementById('f-s1').value,overs1:document.getElementById('f-o1').value,score2:document.getElementById('f-s2').value,overs2:document.getElementById('f-o2').value,winner:document.getElementById('f-winner').value,margin:document.getElementById('f-margin').value,mom:document.getElementById('f-mom').value};
+  DB.results=DB.results.filter(x=>x.match!==mn); DB.results.push(r); DB.results.sort((a,b)=>a.match-b.match);
+  save(); renderAll(); flashSaved();
+}
+
+function saveTable(){ save(); renderAll(); flashSaved(); }
+
+function saveBatter(){
+  const name=document.getElementById('b-name').value.trim(); if(!name) return;
+  const team=document.getElementById('b-team').value;
+  const runs=parseInt(document.getElementById('b-runs').value)||0;
+  const sr=parseFloat(document.getElementById('b-sr').value)||0;
+  const fifties=parseInt(document.getElementById('b-50').value)||0;
+  const hundreds=parseInt(document.getElementById('b-100').value)||0;
+  const mom=parseInt(document.getElementById('b-mom').value)||0;
+  const catches=parseInt(document.getElementById('b-cat').value)||0;
+  const note=document.getElementById('b-note').value.trim()||undefined;
+  const notOut=document.getElementById('b-notout').checked;
+
+  const idx=DB.batting.findIndex(b=>b.name===name&&b.team===team);
+  if(idx>=0){
+    const b=DB.batting[idx];
+    const prevDismissals = b.dismissals !== undefined ? b.dismissals : b.inn;
+    const newDismissals = prevDismissals + (notOut ? 0 : 1);
+    const newInn = b.inn + 1;
+    const newRuns = b.runs + runs;
+    const newFifties = b.fifties + fifties;
+    const newHundreds = b.hundreds + hundreds;
+    const newMom = b.mom + mom;
+    const newCatches = b.catches + catches;
+    const newHs = Math.max(b.hs, runs);
+    
+    let newSr = b.sr;
+    if (sr > 0) {
+      newSr = ((b.sr * b.inn) + sr) / newInn;
+    }
+    
+    const newAvg = newDismissals > 0 ? (newRuns / newDismissals) : newRuns;
+    
+    DB.batting[idx]={
+      ...b,
+      inn: newInn,
+      runs: newRuns,
+      hs: newHs,
+      fifties: newFifties,
+      hundreds: newHundreds,
+      mom: newMom,
+      catches: newCatches,
+      dismissals: newDismissals,
+      avg: newAvg,
+      sr: newSr,
+      note: note || b.note
+    };
+  } else {
+    const dismissals = notOut ? 0 : 1;
+    DB.batting.push({
+      name,
+      team,
+      inn: 1,
+      runs,
+      hs: runs,
+      avg: runs, // if not out on debut, average matches runs scored
+      sr,
+      fifties,
+      hundreds,
+      mom,
+      catches,
+      note,
+      dismissals
+    });
+  }
+  
+  save(); renderAll(); flashSaved();
+  document.getElementById('b-name').value=''; document.getElementById('b-runs').value=''; document.getElementById('b-sr').value=''; document.getElementById('b-50').value='0'; document.getElementById('b-100').value='0'; document.getElementById('b-mom').value='0'; document.getElementById('b-cat').value='0'; document.getElementById('b-note').value=''; document.getElementById('b-notout').checked=false;
+}
+
+function saveBowler(){
+  const name=document.getElementById('w-name').value.trim(); if(!name) return;
+  const team=document.getElementById('w-team').value;
+  const wkts=parseInt(document.getElementById('w-wkts').value)||0;
+  const bbi=document.getElementById('w-bbi').value;
+  const econ=parseFloat(document.getElementById('w-econ').value)||0;
+  const sr=parseFloat(document.getElementById('w-sr').value)||0;
+  const avg=parseFloat(document.getElementById('w-avg').value)||0;
+  const fourW=parseInt(document.getElementById('w-4w').value)||0;
+  
+  const idx=DB.bowling.findIndex(b=>b.name===name&&b.team===team);
+  if(idx>=0){
+    const b=DB.bowling[idx];
+    const newInn = b.inn + 1;
+    const newWkts = b.wkts + wkts;
+    const newFourW = b.fourW + fourW;
+    const newBbi = wkts > (parseInt(b.bbi?.split('/')[0]) || 0) ? bbi : b.bbi;
+    
+    const newEcon = econ > 0 ? ((b.econ * b.inn) + econ) / newInn : b.econ;
+    const newAvg = avg > 0 ? ((b.avg * b.inn) + avg) / newInn : b.avg;
+    const newSr = sr > 0 ? ((b.sr * b.inn) + sr) / newInn : b.sr;
+    
+    DB.bowling[idx]={
+      ...b,
+      inn: newInn,
+      wkts: newWkts,
+      bbi: newBbi,
+      econ: newEcon,
+      avg: newAvg,
+      sr: newSr,
+      fourW: newFourW
+    };
+  } else {
+    DB.bowling.push({name,team,inn:1,wkts,bbi,avg,econ,sr,fourW});
+  }
+  
+  save(); renderAll(); flashSaved();
+  document.getElementById('w-name').value=''; document.getElementById('w-wkts').value=''; document.getElementById('w-bbi').value=''; document.getElementById('w-econ').value=''; document.getElementById('w-sr').value=''; document.getElementById('w-avg').value=''; document.getElementById('w-4w').value='0';
+}
+
+// ── BACKUP & RESTORE ──────────────────────────────────────────────────────────
+function exportData() {
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(DB, null, 2));
+  const downloadAnchor = document.createElement('a');
+  downloadAnchor.setAttribute("href", dataStr);
+  downloadAnchor.setAttribute("download", `bcl7_data_backup_${new Date().toISOString().split('T')[0]}.json`);
+  document.body.appendChild(downloadAnchor);
+  downloadAnchor.click();
+  downloadAnchor.remove();
+}
+
+function triggerImport() {
+  document.getElementById('import-file').click();
+}
+
+function importData(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    try {
+      const parsed = JSON.parse(event.target.result);
+      if (parsed && parsed.table && parsed.results && parsed.batting && parsed.bowling) {
+        DB = parsed;
+        save();
+        renderAll();
+        flashSaved();
+      } else {
+        alert("Invalid backup file structure!");
+      }
+    } catch(err) {
+      alert("Error parsing file: " + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function resetData() {
+  if (confirm("Reset database? This will revert all stats to defaults, overwriting current entries.")) {
+    DB = JSON.parse(JSON.stringify(SEED));
+    save();
+    renderAll();
+    flashSaved();
+  }
+}
+
+// ── NEW FUNCTIONS FOR PLAYER PROFILES & COMPARISON ─────────────────────────────
+function openPlayerProfile(name, teamId) {
+  const team = byId(teamId);
+  const playerInSquad = (SQUADS[teamId] || []).find(p => p.p === name);
+  const role = playerInSquad ? playerInSquad.r : "BAT";
+  
+  document.getElementById('p-card-name').innerText = name;
+  document.getElementById('p-card-emoji').innerText = team ? team.emoji : "🏏";
+  document.getElementById('p-card-team').innerHTML = teamPill(teamId);
+  document.getElementById('p-card-badge').innerHTML = badge(role);
+  
+  const batStats = DB.batting.find(b => b.name === name && b.team === teamId);
+  const bowlStats = DB.bowling.find(b => b.name === name && b.team === teamId);
+  
+  let runs = batStats ? batStats.runs : 0;
+  let wkts = bowlStats ? bowlStats.wkts : 0;
+  let catches = batStats ? batStats.catches : 0;
+  let mom = batStats ? batStats.mom : 0;
+  let fifties = batStats ? batStats.fifties : 0;
+  let hundreds = batStats ? batStats.hundreds : 0;
+  let fourW = bowlStats ? bowlStats.fourW : 0;
+  
+  const mvpPts = runs + wkts * 20 + catches * 10 + mom * 25 + fifties * 10 + hundreds * 25 + fourW * 15;
+  document.getElementById('p-card-mvp-pts').innerText = mvpPts + " pts";
+  document.getElementById('p-card-mvp-mom').innerText = mom + " ★";
+  
+  if (batStats) {
+    document.getElementById('p-card-batting-sect').style.display = 'block';
+    document.getElementById('p-card-batting-row').innerHTML = `
+      <td>${batStats.inn}</td>
+      <td style="color:var(--text); font-weight:800;">${batStats.runs}</td>
+      <td>${batStats.hs}</td>
+      <td>${n2(batStats.avg)}</td>
+      <td>${n1(batStats.sr)}</td>
+      <td style="color:var(--green);">${batStats.fifties}</td>
+      <td style="color:var(--acc);">${batStats.hundreds}</td>
+      <td>${batStats.catches}</td>
+    `;
+  } else {
+    document.getElementById('p-card-batting-sect').style.display = 'none';
+  }
+  
+  if (bowlStats) {
+    document.getElementById('p-card-bowling-sect').style.display = 'block';
+    document.getElementById('p-card-bowling-row').innerHTML = `
+      <td>${bowlStats.inn}</td>
+      <td style="color:var(--text); font-weight:800;">${bowlStats.wkts}</td>
+      <td>${bowlStats.bbi || '—'}</td>
+      <td>${n2(bowlStats.avg)}</td>
+      <td style="color:${bowlStats.econ < 8 ? 'var(--green)' : bowlStats.econ > 12 ? 'var(--loss)' : 'var(--muted)'};">${n2(bowlStats.econ)}</td>
+      <td>${n1(bowlStats.sr)}</td>
+      <td style="color:var(--acc);">${bowlStats.fourW}</td>
+    `;
+  } else {
+    document.getElementById('p-card-bowling-sect').style.display = 'none';
+  }
+  
+  document.getElementById('playerModal').style.display = 'flex';
+}
+
+function closePlayerModal() {
+  document.getElementById('playerModal').style.display = 'none';
+}
+
+// ── NEW FUNCTIONS FOR SCORECARD MODAL ──────────────────────────────────────────
+function openScorecardModal(matchNum) {
+  const r = DB.results.find(m => String(m.match) === String(matchNum));
+  if (!r) {
+    console.warn("openScorecardModal: Match not found for matchNum:", matchNum);
+    return;
+  }
+  
+  const t1 = byId(r.team1);
+  const t2 = byId(r.team2);
+  const win = byId(r.winner);
+  
+  document.getElementById('s-modal-title').innerText = `Match ${matchNum} Scorecard`;
+  document.getElementById('s-modal-subtitle').innerText = r.venue ? r.venue : '';
+  
+  // Summary Details
+  const sumWinner = document.getElementById('s-sum-winner');
+  if (win) {
+    sumWinner.style.display = 'inline-block';
+    sumWinner.style.background = `${win.color}22`;
+    sumWinner.style.color = win.color;
+    sumWinner.style.border = `1px solid ${win.color}33`;
+    sumWinner.innerText = `${win.emoji} ${win.name} won by ${r.margin}`;
+  } else {
+    sumWinner.style.display = 'none';
+  }
+  
+  document.getElementById('s-sum-t1-name').innerText = t1 ? `${t1.emoji} ${t1.name}` : r.team1;
+  document.getElementById('s-sum-t1-score').innerHTML = `${r.score1} <span class="score-ov">(${r.overs1})</span>`;
+  
+  document.getElementById('s-sum-t2-name').innerText = t2 ? `${t2.emoji} ${t2.name}` : r.team2;
+  document.getElementById('s-sum-t2-score').innerHTML = `${r.score2} <span class="score-ov">(${r.overs2})</span>`;
+  
+  document.getElementById('s-sum-mom').innerHTML = r.mom ? `⭐ <strong style="color:var(--acc)">MOM:</strong> ${r.mom}` : '';
+  
+  // Set Innings Tab Titles
+  const tabInn1 = document.getElementById('s-tab-inn1');
+  const tabInn2 = document.getElementById('s-tab-inn2');
+  tabInn1.innerText = `${r.team1} Innings`;
+  tabInn2.innerText = `${r.team2} Innings`;
+  
+  // Populate Innings Content
+  if (r.scorecard) {
+    document.getElementById('s-inn1-content').innerHTML = buildInningsHTML(r.team1, r.team2, r.scorecard.t1Inn);
+    document.getElementById('s-inn2-content').innerHTML = buildInningsHTML(r.team2, r.team1, r.scorecard.t2Inn);
+  } else {
+    const fallbackHTML = `<div style="background:var(--card); border:1px dashed var(--border); border-radius:8px; padding:40px; text-align:center; color:var(--muted); font-style:italic;">Detailed scorecard not available for this match.</div>`;
+    document.getElementById('s-inn1-content').innerHTML = fallbackHTML;
+    document.getElementById('s-inn2-content').innerHTML = fallbackHTML;
+  }
+  
+  // Default to Summary Tab
+  showScorecardTab('summary', document.getElementById('s-tab-summary'));
+  
+  document.getElementById('scorecardModal').style.display = 'flex';
+}
+
+function closeScorecardModal() {
+  document.getElementById('scorecardModal').style.display = 'none';
+}
+
+function showScorecardTab(tabId, btn) {
+  // Hide all sections
+  document.getElementById('s-sect-summary').style.display = 'none';
+  document.getElementById('s-sect-inn1').style.display = 'none';
+  document.getElementById('s-sect-inn2').style.display = 'none';
+  
+  // Deactivate all tab buttons
+  const buttons = document.querySelectorAll('#s-modal-tabs .mtab');
+  buttons.forEach(b => b.classList.remove('active'));
+  
+  // Show target section and activate button
+  if (tabId === 'summary') {
+    document.getElementById('s-sect-summary').style.display = 'block';
+  } else if (tabId === 'inn1') {
+    document.getElementById('s-sect-inn1').style.display = 'block';
+  } else if (tabId === 'inn2') {
+    document.getElementById('s-sect-inn2').style.display = 'block';
+  }
+  
+  if (btn) btn.classList.add('active');
+}
+
+function buildInningsHTML(batTeamId, bowlTeamId, innData) {
+  if (!innData || !innData.bat) {
+    return `<div style="text-align:center; padding:40px; color:var(--muted); font-style:italic;">No detailed innings data.</div>`;
+  }
+  
+  const batTeam = byId(batTeamId);
+  const bowlTeam = byId(bowlTeamId);
+  
+  // Calculate batting totals
+  let totalRuns = 0;
+  let totalBalls = 0;
+  innData.bat.forEach(b => {
+    totalRuns += b.runs || 0;
+    totalBalls += b.balls || 0;
+  });
+  const totalWkts = innData.bat.filter(b => b.dismissal && b.dismissal.toLowerCase() !== 'not out').length;
+  
+  // Batting Table
+  let batRows = innData.bat.map(b => {
+    const sr = b.balls > 0 ? ((b.runs / b.balls) * 100).toFixed(1) : '0.0';
+    return `
+      <tr>
+        <td style="font-weight:600; color:var(--text);">${b.name}</td>
+        <td class="s-dismissal">${b.dismissal}</td>
+        <td class="s-runs" style="text-align:right; color:${b.runs >= 30 ? 'var(--acc)' : 'var(--text)'};">${b.runs}</td>
+        <td class="s-balls" style="text-align:right;">${b.balls}</td>
+        <td class="s-sr" style="text-align:right;">${sr}</td>
+      </tr>
+    `;
+  }).join('');
+  
+  // Bowling Table
+  let bowlRows = innData.bowl.map(b => {
+    const parts = String(b.overs).split('.');
+    const overs = parseInt(parts[0]) || 0;
+    const balls = parseInt(parts[1]) || 0;
+    const totalBalls = (overs * 6) + balls;
+    const econ = totalBalls > 0 ? ((b.runs / totalBalls) * 6).toFixed(2) : '0.00';
+    return `
+      <tr>
+        <td style="font-weight:600; color:var(--text);">${b.name}</td>
+        <td style="text-align:right; color:var(--text);">${b.overs}</td>
+        <td class="s-balls" style="text-align:right;">${b.dots || 0}</td>
+        <td class="s-runs" style="text-align:right;">${b.runs}</td>
+        <td style="font-weight:700; text-align:right; color:${b.wkts >= 3 ? 'var(--green)' : 'var(--text)'};">${b.wkts}</td>
+        <td class="s-sr" style="text-align:right;">${econ}</td>
+      </tr>
+    `;
+  }).join('');
+  
+  // FOW mapping
+  let fowTexts = [];
+  if (innData.fow && Array.isArray(innData.fow)) {
+    const dismissedBatters = innData.bat.filter(b => b.dismissal && b.dismissal.toLowerCase() !== 'not out');
+    innData.fow.forEach((runs, index) => {
+      const batter = dismissedBatters[index];
+      const batterName = batter ? batter.name : "";
+      fowTexts.push(`<b>${index + 1}-${runs}</b>${batterName ? ` (${batterName})` : ''}`);
+    });
+  }
+  const fowStr = fowTexts.length > 0 ? fowTexts.join(', ') : '—';
+  
+  return `
+    <div style="margin-bottom:16px;">
+      <div class="s-section-title" style="border-bottom-color:${batTeam?.color}">
+        <span>${batTeam?.emoji} ${batTeam?.name} Batting</span>
+        <span style="font-weight:800; font-size:18px; color:${batTeam?.color}">${totalRuns}/${totalWkts}</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="s-table" style="width:100%; border-collapse:collapse;">
+          <thead>
+            <tr>
+              <th style="text-align:left;">Batter</th>
+              <th style="text-align:left;">Dismissal</th>
+              <th style="text-align:right;">R</th>
+              <th style="text-align:right;">B</th>
+              <th style="text-align:right;">SR</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${batRows}
+          </tbody>
+        </table>
+      </div>
+      <div class="s-extras-row">
+        <span>Extras</span>
+        <span>${innData.extras || 0} (wd, nb, lb, b)</span>
+      </div>
+    </div>
+    
+    <div style="margin-top:20px;">
+      <div class="s-section-title" style="border-bottom-color:${bowlTeam?.color}">
+        <span>${bowlTeam?.emoji} ${bowlTeam?.name} Bowling</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="s-table" style="width:100%; border-collapse:collapse;">
+          <thead>
+            <tr>
+              <th style="text-align:left;">Bowler</th>
+              <th style="text-align:right;">O</th>
+              <th style="text-align:right;">D</th>
+              <th style="text-align:right;">R</th>
+              <th style="text-align:right;">W</th>
+              <th style="text-align:right;">Econ</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${bowlRows}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="s-fow-container">
+      <div style="color:var(--muted);"><strong style="color:var(--text); text-transform:uppercase; font-size:10px; letter-spacing:0.5px; display:block; margin-bottom:4px;">Fall of Wickets</strong> ${fowStr}</div>
+    </div>
+  `;
+}
+
+function renderComparison() {
+  const id1 = document.getElementById('c-team1').value;
+  const id2 = document.getElementById('c-team2').value;
+  if (!id1 || !id2) return;
+  
+  const t1 = byId(id1), t2 = byId(id2);
+  
+  const matches = DB.results.filter(r => 
+    (r.team1 === id1 && r.team2 === id2) || (r.team1 === id2 && r.team2 === id1)
+  );
+  
+  const t1Wins = matches.filter(r => r.winner === id1).length;
+  const t2Wins = matches.filter(r => r.winner === id2).length;
+  
+  document.getElementById('c-h2h-wins').innerText = `${t1Wins} - ${t2Wins}`;
+  document.getElementById('c-h2h-wins').style.color = t1Wins > t2Wins ? t1.color : t2Wins > t1Wins ? t2.color : 'var(--acc)';
+  
+  let summaryText = "";
+  if (matches.length === 0) {
+    summaryText = "No head-to-head matches played yet in Season 7.";
+  } else {
+    summaryText = `${t1.emoji} ${id1} has won ${t1Wins} match(es), ${t2.emoji} ${id2} has won ${t2Wins} match(es). (${matches.length} played)`;
+  }
+  document.getElementById('c-h2h-summary').innerText = summaryText;
+  
+  const sortedTable = [...DB.table].sort((a,b)=>b.pts-a.pts||b.nrr-a.nrr);
+  const rank1 = sortedTable.findIndex(r => r.id === id1) + 1;
+  const rank2 = sortedTable.findIndex(r => r.id === id2) + 1;
+  const pts1 = sortedTable.find(r => r.id === id1)?.pts || 0;
+  const pts2 = sortedTable.find(r => r.id === id2)?.pts || 0;
+  const nrr1 = sortedTable.find(r => r.id === id1)?.nrr || 0;
+  const nrr2 = sortedTable.find(r => r.id === id2)?.nrr || 0;
+  
+  document.getElementById('c-standings-diff').innerHTML = `
+    <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+      <span style="color:${t1.color}; font-weight:600;">Rank #${rank1}</span>
+      <span style="color:var(--muted); font-size:10px;">STANDINGS</span>
+      <span style="color:${t2.color}; font-weight:600;">Rank #${rank2}</span>
+    </div>
+    <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+      <span style="color:${t1.color}; font-weight:700;">${pts1} pts</span>
+      <span style="color:var(--muted); font-size:10px;">POINTS</span>
+      <span style="color:${t2.color}; font-weight:700;">${pts2} pts</span>
+    </div>
+    <div style="display:flex; justify-content:space-between;">
+      <span class="${nrrClass(nrr1)}" style="font-weight:500;">${nrrStr(nrr1)}</span>
+      <span style="color:var(--muted); font-size:10px;">NET RUN RATE</span>
+      <span class="${nrrClass(nrr2)}" style="font-weight:500;">${nrrStr(nrr2)}</span>
+    </div>
+  `;
+  
+  const getAvgRuns = (teamId) => {
+    let totals = 0, count = 0;
+    DB.results.forEach(r => {
+      if (r.team1 === teamId) {
+        totals += parseInt(r.score1.split('/')[0]) || 0;
+        count++;
+      } else if (r.team2 === teamId) {
+        totals += parseInt(r.score2.split('/')[0]) || 0;
+        count++;
+      }
+    });
+    return count > 0 ? (totals / count) : 0;
+  };
+  
+  const getHighestScore = (teamId) => {
+    let hs = 0;
+    DB.results.forEach(r => {
+      if (r.team1 === teamId) hs = Math.max(hs, parseInt(r.score1.split('/')[0]) || 0);
+      if (r.team2 === teamId) hs = Math.max(hs, parseInt(r.score2.split('/')[0]) || 0);
+    });
+    return hs;
+  };
+
+  const getAvgWickets = (teamId) => {
+    let totalWkts = 0, count = 0;
+    DB.results.forEach(r => {
+      if (r.team1 === teamId) {
+        const parts = r.score1.split('/');
+        totalWkts += parts.length > 1 ? (parseInt(parts[1]) || 0) : 10;
+        count++;
+      } else if (r.team2 === teamId) {
+        const parts = r.score2.split('/');
+        totalWkts += parts.length > 1 ? (parseInt(parts[1]) || 0) : 10;
+        count++;
+      }
+    });
+    return count > 0 ? (totalWkts / count) : 0;
+  };
+  
+  const avgRuns1 = getAvgRuns(id1);
+  const avgRuns2 = getAvgRuns(id2);
+  const hs1 = getHighestScore(id1);
+  const hs2 = getHighestScore(id2);
+  const avgWkts1 = getAvgWickets(id1);
+  const avgWkts2 = getAvgWickets(id2);
+  
+  const renderBar = (val1, val2, label, decimals=1) => {
+    const sum = val1 + val2;
+    const pct1 = sum > 0 ? (val1 / sum) * 100 : 50;
+    const pct2 = sum > 0 ? (val2 / sum) * 100 : 50;
+    
+    return `
+      <div style="margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; font-weight:600;">
+          <span style="color:${t1.color};">${val1.toFixed(decimals)}</span>
+          <span style="color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:1px;">${label}</span>
+          <span style="color:${t2.color};">${val2.toFixed(decimals)}</span>
+        </div>
+        <div style="height:8px; background:rgba(255,255,255,0.1); border-radius:4px; overflow:hidden; display:flex; border:1px solid var(--border);">
+          <div style="width:${pct1}%; background:${t1.color}; height:100%; transition:width 0.4s ease;"></div>
+          <div style="width:${pct2}%; background:${t2.color}; height:100%; transition:width 0.4s ease;"></div>
+        </div>
+      </div>
+    `;
+  };
+  
+  document.getElementById('c-meters-container').innerHTML = `
+    ${renderBar(avgRuns1, avgRuns2, 'Avg Runs Scored', 1)}
+    ${renderBar(hs1, hs2, 'Highest Total', 0)}
+    ${renderBar(avgWkts1, avgWkts2, 'Avg Wickets Lost', 1)}
+  `;
+  
+  const historyContainer = document.getElementById('c-history-container');
+  if (matches.length === 0) {
+    historyContainer.innerHTML = `
+      <div style="background:var(--card); border:1px solid var(--border); border-radius:8px; padding:30px; text-align:center; color:var(--muted); font-style:italic; font-size:13px;">
+        No fixtures played between these teams yet.
+      </div>
+    `;
+  } else {
+    historyContainer.innerHTML = matches.map(r => {
+      const win = byId(r.winner);
+      return `
+        <div class="result-card" style="border-color:${win?.color}33; padding:12px 16px; margin-bottom:8px; --team-color:${win?.color}; --team-glow:${win?.color}22;">
+          <div style="display:flex; justify-content:space-between; font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:6px;">
+            <span>Match ${r.match}</span>
+            <span style="color:${win?.color}; font-weight:700;">Winner: ${r.winner} (by ${r.margin})</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700; color:var(--text);">
+            <span>${r.team1 === id1 ? t1.emoji + ' ' + t1.name : t2.emoji + ' ' + t2.name}: ${r.team1 === id1 ? r.score1 : r.score2}</span>
+            <span style="font-family:'Bebas Neue',sans-serif; color:var(--red);">VS</span>
+            <span>${r.team2 === id2 ? t2.emoji + ' ' + t2.name : t1.emoji + ' ' + t1.name}: ${r.team2 === id2 ? r.score2 : r.score1}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+populateTeamSelects();
+if(document.getElementById('c-team2')) {
+  document.getElementById('c-team2').value = "AS";
+}
+renderComparison();
+renderAll();
