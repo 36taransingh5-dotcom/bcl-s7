@@ -689,6 +689,308 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   color: var(--text);
   font-weight: 500;
 }
+
+/* AWARDS & TOURNAMENT TEAM */
+.awards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+.award-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.award-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--acc);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+}
+.award-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 4px;
+  background: var(--acc);
+  opacity: 0.8;
+}
+.award-card.orange-cap::before { background: #f97316; }
+.award-card.purple-cap::before { background: #8b5cf6; }
+.award-card.emerging::before { background: #06b6d4; }
+.award-card.mvp::before { background: linear-gradient(90deg, #f5c842, var(--acc)); }
+
+.award-badge-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+  display: inline-block;
+  animation: pulseLight 3s infinite ease-in-out;
+}
+.award-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.award-player {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 1px;
+  color: var(--text-light);
+  line-height: 1.1;
+}
+.award-team {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--acc);
+  margin-top: 2px;
+  margin-bottom: 16px;
+}
+.award-team.t-AS { color: #f97316; }
+.award-team.t-TT { color: #63b3ed; }
+.award-team.t-AA { color: #fb7185; }
+.award-team.t-GB { color: #a78bfa; }
+.award-team.t-HH { color: #f5c842; }
+.award-team.t-VV { color: #6ee7b7; }
+
+.award-stats {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+.award-stat-item {
+  text-align: center;
+}
+.award-stat-val {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-light);
+}
+.award-stat-lbl {
+  font-size: 9px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* TOP 5 TABLES */
+.top5-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+.top5-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+.top5-title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--acc);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+.top5-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.top5-table th {
+  text-align: left;
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.top5-table td {
+  font-size: 12px;
+  padding: 8px 8px;
+  border-bottom: 1px dashed rgba(255,255,255,0.05);
+}
+.top5-table tr:last-child td { border: none; }
+.top5-rank {
+  font-weight: 700;
+  color: var(--muted);
+  width: 25px;
+}
+
+/* CRICKET FIELD */
+.cricket-field-wrapper {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 30px;
+  box-shadow: var(--shadow);
+}
+.cricket-field {
+  position: relative;
+  width: 100%;
+  max-width: 580px;
+  aspect-ratio: 4/5;
+  background: linear-gradient(135deg, #1b4430 0%, #0c2b1d 100%);
+  border: 4px solid #2e7d32;
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  margin: 0 auto;
+  overflow: hidden;
+  box-shadow: inset 0 0 50px rgba(0,0,0,0.6), var(--shadow);
+}
+.field-boundary {
+  position: absolute;
+  top: 5%; left: 5%; right: 5%; bottom: 5%;
+  border: 1px dashed rgba(255,255,255,0.15);
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  pointer-events: none;
+}
+.field-pitch {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 120px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(217, 249, 157, 0.08);
+  border-radius: 2px;
+  pointer-events: none;
+}
+.field-pitch::before, .field-pitch::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; height: 1px;
+  background: rgba(255,255,255,0.4);
+}
+.field-pitch::before { top: 15px; }
+.field-pitch::after { bottom: 15px; }
+
+.field-player {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 5;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.field-player:hover {
+  transform: translate(-50%, -50%) scale(1.15);
+  z-index: 10;
+}
+.fp-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(18,18,18,0.9);
+  border: 1.5px solid var(--acc);
+  color: var(--text-light);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+.field-player.p-AA .fp-badge { border-color: #fb7185; }
+.field-player.p-VV .fp-badge { border-color: #6ee7b7; }
+.field-player.p-TT .fp-badge { border-color: #63b3ed; }
+.field-player.p-GB .fp-badge { border-color: #a78bfa; }
+.field-player.p-HH .fp-badge { border-color: #f5c842; }
+.field-player.p-AS .fp-badge { border-color: #f97316; }
+
+.fp-name {
+  background: rgba(18, 18, 18, 0.85);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 3px 8px;
+  color: var(--text-light);
+  font-size: 10px;
+  font-weight: 600;
+  margin-top: 4px;
+  white-space: nowrap;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+.fp-role {
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 1px;
+}
+.field-player:hover .fp-role {
+  color: var(--acc);
+}
+
+.fp-tooltip {
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%) scale(0.9);
+  background: rgba(24, 24, 27, 0.96);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  z-index: 100;
+  white-space: nowrap;
+  text-align: left;
+}
+.field-player:hover .fp-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+.tooltip-title {
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--text-light);
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 4px;
+}
+.tooltip-stat {
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.tooltip-stat strong {
+  color: var(--text-light);
+}
+
+@keyframes pulseLight {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(217,249,157,0.3)); }
+  50% { transform: scale(1.08); filter: drop-shadow(0 0 10px rgba(217,249,157,0.6)); }
+}
+.tot-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (min-width: 992px) {
+  .tot-layout {
+    grid-template-columns: 460px 1fr;
+  }
+}
 </style>
 </head>
 <body>
@@ -720,6 +1022,7 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   <button class="tab" onclick="showTab('compare',this)">Compare</button>
   <button class="tab" onclick="showTab('stories',this)">Stories</button>
   <button class="tab" onclick="showTab('playoffs',this)">Playoffs</button>
+  <button class="tab" onclick="showTab('awards',this)">Awards</button>
 </div>
 
 <!-- POINTS TABLE -->
@@ -849,6 +1152,22 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   <section>
     <div class="st">Knockout Stage</div>
     <div id="playoffsContainer"></div>
+  </section>
+</div>
+
+<!-- SEASON AWARDS -->
+<div id="panel-awards" class="panel">
+  <section>
+    <div class="st">Tournament Awards</div>
+    <div id="awardsAccoladesContainer"></div>
+  </section>
+  <section style="margin-top:30px;">
+    <div class="st">Top 5 Leaderboards</div>
+    <div id="awardsTop5Container"></div>
+  </section>
+  <section style="margin-top:30px;">
+    <div class="st">Team of the Tournament</div>
+    <div id="awardsTeamOfTournamentContainer"></div>
   </section>
 </div>
 
@@ -11227,6 +11546,7 @@ function renderAll(){
   renderTable(); renderResults(); renderSchedule(); renderSquads(); renderStats(); renderPlayoffs();
   if(typeof populateStoriesSelect === 'function') populateStoriesSelect();
   if(typeof renderStories === 'function') renderStories();
+  if(typeof renderAwards === 'function') renderAwards();
 }
 
 function getTeamForm(teamId) {
@@ -12353,6 +12673,391 @@ function renderStories() {
       <div style="font-weight:700; font-size:14px; color:var(--text); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:16px;">Season Form Timeline</div>
       <div style="display:flex; align-items:center; overflow-x:auto; padding:8px; scrollbar-width:thin; background:var(--bg); border-radius:12px; border:1px solid var(--border);">
         ${formHtml}
+      </div>
+    </div>
+  `;
+}
+
+function renderAwards() {
+  const accoladesContainer = document.getElementById('awardsAccoladesContainer');
+  const top5Container = document.getElementById('awardsTop5Container');
+  const teamOfTournamentContainer = document.getElementById('awardsTeamOfTournamentContainer');
+  if (!accoladesContainer || !top5Container || !teamOfTournamentContainer) return;
+
+  // 1. Compute Accolades
+  // MVP Calculation
+  const map = {};
+  DB.batting.forEach(b => {
+    const k = b.name + "|" + b.team;
+    if (!map[k]) map[k] = { name: b.name, team: b.team, runs: 0, wkts: 0, mom: 0, fifties: 0, hundreds: 0, catches: 0, fourW: 0 };
+    map[k].runs += b.runs || 0;
+    map[k].mom += b.mom || 0;
+    map[k].fifties += b.fifties || 0;
+    map[k].hundreds += b.hundreds || 0;
+    map[k].catches += b.catches || 0;
+  });
+  DB.bowling.forEach(b => {
+    const k = b.name + "|" + b.team;
+    if (!map[k]) map[k] = { name: b.name, team: b.team, runs: 0, wkts: 0, mom: 0, fifties: 0, hundreds: 0, catches: 0, fourW: 0 };
+    map[k].wkts += b.wkts || 0;
+    map[k].fourW += b.fourW || 0;
+  });
+  const mvpPlayers = Object.values(map).map(p => ({
+    ...p,
+    pts: p.runs * 1 + p.wkts * 20 + p.mom * 50 + p.fifties * 10 + p.hundreds * 25 + p.catches * 10 + p.fourW * 15
+  })).sort((a,b) => b.pts - a.pts);
+  
+  const mvp = mvpPlayers[0] || { name: "TBD", team: "AA", runs: 0, wkts: 0, mom: 0, pts: 0 };
+
+  // Orange Cap
+  const topBatters = [...DB.batting].sort((a,b) => b.runs - a.runs);
+  const orangeCap = topBatters[0] || { name: "TBD", team: "AA", runs: 0, avg: 0, sr: 0 };
+
+  // Purple Cap
+  const topBowlers = [...DB.bowling].sort((a,b) => b.wkts - a.wkts || a.avg - b.avg);
+  const purpleCap = topBowlers[0] || { name: "TBD", team: "AA", wkts: 0, avg: 0, econ: 0 };
+
+  // Emerging Player
+  const emerging = DB.batting.find(p => p.name === 'Vaibhav Suryavanshi') || { name: "Vaibhav Suryavanshi", team: "TT", runs: 0, avg: 0, sr: 0 };
+
+  accoladesContainer.innerHTML = `
+    <div class="awards-grid">
+      <!-- MVP -->
+      <div class="award-card mvp">
+        <span class="award-badge-icon">👑</span>
+        <div class="award-title">Most Valuable Player</div>
+        <div class="award-player">${mvp.name}</div>
+        <div class="award-team t-${mvp.team}">${byId(mvp.team)?.name || mvp.team}</div>
+        <div class="award-stats">
+          <div class="award-stat-item">
+            <div class="award-stat-val">${mvp.runs}</div>
+            <div class="award-stat-lbl">Runs</div>
+          </div>
+          <div class="award-stat-item">
+            <div class="award-stat-val">${mvp.wkts}</div>
+            <div class="award-stat-lbl">Wkts</div>
+          </div>
+          <div class="award-stat-item">
+            <div class="award-stat-val">${mvp.pts}</div>
+            <div class="award-stat-lbl">Points</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORANGE CAP -->
+      <div class="award-card orange-cap">
+        <span class="award-badge-icon">🏏</span>
+        <div class="award-title">Orange Cap (Most Runs)</div>
+        <div class="award-player">${orangeCap.name}</div>
+        <div class="award-team t-${orangeCap.team}">${byId(orangeCap.team)?.name || orangeCap.team}</div>
+        <div class="award-stats">
+          <div class="award-stat-item">
+            <div class="award-stat-val">${orangeCap.runs}</div>
+            <div class="award-stat-lbl">Runs</div>
+          </div>
+          <div class="award-stat-item">
+            <div class="award-stat-val">${orangeCap.avg}</div>
+            <div class="award-stat-lbl">Avg</div>
+          </div>
+          <div class="award-stat-item">
+            <div class="award-stat-val">${orangeCap.sr}</div>
+            <div class="award-stat-lbl">S/R</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PURPLE CAP -->
+      <div class="award-card purple-cap">
+        <span class="award-badge-icon">🥎</span>
+        <div class="award-title">Purple Cap (Most Wkts)</div>
+        <div class="award-player">${purpleCap.name}</div>
+        <div class="award-team t-${purpleCap.team}">${byId(purpleCap.team)?.name || purpleCap.team}</div>
+        <div class="award-stats">
+          <div class="award-stat-item">
+            <div class="award-stat-val">${purpleCap.wkts}</div>
+            <div class="award-stat-lbl">Wickets</div>
+          </div>
+          <div class="award-stat-item">
+            <div class="award-stat-val">${purpleCap.avg}</div>
+            <div class="award-stat-lbl">Avg</div>
+          </div>
+          <div class="award-stat-item">
+            <div class="award-stat-val">${purpleCap.econ}</div>
+            <div class="award-stat-lbl">Econ</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EMERGING -->
+      <div class="award-card emerging">
+        <span class="award-badge-icon">🌟</span>
+        <div class="award-title">Emerging Player</div>
+        <div class="award-player">${emerging.name}</div>
+        <div class="award-team t-${emerging.team}">${byId(emerging.team)?.name || emerging.team}</div>
+        <div class="award-stats">
+          <div class="award-stat-item">
+            <div class="award-stat-val">${emerging.runs}</div>
+            <div class="award-stat-lbl">Runs</div>
+          </div>
+          <div class="award-stat-item">
+            <div class="award-stat-val">${emerging.avg}</div>
+            <div class="award-stat-lbl">Avg</div>
+          </div>
+          <div class="award-stat-item">
+            <div class="award-stat-val">${emerging.sr}</div>
+            <div class="award-stat-lbl">S/R</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // 2. Compute Top 5 Grids
+  // Top 5 Runs
+  const runs5 = topBatters.slice(0, 5);
+  const runs5Rows = runs5.map((p, i) => `
+    <tr>
+      <td class="top5-rank">#${i+1}</td>
+      <td style="font-weight:600;">${p.name} <span style="font-size:10px; color:var(--muted); font-weight:400;">(${p.team})</span></td>
+      <td style="text-align:right;">${p.inn}</td>
+      <td style="text-align:right; font-weight:700; color:var(--acc);">${p.runs}</td>
+      <td style="text-align:right; color:var(--muted);">${p.avg}</td>
+      <td style="text-align:right; color:var(--muted);">${p.sr}</td>
+    </tr>
+  `).join('');
+
+  // Top 5 Wickets
+  const wkts5 = topBowlers.slice(0, 5);
+  const wkts5Rows = wkts5.map((p, i) => `
+    <tr>
+      <td class="top5-rank">#${i+1}</td>
+      <td style="font-weight:600;">${p.name} <span style="font-size:10px; color:var(--muted); font-weight:400;">(${p.team})</span></td>
+      <td style="text-align:right;">${p.inn}</td>
+      <td style="text-align:right; font-weight:700; color:var(--acc);">${p.wkts}</td>
+      <td style="text-align:right; color:var(--muted);">${p.avg}</td>
+      <td style="text-align:right; color:var(--muted);">${p.econ}</td>
+    </tr>
+  `).join('');
+
+  // Top 5 Innings Scores (dynamic parsing)
+  const allInningsScores = [];
+  DB.results.forEach(r => {
+    if (!r.scorecard) return;
+    const parseInnings = (inn, battingTeam, bowlingTeam) => {
+      inn.bat.forEach(b => {
+        if (b.runs > 0 || b.balls > 0) {
+          allInningsScores.push({
+            name: b.name,
+            runs: b.runs,
+            balls: b.balls,
+            dismissal: b.dismissal,
+            batTeam: battingTeam,
+            bowlTeam: bowlingTeam,
+            match: r.match
+          });
+        }
+      });
+    };
+    parseInnings(r.scorecard.t1Inn, r.team1, r.team2);
+    parseInnings(r.scorecard.t2Inn, r.team2, r.team1);
+  });
+  const top5Individual = allInningsScores.sort((a,b) => b.runs - a.runs || a.balls - b.balls).slice(0, 5);
+  const ind5Rows = top5Individual.map((p, i) => {
+    const bowlTeamName = byId(p.bowlTeam)?.name || p.bowlTeam;
+    return `
+      <tr>
+        <td class="top5-rank">#${i+1}</td>
+        <td style="font-weight:600;">${p.name} <span style="font-size:10px; color:var(--muted); font-weight:400;">(${p.batTeam})</span></td>
+        <td style="text-align:right; font-weight:700; color:var(--acc);">${p.runs}${p.dismissal.toLowerCase().includes('not out')?'*':''}</td>
+        <td style="text-align:right; color:var(--muted);">${p.balls}</td>
+        <td style="text-align:right; font-size:10px; color:var(--muted); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Match ${p.match} vs ${bowlTeamName}">vs ${p.bowlTeam} (M${p.match})</td>
+      </tr>
+    `;
+  }).join('');
+
+  // Top 5 Bowling Figures (dynamic parsing)
+  const allBowlingSpells = [];
+  DB.results.forEach(r => {
+    if (!r.scorecard) return;
+    const parseInnings = (inn, bowlingTeam, battingTeam) => {
+      (inn.bowl || []).forEach(b => {
+        if (b.overs) {
+          allBowlingSpells.push({
+            name: b.name,
+            wkts: b.wkts,
+            runs: b.runs,
+            overs: b.overs,
+            bowlTeam: bowlingTeam,
+            batTeam: battingTeam,
+            match: r.match
+          });
+        }
+      });
+    };
+    parseInnings(r.scorecard.t1Inn, r.team2, r.team1);
+    parseInnings(r.scorecard.t2Inn, r.team1, r.team2);
+  });
+  const top5BBI = allBowlingSpells.sort((a,b) => b.wkts - a.wkts || a.runs - b.runs).slice(0, 5);
+  const bbi5Rows = top5BBI.map((p, i) => `
+    <tr>
+      <td class="top5-rank">#${i+1}</td>
+      <td style="font-weight:600;">${p.name} <span style="font-size:10px; color:var(--muted); font-weight:400;">(${p.bowlTeam})</span></td>
+      <td style="text-align:right; font-weight:700; color:var(--acc);">${p.wkts}/${p.runs}</td>
+      <td style="text-align:right; color:var(--muted);">${p.overs}</td>
+      <td style="text-align:right; font-size:10px; color:var(--muted);" title="Match ${p.match} vs ${byId(p.batTeam)?.name}">vs ${p.batTeam} (M${p.match})</td>
+    </tr>
+  `).join('');
+
+  top5Container.innerHTML = `
+    <div class="top5-grid">
+      <!-- Runs -->
+      <div class="top5-card">
+        <div class="top5-title">🏏 Most Runs</div>
+        <table class="top5-table">
+          <thead>
+            <tr><th>Rank</th><th>Player</th><th style="text-align:right;">Inn</th><th style="text-align:right;">Runs</th><th style="text-align:right;">Avg</th><th style="text-align:right;">S/R</th></tr>
+          </thead>
+          <tbody>
+            ${runs5Rows}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Wickets -->
+      <div class="top5-card">
+        <div class="top5-title">🥎 Most Wickets</div>
+        <table class="top5-table">
+          <thead>
+            <tr><th>Rank</th><th>Player</th><th style="text-align:right;">Inn</th><th style="text-align:right;">Wkts</th><th style="text-align:right;">Avg</th><th style="text-align:right;">Econ</th></tr>
+          </thead>
+          <tbody>
+            ${wkts5Rows}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Individual Scores -->
+      <div class="top5-card">
+        <div class="top5-title">💥 Highest Individual Scores</div>
+        <table class="top5-table">
+          <thead>
+            <tr><th>Rank</th><th>Player</th><th style="text-align:right;">Score</th><th style="text-align:right;">Balls</th><th style="text-align:right;">Opponent</th></tr>
+          </thead>
+          <tbody>
+            ${ind5Rows}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Best Bowling Figures -->
+      <div class="top5-card">
+        <div class="top5-title">🎯 Best Spells (BBI)</div>
+        <table class="top5-table">
+          <thead>
+            <tr><th>Rank</th><th>Player</th><th style="text-align:right;">BBI</th><th style="text-align:right;">Overs</th><th style="text-align:right;">Opponent</th></tr>
+          </thead>
+          <tbody>
+            ${bbi5Rows}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+
+  // 3. Render Team of the Tournament
+  const teamXI = [
+    { name: "Quinton de Kock", team: "AA", pos: "Opener / WK", top: "15%", left: "30%" },
+    { name: "Ishan Kishan", team: "GB", pos: "Opener", top: "15%", left: "70%" },
+    { name: "David Warner", team: "AA", pos: "No. 3", top: "27%", left: "50%" },
+    { name: "Virat Kohli", team: "VV", pos: "No. 4", top: "39%", left: "50%" },
+    { name: "Steve Smith", team: "HH", pos: "No. 5", top: "50%", left: "50%" },
+    { name: "Will Jacks", team: "AA", pos: "No. 6 All-rounder (S)", top: "60%", left: "28%" },
+    { name: "Hardik Pandya", team: "TT", pos: "No. 7 All-rounder (P)", top: "60%", left: "72%" },
+    { name: "Varun Chakravarthy", team: "TT", pos: "No. 8 Spinner", top: "72%", left: "50%" },
+    { name: "Mohammed Shami", team: "TT", pos: "No. 9 Pacer", top: "83%", left: "22%" },
+    { name: "Trent Boult", team: "VV", pos: "No. 10 Pacer", top: "85%", left: "50%" },
+    { name: "Jasprit Bumrah", team: "AA", pos: "No. 11 Pacer", top: "83%", left: "78%" }
+  ];
+
+  const fieldPlayersHtml = teamXI.map(p => {
+    // get player stats
+    const batStats = DB.batting.find(x => x.name === p.name);
+    const bowlStats = DB.bowling.find(x => x.name === p.name);
+    
+    let tooltipHtml = `<div class="tooltip-title">${p.name} (${p.team})</div>`;
+    if (batStats && batStats.runs > 10) {
+      tooltipHtml += `<div class="tooltip-stat">Runs: <strong>${batStats.runs}</strong> | Avg: <strong>${batStats.avg}</strong> | SR: <strong>${batStats.sr}</strong></div>`;
+    }
+    if (bowlStats && bowlStats.wkts > 0) {
+      tooltipHtml += `<div class="tooltip-stat">Wkts: <strong>${bowlStats.wkts}</strong> | Avg: <strong>${bowlStats.avg}</strong> | Econ: <strong>${bowlStats.econ}</strong></div>`;
+    }
+    
+    const initials = p.name.split(' ').map(n=>n[0]).join('');
+    
+    return `
+      <div class="field-player p-${p.team}" style="top:${p.top}; left:${p.left};" onclick="openPlayerProfile('${p.name}', '${p.team}')">
+        <div class="fp-badge">${initials}</div>
+        <div class="fp-name">${p.name.split(' ').pop()}</div>
+        <div class="fp-role">${p.pos}</div>
+        <div class="fp-tooltip">
+          ${tooltipHtml}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Table list of the XI
+  const teamXITableRows = teamXI.map((p, idx) => {
+    const batStats = DB.batting.find(x => x.name === p.name);
+    const bowlStats = DB.bowling.find(x => x.name === p.name);
+    
+    let statsStr = "";
+    if (batStats && batStats.runs > 0) {
+      statsStr += `${batStats.runs} Runs (avg ${batStats.avg}, SR ${batStats.sr})`;
+    }
+    if (bowlStats && bowlStats.wkts > 0) {
+      if (statsStr) statsStr += " & ";
+      statsStr += `${bowlStats.wkts} Wickets (avg ${bowlStats.avg}, econ ${bowlStats.econ})`;
+    }
+    
+    return `
+      <tr>
+        <td style="font-weight:700; color:var(--muted); width:40px;">${idx+1}</td>
+        <td style="font-weight:600;">${p.name}</td>
+        <td style="color:var(--acc); font-weight:700;">${p.team}</td>
+        <td style="font-weight:600; color:var(--muted);">${p.pos}</td>
+        <td>${statsStr}</td>
+      </tr>
+    `;
+  }).join('');
+
+  teamOfTournamentContainer.innerHTML = `
+    <div class="tot-layout">
+      <!-- Visual Field -->
+      <div class="cricket-field-wrapper">
+        <div class="cricket-field">
+          <div class="field-boundary"></div>
+          <div class="field-pitch"></div>
+          ${fieldPlayersHtml}
+        </div>
+      </div>
+
+      <!-- Description and Table -->
+      <div class="top5-card" style="height:100%;">
+        <div class="top5-title">🏆 BCL Season 7 Team of the Tournament</div>
+        <p style="font-size:13px; color:var(--muted); line-height:1.6; margin-bottom:16px;">
+          The official BCL Season 7 Team of the Tournament highlights the most dominant players of the league, structured in a fully balanced, traditional XI format. Positions are aligned exactly with where players batted and bowled throughout the season. Hover over any player on the field to see their dynamic statistics!
+        </p>
+        <div style="overflow-x:auto;">
+          <table class="top5-table">
+            <thead>
+              <tr><th>#</th><th>Player</th><th>Team</th><th>Position / Role</th><th>Season Performance</th></tr>
+            </thead>
+            <tbody>
+              ${teamXITableRows}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   `;
