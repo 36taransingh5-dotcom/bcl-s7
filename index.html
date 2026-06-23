@@ -11754,7 +11754,7 @@ function save(){
 }
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
-const byId = id => TEAMS.find(t=>t.id===id);
+const byId = id => ALL_TEAMS.find(t=>t.id===id);
 function badge(role){
   const c=ROLE_COLORS[role]||"#6b7280";
   return `<span class="badge" style="background:${c}15;color:${c};border:1px solid ${c}33;box-shadow:0 0 6px ${c}10">${role}</span>`;
@@ -12358,8 +12358,23 @@ function resetData() {
 
 // ── NEW FUNCTIONS FOR PLAYER PROFILES & COMPARISON ─────────────────────────────
 function openPlayerProfile(name, teamId) {
+  // Determine the active season from the UI
+  const activePanel = document.querySelector('.panel.active');
+  const panelId = activePanel ? activePanel.id.replace('panel-', '') : 'stats';
+  const season = localFilters[panelId] || 'season8';
+  
+  let lDB = MULTI_DB.season8;
+  let lSQUADS = SQUADS_S8;
+  if (season === 'season7') {
+    lDB = MULTI_DB.season7;
+    lSQUADS = SQUADS_S7;
+  } else if (season === 'overall') {
+    lDB = MULTI_DB.overall;
+    lSQUADS = { ...SQUADS_S7, ...SQUADS_S8 };
+  }
+  
   const team = byId(teamId);
-  const playerInSquad = (SQUADS[teamId] || []).find(p => p.p === name);
+  const playerInSquad = (lSQUADS[teamId] || []).find(p => p.p === name);
   const role = playerInSquad ? playerInSquad.r : "BAT";
   
   document.getElementById('p-card-name').innerText = name;
@@ -12367,8 +12382,8 @@ function openPlayerProfile(name, teamId) {
   document.getElementById('p-card-team').innerHTML = teamPill(teamId);
   document.getElementById('p-card-badge').innerHTML = badge(role);
   
-  const batStats = DB.batting.find(b => b.name === name && b.team === teamId);
-  const bowlStats = DB.bowling.find(b => b.name === name && b.team === teamId);
+  const batStats = lDB.batting.find(b => b.name === name && b.team === teamId);
+  const bowlStats = lDB.bowling.find(b => b.name === name && b.team === teamId);
   
   let runs = batStats ? batStats.runs : 0;
   let wkts = bowlStats ? bowlStats.wkts : 0;
