@@ -11714,6 +11714,20 @@ function aggregateDB() {
   return agg;
 }
 
+function updateThemeColor() {
+  const activePanel = document.querySelector('.panel.active');
+  if (!activePanel) return;
+  const panelId = activePanel.id.replace('panel-', '');
+  const season = localFilters[panelId] || 'season8';
+  
+  if (season === 'season7') {
+    document.documentElement.style.setProperty('--acc', 'var(--green)');
+    document.documentElement.style.setProperty('--shadow', '0 10px 30px rgba(52, 211, 153, 0.2)'); // Tinted green shadow
+  } else {
+    document.documentElement.style.setProperty('--acc', '#60a5fa');
+    document.documentElement.style.setProperty('--shadow', '0 10px 30px rgba(96, 165, 250, 0.2)'); // Tinted blue shadow
+  }
+}
 function setLocalFilter(panel, season, btn) {
   localFilters[panel] = season;
   // Update UI buttons
@@ -11730,6 +11744,7 @@ function setLocalFilter(panel, season, btn) {
   if (panel === 'compare') renderComparison();
   if (panel === 'stories') renderStories();
   if (panel === 'awards') renderAwards();
+  updateThemeColor();
 }
 function save(){ 
   if(activeSeason !== 'overall') {
@@ -11774,6 +11789,7 @@ function renderAll(){
   if(typeof populateStoriesSelect === 'function') populateStoriesSelect();
   if(typeof renderStories === 'function') renderStories();
   if(typeof renderAwards === 'function') renderAwards();
+  updateThemeColor();
 }
 
 function getTeamForm(teamId, lDB) {
@@ -12128,12 +12144,14 @@ function showStatsCategory(cat, btn) {
   let parent = document.getElementById('statsCategoryFilters');
   parent.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  updateThemeColor();
 }
 function showTab(id, btn){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   document.getElementById('panel-'+id).classList.add('active');
   btn.classList.add('active');
+  updateThemeColor();
 }
 
 // ── ADMIN ─────────────────────────────────────────────────────────────────────
@@ -12153,6 +12171,7 @@ function showMTab(id, btn){
   document.querySelectorAll('.mtab').forEach(b=>b.classList.remove('active'));
   document.getElementById('mform-'+id).style.display='block';
   btn.classList.add('active');
+  updateThemeColor();
 }
 
 function populateTeamSelects(){
@@ -12482,6 +12501,7 @@ function showScorecardTab(tabId, btn) {
   }
   
   if (btn) btn.classList.add('active');
+  updateThemeColor();
 }
 
 function buildInningsHTML(batTeamId, bowlTeamId, innData) {
