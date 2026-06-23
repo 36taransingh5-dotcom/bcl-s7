@@ -11639,6 +11639,7 @@ if (!MULTI_DB) {
         {id:"HH",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
         {id:"SM",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
         {id:"TT",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
+        {id:"UU",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
         {id:"VV",m:0,w:0,l:0,nr:0,pts:0,nrr:0}
       ],
       results: [],
@@ -11646,6 +11647,10 @@ if (!MULTI_DB) {
       bowling: []
     }
   };
+  localStorage.setItem(STORE_KEY_MULTI, JSON.stringify(MULTI_DB));
+} else if (MULTI_DB.season8 && !MULTI_DB.season8.table.find(t => t.id === 'UU')) {
+  MULTI_DB.season8.table.push({id:"UU",m:0,w:0,l:0,nr:0,pts:0,nrr:0});
+  MULTI_DB.season8.table.sort((a,b) => a.id.localeCompare(b.id));
   localStorage.setItem(STORE_KEY_MULTI, JSON.stringify(MULTI_DB));
 }
 
