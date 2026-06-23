@@ -1484,21 +1484,21 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <script>
 // ── DATA ──────────────────────────────────────────────────────────────────────
 const TEAMS_S7 = [
-  {id:"HH",name:"Harshit Harmobiles",emoji:"⚙️",color:"#60a5fa"},
+  {id:"HH",name:"Harshit Harmobiles",emoji:"⚙️",logo:"logos/hh.jpg",color:"#60a5fa"},
   {id:"AS",name:"Anagh Savants",      emoji:"🗡️",color:"#f1f5f9"},
-  {id:"AA",name:"Aarnav Aces",        emoji:"🛡️",color:"#34d399"},
-  {id:"GB",name:"Gauransh Blazers",   emoji:"🔥",color:"#fb923c"},
-  {id:"TT",name:"Taran Tranquils",    emoji:"🌊",color:"#a78bfa"},
-  {id:"VV",name:"Vivaan Victors",     emoji:"⚡",color:"#fbbf24"},
+  {id:"AA",name:"Aarnav Aces",        emoji:"🛡️",logo:"logos/aa.jpg",color:"#34d399"},
+  {id:"GB",name:"Gauransh Blazers",   emoji:"🔥",logo:"logos/gb.jpg",color:"#fb923c"},
+  {id:"TT",name:"Taran Tranquils",    emoji:"🌊",logo:"logos/tt.jpg",color:"#a78bfa"},
+  {id:"VV",name:"Vivaan Victors",     emoji:"⚡",logo:"logos/vv.jpg",color:"#fbbf24"},
 ];
 const TEAMS_S8 = [
-  {id:"AA",name:"Aarnav Aces",        emoji:"🛡️",color:"#34d399"},
-  {id:"GB",name:"Gauransh Blazers",   emoji:"🔥",color:"#fb923c"},
+  {id:"AA",name:"Aarnav Aces",        emoji:"🛡️",logo:"logos/aa.jpg",color:"#34d399"},
+  {id:"GB",name:"Gauransh Blazers",   emoji:"🔥",logo:"logos/gb.jpg",color:"#fb923c"},
   {id:"HH",name:"Harshit Harmobiles", emoji:"⚙️",color:"#60a5fa"},
   {id:"SM",name:"Shaurya Mavericks",  emoji:"🦅",color:"#f1f5f9"},
-  {id:"TT",name:"Taran Tranquils",    emoji:"🌊",color:"#a78bfa"},
-  {id:"UU",name:"Urvaksh Uttamnagris",emoji:"🏙️",color:"#2dd4bf"},
-  {id:"VV",name:"Vivaan Victors",     emoji:"⚡",color:"#fbbf24"}
+  {id:"TT",name:"Taran Tranquils",    emoji:"🌊",logo:"logos/tt.jpg",color:"#a78bfa"},
+  {id:"UU",name:"Urvaksh Uttamnagris",emoji:"🏙️",logo:"logos/uu.png",color:"#2dd4bf"},
+  {id:"VV",name:"Vivaan Victors",     emoji:"⚡",logo:"logos/vv.jpg",color:"#fbbf24"}
 ];
 const ALL_TEAMS = [...new Map([...TEAMS_S7, ...TEAMS_S8].map(item => [item.id, item])).values()];
 let TEAMS = TEAMS_S8;
@@ -11764,9 +11764,15 @@ function badge(role){
   const c=ROLE_COLORS[role]||"#6b7280";
   return `<span class="badge" style="background:${c}15;color:${c};border:1px solid ${c}33;box-shadow:0 0 6px ${c}10">${role}</span>`;
 }
+function teamIcon(t) {
+  if (!t) return "❓";
+  if (t.logo) return `<img src="${t.logo}" class="team-logo-img" alt="${t.id}" style="width:1.2em; height:1.2em; vertical-align:middle; object-fit:contain; display:inline-block; border-radius: 4px; pointer-events:none;">`;
+  return t.emoji;
+}
+
 function teamPill(id){
   const t=byId(id); if(!t) return id;
-  return `<span style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;background:${t.color}15;padding:2px 8px;border-radius:12px;border:1px solid ${t.color}22">${t.emoji} <span style="color:${t.color};font-weight:600">${id}</span></span>`;
+  return `<span style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;background:${t.color}15;padding:2px 8px;border-radius:12px;border:1px solid ${t.color}22">${teamIcon(t)} <span style="color:${t.color};font-weight:600">${id}</span></span>`;
 }
 function computeMVP(lDB){
   const map={};
@@ -11835,7 +11841,7 @@ function renderTable(){
     const t=byId(row.id);
     const formHtml = getTeamForm(row.id, lDB);
     return `<tr>
-      <td><span class="rank">${i+1}</span>${i<4?'<span class="qualify-bar"></span>':''}${t?.emoji} <strong>${t?.name}</strong></td>
+      <td><span class="rank">${i+1}</span>${i<4?'<span class="qualify-bar"></span>':''}${teamIcon(t)} <strong>${t?.name}</strong></td>
       <td style="color:var(--muted)">${row.m}</td>
       <td style="color:var(--green);font-weight:600">${row.w}</td>
       <td style="color:var(--loss)">${row.l}</td>
@@ -11962,7 +11968,7 @@ function getPlayoffsHtml(){
       <div class="bracket-champ-card">
         <div class="champ-trophy">🏆</div>
         <div class="champ-subtitle">BCL Season 7 Champion</div>
-        <div class="champ-title">${champ ? champ.emoji + ' ' + champ.name : m46.winner}</div>
+        <div class="champ-title">${champ ? teamIcon(champ) + ' ' + champ.name : m46.winner}</div>
         <div style="font-size:12px; color:var(--green); font-weight:700; margin-top:4px;">Won by ${m46.margin}</div>
       </div>
     `;
@@ -12010,16 +12016,16 @@ function renderResults(){
     return `<div class="result-card" onclick="openScorecardModal('${r.match}')" style="cursor:pointer; border-color:${win?.color}33; --team-color:${win?.color}; --team-glow:${win?.color}22">
       <div class="result-header">
         <div class="match-label" style="color:${win?.color}">Match ${r.match}${r.venue?' · '+r.venue:''}</div>
-        <div class="win-badge" style="background:${win?.color}22;color:${win?.color}">${win?.emoji} ${win?.name} won by ${r.margin}</div>
+        <div class="win-badge" style="background:${win?.color}22;color:${win?.color}">${teamIcon(win)} ${win?.name} won by ${r.margin}</div>
       </div>
       <div class="scores-grid">
         <div class="score-side right">
-          <div class="team-name-sm">${t1?.emoji} ${t1?.name}</div>
+          <div class="team-name-sm">${teamIcon(t1)} ${t1?.name}</div>
           <div class="score-big" style="color:${w1?'var(--acc)':'var(--muted)'}">${r.score1} <span class="score-ov">(${r.overs1})</span></div>
         </div>
         <div class="vs-badge">VS</div>
         <div class="score-side">
-          <div class="team-name-sm">${t2?.emoji} ${t2?.name}</div>
+          <div class="team-name-sm">${teamIcon(t2)} ${t2?.name}</div>
           <div class="score-big" style="color:${w2?'var(--acc)':'var(--muted)'}">${r.score2} <span class="score-ov">(${r.overs2})</span></div>
         </div>
       </div>
@@ -12043,15 +12049,15 @@ function renderSchedule(){
       const s1=res?`<span class="score-sm" style="color:${res.winner===m.t1?'var(--green)':'var(--loss)'}">${score1}</span>`:'';
       const s2=res?`<span class="score-sm" style="color:${res.winner===m.t2?'var(--green)':'var(--loss)'}">${score2}</span>`:'';
       return `<div class="match-row${res?' done':''}">
-        <span class="m-team r">${mt1?.emoji} ${mt1?.name}${s1}</span>
+        <span class="m-team r">${teamIcon(mt1)} ${mt1?.name}${s1}</span>
         <span class="m-num ${res?'done':'pending'}">${res?'✓':''} M${m.n}</span>
-        <span class="m-team">${mt2?.emoji} ${mt2?.name}${s2}</span>
+        <span class="m-team">${teamIcon(mt2)} ${mt2?.name}${s2}</span>
       </div>`;
     }).join('');
     const byes = Array.isArray(round.b) ? round.b : (round.b ? [round.b] : []);
     const byeStr = byes.map(bid => {
       const t = byId(bid);
-      return t ? `${t.emoji} ${bid}` : '';
+      return t ? `${teamIcon(t)} ${bid}` : '';
     }).filter(Boolean).join(', ');
     return `${divider}<div class="round-card">
       <div class="round-hdr">
@@ -12069,7 +12075,7 @@ function renderSquads(){
     const sq = localFilters.squads === 'season7' ? SQUADS_S7 : localFilters.squads === 'season8' ? SQUADS_S8 : { ...SQUADS_S7, ...SQUADS_S8 };
     const players=(sq[team.id]||[]).map(p=>`<li><span class="p-num">${p.n}</span><span class="p-name player-link" onclick="openPlayerProfile('${p.p}', '${team.id}')">${p.p}</span>${badge(p.r)}</li>`).join('');
     return `<div class="squad-card">
-      <div class="squad-hdr"><span class="squad-emoji">${team.emoji}</span>
+      <div class="squad-hdr"><span class="squad-emoji">${teamIcon(team)}</span>
         <div><div class="squad-team">${team.name}</div><div class="squad-code" style="color:${team.color}">${team.id}</div></div>
       </div>
       <ul class="squad-list">${players}</ul>
@@ -12188,7 +12194,7 @@ function buildTableEditRows(){
   document.getElementById('tableEditRows').innerHTML=DB.table.map((row,i)=>{
     const t=byId(row.id);
     return `<div class="table-edit-row">
-      <div class="team-edit-label">${t?.emoji} ${t?.name}</div>
+      <div class="team-edit-label">${teamIcon(t)} ${t?.name}</div>
       ${['m','w','l','nr','pts'].map(k=>`<input type="number" value="${row[k]}" onchange="updateTableCell(${i},'${k}',this.value)" style="padding:5px 8px;text-align:center">`).join('')}
       <input type="number" step="0.001" value="${row.nrr}" onchange="updateTableCell(${i},'nrr',this.value)" style="padding:5px 8px;text-align:center">
     </div>`;
@@ -12383,7 +12389,7 @@ function openPlayerProfile(name, teamId) {
   const role = playerInSquad ? playerInSquad.r : "BAT";
   
   document.getElementById('p-card-name').innerText = name;
-  document.getElementById('p-card-emoji').innerText = team ? team.emoji : "🏏";
+  document.getElementById('p-card-emoji').innerHTML = team ? teamIcon(team) : "🏏";
   document.getElementById('p-card-team').innerHTML = teamPill(teamId);
   document.getElementById('p-card-badge').innerHTML = badge(role);
   
@@ -12462,15 +12468,15 @@ function openScorecardModal(matchNum) {
     sumWinner.style.background = `${win.color}22`;
     sumWinner.style.color = win.color;
     sumWinner.style.border = `1px solid ${win.color}33`;
-    sumWinner.innerText = `${win.emoji} ${win.name} won by ${r.margin}`;
+    sumWinner.innerText = `${teamIcon(win)} ${win.name} won by ${r.margin}`;
   } else {
     sumWinner.style.display = 'none';
   }
   
-  document.getElementById('s-sum-t1-name').innerText = t1 ? `${t1.emoji} ${t1.name}` : r.team1;
+  document.getElementById('s-sum-t1-name').innerText = t1 ? `${teamIcon(t1)} ${t1.name}` : r.team1;
   document.getElementById('s-sum-t1-score').innerHTML = `${r.score1} <span class="score-ov">(${r.overs1})</span>`;
   
-  document.getElementById('s-sum-t2-name').innerText = t2 ? `${t2.emoji} ${t2.name}` : r.team2;
+  document.getElementById('s-sum-t2-name').innerText = t2 ? `${teamIcon(t2)} ${t2.name}` : r.team2;
   document.getElementById('s-sum-t2-score').innerHTML = `${r.score2} <span class="score-ov">(${r.overs2})</span>`;
   
   document.getElementById('s-sum-mom').innerHTML = r.mom ? `⭐ <strong style="color:var(--acc)">MOM:</strong> ${r.mom}` : '';
@@ -12665,7 +12671,7 @@ function renderComparison() {
   if (matches.length === 0) {
     summaryText = "No head-to-head matches played yet in Season 7.";
   } else {
-    summaryText = `${t1.emoji} ${id1} has won ${t1Wins} match(es), ${t2.emoji} ${id2} has won ${t2Wins} match(es). (${matches.length} played)`;
+    summaryText = `${teamIcon(t1)} ${id1} has won ${t1Wins} match(es), ${teamIcon(t2)} ${id2} has won ${t2Wins} match(es). (${matches.length} played)`;
   }
   document.getElementById('c-h2h-summary').innerText = summaryText;
   
@@ -12907,10 +12913,10 @@ function renderStories() {
 
   container.innerHTML = `
     <div style="background:var(--card); border:1px solid var(--border); border-radius:16px; padding:32px; box-shadow:0 8px 30px rgba(0,0,0,0.2); margin-bottom:24px; border-top: 5px solid ${team.color}; position:relative; overflow:hidden;">
-      <div style="position:absolute; top:-20px; right:-20px; font-size:150px; opacity:0.03; pointer-events:none;">${team.emoji}</div>
+      <div style="position:absolute; top:-20px; right:-20px; font-size:150px; opacity:0.03; pointer-events:none;">${teamIcon(team)}</div>
       
       <div style="display:flex; align-items:center; gap:20px; margin-bottom:24px; position:relative; z-index:1;">
-        <div style="font-size:56px; background:var(--bg); border-radius:50%; width:100px; height:100px; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 15px rgba(0,0,0,0.3); border:2px solid ${team.color}33;">${team.emoji}</div>
+        <div style="font-size:56px; background:var(--bg); border-radius:50%; width:100px; height:100px; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 15px rgba(0,0,0,0.3); border:2px solid ${team.color}33;">${teamIcon(team)}</div>
         <div>
           <h2 style="margin:0; font-family:'Bebas Neue',sans-serif; font-size:42px; color:var(--text); letter-spacing:1.5px; text-shadow: 0 2px 5px rgba(0,0,0,0.3);">${team.name} <span style="color:${team.color}">Story</span></h2>
           <div style="color:var(--muted); font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-top:4px; display:flex; gap:12px;">
