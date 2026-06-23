@@ -7,19 +7,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #000000;
-  --card: #111111;
-  --border: #222222;
-  --acc: #0b43dc;
-  --red: #fc3f21;
-  --text: #f3f4f6;
+  --bg: #0f172a;
+  --card: #1e293b;
+  --border: #334155;
+  --acc: #60a5fa;
+  --red: #f87171;
+  --text: #f8fafc;
   --text-light: #ffffff;
-  --muted: #9ca3af;
-  --green: #1bb476;
-  --loss: #fc3f21;
-  --purple: #aea2f0;
-  --yellow: #fed040;
-  --shadow: 0 10px 30px rgba(11, 67, 220, 0.15);
+  --muted: #94a3b8;
+  --green: #34d399;
+  --loss: #f87171;
+  --purple: #a78bfa;
+  --yellow: #fbbf24;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -1485,20 +1485,20 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <script>
 // ── DATA ──────────────────────────────────────────────────────────────────────
 const TEAMS_S7 = [
-  {id:"HH",name:"Harshit Harmobiles",emoji:"⚙️",color:"#0b43dc"},
-  {id:"AS",name:"Anagh Savants",      emoji:"🗡️",color:"#ffffff"},
-  {id:"AA",name:"Aarnav Aces",        emoji:"🛡️",color:"#1bb476"},
-  {id:"GB",name:"Gauransh Blazers",   emoji:"🔥",color:"#fc3f21"},
-  {id:"TT",name:"Taran Tranquils",    emoji:"🌊",color:"#aea2f0"},
-  {id:"VV",name:"Vivaan Victors",     emoji:"⚡",color:"#fed040"},
+  {id:"HH",name:"Harshit Harmobiles",emoji:"⚙️",color:"#60a5fa"},
+  {id:"AS",name:"Anagh Savants",      emoji:"🗡️",color:"#f1f5f9"},
+  {id:"AA",name:"Aarnav Aces",        emoji:"🛡️",color:"#34d399"},
+  {id:"GB",name:"Gauransh Blazers",   emoji:"🔥",color:"#fb923c"},
+  {id:"TT",name:"Taran Tranquils",    emoji:"🌊",color:"#a78bfa"},
+  {id:"VV",name:"Vivaan Victors",     emoji:"⚡",color:"#fbbf24"},
 ];
 const TEAMS_S8 = [
-  {id:"AA",name:"Aarnav Aces",        emoji:"🛡️",color:"#1bb476"},
-  {id:"GB",name:"Gauransh Blazers",   emoji:"🔥",color:"#fc3f21"},
-  {id:"HH",name:"Harshit Harmobiles", emoji:"⚙️",color:"#0b43dc"},
-  {id:"SM",name:"Shaurya Mavericks",  emoji:"🦅",color:"#ffffff"},
-  {id:"TT",name:"Taran Tranquils",    emoji:"🌊",color:"#aea2f0"},
-  {id:"VV",name:"Vivaan Victors",     emoji:"⚡",color:"#fed040"}
+  {id:"AA",name:"Aarnav Aces",        emoji:"🛡️",color:"#34d399"},
+  {id:"GB",name:"Gauransh Blazers",   emoji:"🔥",color:"#fb923c"},
+  {id:"HH",name:"Harshit Harmobiles", emoji:"⚙️",color:"#60a5fa"},
+  {id:"SM",name:"Shaurya Mavericks",  emoji:"🦅",color:"#f1f5f9"},
+  {id:"TT",name:"Taran Tranquils",    emoji:"🌊",color:"#a78bfa"},
+  {id:"VV",name:"Vivaan Victors",     emoji:"⚡",color:"#fbbf24"}
 ];
 const ALL_TEAMS = [...new Map([...TEAMS_S7, ...TEAMS_S8].map(item => [item.id, item])).values()];
 let TEAMS = TEAMS_S8;
