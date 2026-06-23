@@ -1005,14 +1005,14 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <div class="wrap">
 
 <header>
-  <div class="season-tag" style="display:flex; align-items:center; justify-content:center; gap:10px; border:none; padding:0; background:none;">
-    <select id="seasonSwitcher" onchange="changeSeason()" style="background:var(--card); color:var(--text); border:1px solid var(--border); padding:6px 12px; border-radius:12px; font-size:12px; font-weight:700; cursor:pointer;">
-      <option value="season8">Season 8</option>
-      <option value="season7">Season 7</option>
-      <option value="overall">Overall All-Time</option>
+  <div class="season-tag" style="display:flex; align-items:center; justify-content:center; gap:10px; border:none; padding:0; background:none; margin-bottom: 24px;">
+    <select id="seasonSwitcher" onchange="changeSeason()" style="background:var(--acc); color:#050505; border:none; padding:10px 24px; border-radius:24px; font-size:16px; font-weight:800; cursor:pointer; text-transform:uppercase; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);">
+      <option value="season8">🚀 Season 8 (Active)</option>
+      <option value="season7">⏪ Season 7 (Archive)</option>
+      <option value="overall">🌍 Overall All-Time Stats</option>
     </select>
   </div>
-  <h1>BCL <span>Dashboard</span></h1>
+  <h1>BCL <span id="hdrSeasonLabel">Season 8</span></h1>
   <p class="sub" id="hdrSubtext">Phase 1 & Revenge Phase · 30 League Matches · Top 4 Qualify</p>
   <div class="pills">
     <div class="pill"><strong id="hdrTeamCount">6</strong> Teams</div>
@@ -11644,6 +11644,7 @@ function changeSeason() {
     SQUADS = { ...SQUADS_S7, ...SQUADS_S8 };
     SCHEDULE = [...SCHEDULE_S7, ...SCHEDULE_S8];
     document.getElementById('hdrSubtext').innerText = "All-Time Aggregated Statistics";
+    document.getElementById('hdrSeasonLabel').innerText = "All-Time";
     document.getElementById('hdrTeamCount').innerText = TEAMS.length;
     document.getElementById('hdrMatchCount').innerText = DB.results.length;
   } else {
@@ -11653,6 +11654,7 @@ function changeSeason() {
       SQUADS = SQUADS_S7;
       SCHEDULE = SCHEDULE_S7;
       document.getElementById('hdrSubtext').innerText = "Double Round-Robin · 42 League Matches · Top 4 Qualify";
+      document.getElementById('hdrSeasonLabel').innerText = "Season 7";
       document.getElementById('hdrTeamCount').innerText = "6";
       document.getElementById('hdrMatchCount').innerText = "46";
     } else {
@@ -11660,6 +11662,7 @@ function changeSeason() {
       SQUADS = SQUADS_S8;
       SCHEDULE = SCHEDULE_S8;
       document.getElementById('hdrSubtext').innerText = "Phase 1 & Revenge Phase · 30 League Matches · Top 4 Qualify";
+      document.getElementById('hdrSeasonLabel').innerText = "Season 8";
       document.getElementById('hdrTeamCount').innerText = "6";
       document.getElementById('hdrMatchCount').innerText = "34";
     }
