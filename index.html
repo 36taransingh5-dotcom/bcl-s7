@@ -12033,7 +12033,8 @@ function renderSchedule(){
 function renderSquads(){
   let lDB = getLocalDB("squads");
   document.getElementById('squadsContainer').innerHTML=(localFilters.squads === 'season7' ? TEAMS_S7 : localFilters.squads === 'season8' ? TEAMS_S8 : ALL_TEAMS).map(team=>{
-    const players=(SQUADS[team.id]||[]).map(p=>`<li><span class="p-num">${p.n}</span><span class="p-name player-link" onclick="openPlayerProfile('${p.p}', '${team.id}')">${p.p}</span>${badge(p.r)}</li>`).join('');
+    const sq = localFilters.squads === 'season7' ? SQUADS_S7 : localFilters.squads === 'season8' ? SQUADS_S8 : { ...SQUADS_S7, ...SQUADS_S8 };
+    const players=(sq[team.id]||[]).map(p=>`<li><span class="p-num">${p.n}</span><span class="p-name player-link" onclick="openPlayerProfile('${p.p}', '${team.id}')">${p.p}</span>${badge(p.r)}</li>`).join('');
     return `<div class="squad-card">
       <div class="squad-hdr"><span class="squad-emoji">${team.emoji}</span>
         <div><div class="squad-team">${team.name}</div><div class="squad-code" style="color:${team.color}">${team.id}</div></div>
