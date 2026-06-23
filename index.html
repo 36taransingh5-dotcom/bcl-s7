@@ -12944,7 +12944,12 @@ function renderAwards() {
   const purpleCap = topBowlers[0] || { name: "TBD", team: "AA", wkts: 0, avg: 0, econ: 0 };
 
   // Emerging Player
-  const emerging = lDB.batting.find(p => p.name === 'Vaibhav Suryavanshi') || { name: "Vaibhav Suryavanshi", team: "TT", runs: 0, avg: 0, sr: 0 };
+  let emerging;
+  if (localFilters.awards === 'season7') {
+    emerging = lDB.batting.find(p => p.name === 'Vaibhav Suryavanshi') || { name: "Vaibhav Suryavanshi", team: "TT", runs: 0, avg: 0, sr: 0 };
+  } else {
+    emerging = { name: "To Be Decided", team: "TBD", runs: "-", avg: "-", sr: "-" };
+  }
 
   accoladesContainer.innerHTML = `
     <div class="awards-grid">
