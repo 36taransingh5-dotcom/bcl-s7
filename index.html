@@ -1120,26 +1120,36 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 
 <!-- STATS -->
 <div id="panel-stats" class="panel">
-  <section>
-    <div class="tab-filters">
-      <button class="filter-btn active" onclick="setLocalFilter('stats', 'season8', this)">Season 8</button>
-      <button class="filter-btn" onclick="setLocalFilter('stats', 'season7', this)">Season 7</button>
-      <button class="filter-btn" onclick="setLocalFilter('stats', 'overall', this)">Overall</button>
+  <section style="border:none; padding-bottom:0; margin-bottom:12px;">
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <div class="tab-filters" style="margin-bottom:0;">
+        <button class="filter-btn active" onclick="setLocalFilter('stats', 'season8', this)">Season 8</button>
+        <button class="filter-btn" onclick="setLocalFilter('stats', 'season7', this)">Season 7</button>
+        <button class="filter-btn" onclick="setLocalFilter('stats', 'overall', this)">Overall</button>
+      </div>
+      <div class="tab-filters" style="margin-bottom:0;" id="statsCategoryFilters">
+        <button class="filter-btn active" onclick="showStatsCategory('batting', this)">Batting</button>
+        <button class="filter-btn" onclick="showStatsCategory('bowling', this)">Bowling</button>
+        <button class="filter-btn" onclick="showStatsCategory('mvp', this)">MVP</button>
+        <button class="filter-btn" onclick="showStatsCategory('milestones', this)">Milestones</button>
+      </div>
     </div>
+  </section>
+  <section id="stats-cat-batting">
     <div class="st">🟠 Orange Cap — Top Run Scorers</div>
     <div class="tbl-wrap"><table>
       <thead><tr><th>#</th><th>Player</th><th>Team</th><th>Inn</th><th>Runs</th><th>HS</th><th>Avg</th><th>SR</th><th>50s</th><th>100s</th></tr></thead>
       <tbody id="battingBody"></tbody>
     </table></div>
   </section>
-  <section>
+  <section id="stats-cat-bowling" style="display:none;">
     <div class="st">🟣 Purple Cap — Top Wicket Takers</div>
     <div class="tbl-wrap"><table>
       <thead><tr><th>#</th><th>Player</th><th>Team</th><th>Inn</th><th>Wkts</th><th>BBI</th><th>Avg</th><th>Econ</th><th>SR</th><th>4W+</th></tr></thead>
       <tbody id="bowlingBody"></tbody>
     </table></div>
   </section>
-  <section>
+  <section id="stats-cat-mvp" style="display:none;">
     <div class="st">⭐ MVP Leaderboard</div>
     <div class="tbl-wrap"><table>
       <thead><tr><th>#</th><th>Player</th><th>Team</th><th>Runs</th><th>Wkts</th><th>Catches</th><th>MOM</th><th>MVP Pts</th></tr></thead>
@@ -1147,7 +1157,7 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
     </table></div>
     <div class="stats-note"><strong style="color:var(--text)">Scoring:</strong> 1 run = 1pt · 1 wkt = 20pts · 1 catch = 10pts · MOM = 25pts · 50 = 10pts · 100 = 25pts · 4W = 15pts</div>
   </section>
-  <section>
+  <section id="stats-cat-milestones" style="display:none;">
     <div class="st">🏅 Season Milestones</div>
     <div class="milestones" id="milestonesContainer"></div>
   </section>
@@ -12110,6 +12120,15 @@ function renderStats(){
 }
 
 // ── TABS ──────────────────────────────────────────────────────────────────────
+
+function showStatsCategory(cat, btn) {
+  ['batting', 'bowling', 'mvp', 'milestones'].forEach(c => {
+    document.getElementById('stats-cat-' + c).style.display = (c === cat) ? 'block' : 'none';
+  });
+  let parent = document.getElementById('statsCategoryFilters');
+  parent.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
 function showTab(id, btn){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
