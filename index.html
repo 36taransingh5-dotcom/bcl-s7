@@ -7,17 +7,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #050505;
-  --card: #111827;
-  --border: #1f2937;
-  --acc: #3b82f6;
-  --red: #ef4444;
+  --bg: #000000;
+  --card: #111111;
+  --border: #222222;
+  --acc: #0b43dc;
+  --red: #fc3f21;
   --text: #f3f4f6;
   --text-light: #ffffff;
   --muted: #9ca3af;
-  --green: #10b981;
-  --loss: #ef4444;
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  --green: #1bb476;
+  --loss: #fc3f21;
+  --purple: #aea2f0;
+  --yellow: #fed040;
+  --shadow: 0 10px 30px rgba(11, 67, 220, 0.15);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -720,10 +722,10 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   background: var(--acc);
   opacity: 0.8;
 }
-.award-card.orange-cap::before { background: #f97316; }
-.award-card.purple-cap::before { background: #8b5cf6; }
-.award-card.emerging::before { background: #06b6d4; }
-.award-card.mvp::before { background: linear-gradient(90deg, #f5c842, var(--acc)); }
+.award-card.orange-cap::before { background: var(--loss); }
+.award-card.purple-cap::before { background: var(--purple); }
+.award-card.emerging::before { background: var(--green); }
+.award-card.mvp::before { background: linear-gradient(90deg, var(--yellow), var(--acc)); }
 
 .award-badge-icon {
   font-size: 32px;
@@ -1473,20 +1475,20 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <script>
 // ── DATA ──────────────────────────────────────────────────────────────────────
 const TEAMS_S7 = [
-  {id:"HH",name:"Harshit Harmobiles",emoji:"⚙️",color:"#60a5fa"},
-  {id:"AS",name:"Anagh Savants",      emoji:"🗡️",color:"#f87171"},
-  {id:"AA",name:"Aarnav Aces",        emoji:"🛡️",color:"#34d399"},
-  {id:"GB",name:"Gauransh Blazers",   emoji:"🔥",color:"#fb923c"},
-  {id:"TT",name:"Taran Tranquils",    emoji:"🌊",color:"#38bdf8"},
-  {id:"VV",name:"Vivaan Victors",     emoji:"⚡",color:"#facc15"},
+  {id:"HH",name:"Harshit Harmobiles",emoji:"⚙️",color:"#0b43dc"},
+  {id:"AS",name:"Anagh Savants",      emoji:"🗡️",color:"#ffffff"},
+  {id:"AA",name:"Aarnav Aces",        emoji:"🛡️",color:"#1bb476"},
+  {id:"GB",name:"Gauransh Blazers",   emoji:"🔥",color:"#fc3f21"},
+  {id:"TT",name:"Taran Tranquils",    emoji:"🌊",color:"#aea2f0"},
+  {id:"VV",name:"Vivaan Victors",     emoji:"⚡",color:"#fed040"},
 ];
 const TEAMS_S8 = [
-  {id:"AA",name:"Aarnav Aces",        emoji:"🛡️",color:"#34d399"},
-  {id:"GB",name:"Gauransh Blazers",   emoji:"🔥",color:"#fb923c"},
-  {id:"HH",name:"Harshit Harmobiles", emoji:"⚙️",color:"#60a5fa"},
-  {id:"SM",name:"Shaurya Mavericks",  emoji:"🦅",color:"#f43f5e"},
-  {id:"TT",name:"Taran Tranquils",    emoji:"🌊",color:"#38bdf8"},
-  {id:"VV",name:"Vivaan Victors",     emoji:"⚡",color:"#facc15"}
+  {id:"AA",name:"Aarnav Aces",        emoji:"🛡️",color:"#1bb476"},
+  {id:"GB",name:"Gauransh Blazers",   emoji:"🔥",color:"#fc3f21"},
+  {id:"HH",name:"Harshit Harmobiles", emoji:"⚙️",color:"#0b43dc"},
+  {id:"SM",name:"Shaurya Mavericks",  emoji:"🦅",color:"#ffffff"},
+  {id:"TT",name:"Taran Tranquils",    emoji:"🌊",color:"#aea2f0"},
+  {id:"VV",name:"Vivaan Victors",     emoji:"⚡",color:"#fed040"}
 ];
 const ALL_TEAMS = [...new Map([...TEAMS_S7, ...TEAMS_S8].map(item => [item.id, item])).values()];
 let TEAMS = TEAMS_S8;
