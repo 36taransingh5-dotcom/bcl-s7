@@ -1063,7 +1063,7 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
     <div class="tab-filters">
       <button class="filter-btn active" onclick="setLocalFilter('table', 'season8', this)">Season 8</button>
       <button class="filter-btn" onclick="setLocalFilter('table', 'season7', this)">Season 7</button>
-      <button class="filter-btn" onclick="setLocalFilter('table', 'overall', this)">Overall</button>
+      
     </div>
     <div class="st">Points Table</div>
     <div class="tbl-wrap"><table>
@@ -1080,7 +1080,7 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
     <div class="tab-filters">
       <button class="filter-btn active" onclick="setLocalFilter('results', 'season8', this)">Season 8</button>
       <button class="filter-btn" onclick="setLocalFilter('results', 'season7', this)">Season 7</button>
-      <button class="filter-btn" onclick="setLocalFilter('results', 'overall', this)">Overall</button>
+      
     </div>
     <div class="st">Match Results</div>
     <div id="resultsContainer"></div>
@@ -1109,7 +1109,7 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
     <div class="tab-filters">
       <button class="filter-btn active" onclick="setLocalFilter('squads', 'season8', this)">Season 8</button>
       <button class="filter-btn" onclick="setLocalFilter('squads', 'season7', this)">Season 7</button>
-      <button class="filter-btn" onclick="setLocalFilter('squads', 'overall', this)">Overall</button>
+      
     </div>
     <div class="st">All Squads</div>
     <div class="squads-grid" id="squadsContainer"></div>
@@ -1154,6 +1154,11 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <!-- COMPARE PANEL -->
 <div id="panel-compare" class="panel">
   <section>
+    <div class="tab-filters">
+      <button class="filter-btn active" onclick="setLocalFilter('compare', 'season8', this)">Season 8</button>
+      <button class="filter-btn" onclick="setLocalFilter('compare', 'season7', this)">Season 7</button>
+      <button class="filter-btn" onclick="setLocalFilter('compare', 'overall', this)">Overall</button>
+    </div>
     <div class="st">Head-to-Head Comparison</div>
     <div style="display:flex; gap:16px; align-items:center; margin-bottom:20px; flex-wrap:wrap;">
       <div style="flex:1; min-width:200px;">
@@ -1192,6 +1197,10 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <!-- STORIES -->
 <div id="panel-stories" class="panel">
   <section>
+    <div class="tab-filters">
+      <button class="filter-btn active" onclick="setLocalFilter('stories', 'season8', this)">Season 8</button>
+      <button class="filter-btn" onclick="setLocalFilter('stories', 'season7', this)">Season 7</button>
+    </div>
     <div class="st">Team Stories & Narratives</div>
     <div style="display:flex; gap:16px; align-items:center; margin-bottom:20px; flex-wrap:wrap;">
       <div style="flex:1; min-width:200px;">
@@ -1218,6 +1227,10 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <!-- SEASON AWARDS -->
 <div id="panel-awards" class="panel">
   <section>
+    <div class="tab-filters">
+      <button class="filter-btn active" onclick="setLocalFilter('awards', 'season8', this)">Season 8</button>
+      <button class="filter-btn" onclick="setLocalFilter('awards', 'season7', this)">Season 7</button>
+    </div>
     <div class="st">Tournament Awards</div>
     <div id="awardsAccoladesContainer"></div>
   </section>
@@ -11624,7 +11637,7 @@ if (!MULTI_DB) {
   localStorage.setItem(STORE_KEY_MULTI, JSON.stringify(MULTI_DB));
 }
 
-let localFilters = { table: 'season8', results: 'season8', schedule: 'season8', squads: 'season8', stats: 'season8', playoffs: 'season8' };
+let localFilters = { table: 'season8', results: 'season8', schedule: 'season8', squads: 'season8', stats: 'season8', playoffs: 'season8', compare: 'season8', stories: 'season8', awards: 'season8' };
 function getLocalDB(panel) {
   let s = localFilters[panel];
   if (s === 'overall') return aggregateDB();
@@ -11702,6 +11715,9 @@ function setLocalFilter(panel, season, btn) {
   if (panel === 'squads') renderSquads();
   if (panel === 'stats') renderStats();
   if (panel === 'playoffs') renderPlayoffs();
+  if (panel === 'compare') renderComparison();
+  if (panel === 'stories') renderStories();
+  if (panel === 'awards') renderAwards();
 }
 function save(){ 
   if(activeSeason !== 'overall') {
@@ -12566,13 +12582,14 @@ function buildInningsHTML(batTeamId, bowlTeamId, innData) {
 }
 
 function renderComparison() {
+  let lDB = getLocalDB("compare");
   const id1 = document.getElementById('c-team1').value;
   const id2 = document.getElementById('c-team2').value;
   if (!id1 || !id2) return;
   
   const t1 = byId(id1), t2 = byId(id2);
   
-  const matches = lDB.results.filter(r => 
+  const matches = llDB.results.filter(r => 
     (r.team1 === id1 && r.team2 === id2) || (r.team1 === id2 && r.team2 === id1)
   );
   
@@ -12590,7 +12607,7 @@ function renderComparison() {
   }
   document.getElementById('c-h2h-summary').innerText = summaryText;
   
-  const sortedTable = [...DB.table].sort((a,b)=>b.pts-a.pts||b.nrr-a.nrr);
+  const sortedTable = [...lDB.table].sort((a,b)=>b.pts-a.pts||b.nrr-a.nrr);
   const rank1 = sortedTable.findIndex(r => r.id === id1) + 1;
   const rank2 = sortedTable.findIndex(r => r.id === id2) + 1;
   const pts1 = sortedTable.find(r => r.id === id1)?.pts || 0;
@@ -12618,7 +12635,7 @@ function renderComparison() {
   
   const getAvgRuns = (teamId) => {
     let totals = 0, count = 0;
-    DB.results.forEach(r => {
+    lDB.results.forEach(r => {
       if (r.team1 === teamId) {
         totals += parseInt(r.score1.split('/')[0]) || 0;
         count++;
@@ -12632,7 +12649,7 @@ function renderComparison() {
   
   const getHighestScore = (teamId) => {
     let hs = 0;
-    DB.results.forEach(r => {
+    lDB.results.forEach(r => {
       if (r.team1 === teamId) hs = Math.max(hs, parseInt(r.score1.split('/')[0]) || 0);
       if (r.team2 === teamId) hs = Math.max(hs, parseInt(r.score2.split('/')[0]) || 0);
     });
@@ -12641,7 +12658,7 @@ function renderComparison() {
 
   const getAvgWickets = (teamId) => {
     let totalWkts = 0, count = 0;
-    DB.results.forEach(r => {
+    lDB.results.forEach(r => {
       if (r.team1 === teamId) {
         const parts = r.score1.split('/');
         totalWkts += parts.length > 1 ? (parseInt(parts[1]) || 0) : 10;
@@ -12726,6 +12743,7 @@ function populateStoriesSelect() {
 }
 
 function renderStories() {
+  let lDB = getLocalDB("stories");
   const sel = document.getElementById('story-team-select');
   const container = document.getElementById('story-container');
   if(!sel || !container) return;
@@ -12734,8 +12752,8 @@ function renderStories() {
   const team = byId(teamId);
   if(!team) return;
 
-  const row = DB.table.find(r => r.id === teamId);
-  const matches = lDB.results.filter(r => r.team1 === teamId || r.team2 === teamId).sort((a,b)=>a.match-b.match);
+  const row = lDB.table.find(r => r.id === teamId);
+  const matches = llDB.results.filter(r => r.team1 === teamId || r.team2 === teamId).sort((a,b)=>a.match-b.match);
   
   if(!row || matches.length === 0) {
     container.innerHTML = `<div style="padding:40px; text-align:center; color:var(--muted); font-style:italic;">No matches played yet.</div>`;
@@ -12743,8 +12761,8 @@ function renderStories() {
   }
 
   // Get Top Batter and Bowler from compiled DB stats
-  const teamBatters = DB.batting.filter(b => b.team === teamId).sort((a,b) => b.runs - a.runs);
-  const teamBowlers = DB.bowling.filter(b => b.team === teamId).sort((a,b) => b.wkts - a.wkts || a.econ - b.econ);
+  const teamBatters = lDB.batting.filter(b => b.team === teamId).sort((a,b) => b.runs - a.runs);
+  const teamBowlers = lDB.bowling.filter(b => b.team === teamId).sort((a,b) => b.wkts - a.wkts || a.econ - b.econ);
   
   const topBatterObj = teamBatters[0];
   const topBatter = topBatterObj ? topBatterObj.name : 'TBD';
@@ -12762,7 +12780,7 @@ function renderStories() {
   }
 
   // Sort table to get exact Rank
-  const sortedStandings = [...DB.table].sort((a,b)=>b.pts-a.pts||b.nrr-a.nrr);
+  const sortedStandings = [...lDB.table].sort((a,b)=>b.pts-a.pts||b.nrr-a.nrr);
   const rank = sortedStandings.findIndex(r => r.id === teamId) + 1;
 
   let motto = "";
@@ -12884,6 +12902,7 @@ function renderStories() {
 }
 
 function renderAwards() {
+  let lDB = getLocalDB("awards");
   const accoladesContainer = document.getElementById('awardsAccoladesContainer');
   const top5Container = document.getElementById('awardsTop5Container');
   const teamOfTournamentContainer = document.getElementById('awardsTeamOfTournamentContainer');
@@ -12893,7 +12912,7 @@ function renderAwards() {
   // 1. Compute Accolades
   // MVP Calculation
   const map = {};
-  DB.batting.forEach(b => {
+  lDB.batting.forEach(b => {
     const k = b.name + "|" + b.team;
     if (!map[k]) map[k] = { name: b.name, team: b.team, runs: 0, wkts: 0, mom: 0, fifties: 0, hundreds: 0, catches: 0, fourW: 0 };
     map[k].runs += b.runs || 0;
@@ -12902,7 +12921,7 @@ function renderAwards() {
     map[k].hundreds += b.hundreds || 0;
     map[k].catches += b.catches || 0;
   });
-  DB.bowling.forEach(b => {
+  lDB.bowling.forEach(b => {
     const k = b.name + "|" + b.team;
     if (!map[k]) map[k] = { name: b.name, team: b.team, runs: 0, wkts: 0, mom: 0, fifties: 0, hundreds: 0, catches: 0, fourW: 0 };
     map[k].wkts += b.wkts || 0;
@@ -12916,15 +12935,15 @@ function renderAwards() {
   const mvp = mvpPlayers[0] || { name: "TBD", team: "AA", runs: 0, wkts: 0, mom: 0, pts: 0 };
 
   // Orange Cap
-  const topBatters = [...DB.batting].sort((a,b) => b.runs - a.runs);
+  const topBatters = [...lDB.batting].sort((a,b) => b.runs - a.runs);
   const orangeCap = topBatters[0] || { name: "TBD", team: "AA", runs: 0, avg: 0, sr: 0 };
 
   // Purple Cap
-  const topBowlers = [...DB.bowling].sort((a,b) => b.wkts - a.wkts || a.avg - b.avg);
+  const topBowlers = [...lDB.bowling].sort((a,b) => b.wkts - a.wkts || a.avg - b.avg);
   const purpleCap = topBowlers[0] || { name: "TBD", team: "AA", wkts: 0, avg: 0, econ: 0 };
 
   // Emerging Player
-  const emerging = DB.batting.find(p => p.name === 'Vaibhav Suryavanshi') || { name: "Vaibhav Suryavanshi", team: "TT", runs: 0, avg: 0, sr: 0 };
+  const emerging = lDB.batting.find(p => p.name === 'Vaibhav Suryavanshi') || { name: "Vaibhav Suryavanshi", team: "TT", runs: 0, avg: 0, sr: 0 };
 
   accoladesContainer.innerHTML = `
     <div class="awards-grid">
@@ -13047,7 +13066,7 @@ function renderAwards() {
 
   // Top 5 Innings Scores (dynamic parsing)
   const allInningsScores = [];
-  DB.results.forEach(r => {
+  lDB.results.forEach(r => {
     if (!r.scorecard) return;
     const parseInnings = (inn, battingTeam, bowlingTeam) => {
       inn.bat.forEach(b => {
@@ -13083,7 +13102,7 @@ function renderAwards() {
 
   // Top 5 Bowling Figures (dynamic parsing)
   const allBowlingSpells = [];
-  DB.results.forEach(r => {
+  lDB.results.forEach(r => {
     if (!r.scorecard) return;
     const parseInnings = (inn, bowlingTeam, battingTeam) => {
       (inn.bowl || []).forEach(b => {
@@ -13188,8 +13207,8 @@ function renderAwards() {
 
   const fieldPlayersHtml = teamXI.map(p => {
     // get player stats
-    const batStats = DB.batting.find(x => x.name === p.name);
-    const bowlStats = DB.bowling.find(x => x.name === p.name);
+    const batStats = lDB.batting.find(x => x.name === p.name);
+    const bowlStats = lDB.bowling.find(x => x.name === p.name);
     
     let tooltipHtml = `<div class="tooltip-title">${p.name} (${p.team})</div>`;
     if (batStats && batStats.runs > 10) {
@@ -13215,8 +13234,8 @@ function renderAwards() {
 
   // Table list of the XI
   const teamXITableRows = teamXI.map((p, idx) => {
-    const batStats = DB.batting.find(x => x.name === p.name);
-    const bowlStats = DB.bowling.find(x => x.name === p.name);
+    const batStats = lDB.batting.find(x => x.name === p.name);
+    const bowlStats = lDB.bowling.find(x => x.name === p.name);
     
     let statsStr = "";
     if (batStats && batStats.runs > 0) {
@@ -13287,8 +13306,8 @@ function renderAwards() {
 
   const worstPlayersHtml = worstXI.map(p => {
     // get player stats
-    const batStats = DB.batting.find(x => x.name === p.name);
-    const bowlStats = DB.bowling.find(x => x.name === p.name);
+    const batStats = lDB.batting.find(x => x.name === p.name);
+    const bowlStats = lDB.bowling.find(x => x.name === p.name);
     
     let tooltipHtml = `<div class="tooltip-title">${p.name} (${p.team})</div>`;
     if (batStats && batStats.runs > 0) {
@@ -13314,8 +13333,8 @@ function renderAwards() {
 
   // Table list of the Worst XI
   const worstXITableRows = worstXI.map((p, idx) => {
-    const batStats = DB.batting.find(x => x.name === p.name);
-    const bowlStats = DB.bowling.find(x => x.name === p.name);
+    const batStats = lDB.batting.find(x => x.name === p.name);
+    const bowlStats = lDB.bowling.find(x => x.name === p.name);
     
     let statsStr = "";
     if (batStats && batStats.runs > 0) {
