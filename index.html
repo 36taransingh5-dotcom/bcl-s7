@@ -999,26 +999,44 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
     grid-template-columns: 460px 1fr;
   }
 }
+
+.tab-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 6px;
+  border-radius: 20px;
+  width: fit-content;
+}
+.filter-btn {
+  background: transparent;
+  border: none;
+  border-radius: 14px;
+  padding: 8px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.filter-btn:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+.filter-btn.active { background: var(--card); color: var(--acc); box-shadow: var(--shadow); }
 </style>
 </head>
 <body>
 <div class="wrap">
 
 <header>
-  <div class="season-tag" style="display:flex; align-items:center; justify-content:center; gap:10px; border:none; padding:0; background:none; margin-bottom: 24px;">
-    <select id="seasonSwitcher" onchange="changeSeason()" style="background:var(--acc); color:#050505; border:none; padding:10px 24px; border-radius:24px; font-size:16px; font-weight:800; cursor:pointer; text-transform:uppercase; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);">
-      <option value="season8">🚀 Season 8 (Active)</option>
-      <option value="season7">⏪ Season 7 (Archive)</option>
-      <option value="overall">🌍 Overall All-Time Stats</option>
-    </select>
-  </div>
-  <h1>BCL <span id="hdrSeasonLabel">Season 8</span></h1>
-  <p class="sub" id="hdrSubtext">Phase 1 & Revenge Phase · 30 League Matches · Top 4 Qualify</p>
+  <h1>BCL <span>Dashboard</span></h1>
+  <p class="sub" id="hdrSubtext">All Statistics, Matches, and Data Tracking</p>
   <div class="pills">
-    <div class="pill"><strong id="hdrTeamCount">6</strong> Teams</div>
-    <div class="pill"><strong id="hdrMatchCount">34</strong> Matches</div>
-    <div class="pill"><strong>2</strong> Legs</div>
-    <div class="pill">Win = <strong>2 pts</strong></div>
+    <div class="pill"><strong>Multi-Season</strong> Database</div>
+    <div class="pill"><strong id="hdrTeamCount">7</strong> Teams Total</div>
+    <div class="pill"><strong id="hdrMatchCount">76</strong> Matches Total</div>
   </div>
   <button class="admin-btn" id="adminBtn" onclick="showAdminInput()">ADMIN</button>
   <div class="admin-input-wrap" id="adminInputWrap" style="display:none">
@@ -1042,6 +1060,11 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <!-- POINTS TABLE -->
 <div id="panel-table" class="panel active">
   <section>
+    <div class="tab-filters">
+      <button class="filter-btn active" onclick="setLocalFilter('table', 'season8', this)">Season 8</button>
+      <button class="filter-btn" onclick="setLocalFilter('table', 'season7', this)">Season 7</button>
+      <button class="filter-btn" onclick="setLocalFilter('table', 'overall', this)">Overall</button>
+    </div>
     <div class="st">Points Table</div>
     <div class="tbl-wrap"><table>
       <thead><tr><th># Team</th><th>M</th><th>W</th><th>L</th><th>NR</th><th>Pts</th><th>NRR</th><th style="text-align:center;">Recent Form</th></tr></thead>
@@ -1054,6 +1077,11 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <!-- RESULTS -->
 <div id="panel-results" class="panel">
   <section>
+    <div class="tab-filters">
+      <button class="filter-btn active" onclick="setLocalFilter('results', 'season8', this)">Season 8</button>
+      <button class="filter-btn" onclick="setLocalFilter('results', 'season7', this)">Season 7</button>
+      <button class="filter-btn" onclick="setLocalFilter('results', 'overall', this)">Overall</button>
+    </div>
     <div class="st">Match Results</div>
     <div id="resultsContainer"></div>
   </section>
@@ -1062,6 +1090,10 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <!-- SCHEDULE -->
 <div id="panel-schedule" class="panel">
   <section>
+    <div class="tab-filters">
+      <button class="filter-btn active" onclick="setLocalFilter('schedule', 'season8', this)">Season 8</button>
+      <button class="filter-btn" onclick="setLocalFilter('schedule', 'season7', this)">Season 7</button>
+    </div>
     <div class="st">League Schedule</div>
     <div class="rounds" id="scheduleContainer"></div>
   </section>
@@ -1074,6 +1106,11 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <!-- SQUADS -->
 <div id="panel-squads" class="panel">
   <section>
+    <div class="tab-filters">
+      <button class="filter-btn active" onclick="setLocalFilter('squads', 'season8', this)">Season 8</button>
+      <button class="filter-btn" onclick="setLocalFilter('squads', 'season7', this)">Season 7</button>
+      <button class="filter-btn" onclick="setLocalFilter('squads', 'overall', this)">Overall</button>
+    </div>
     <div class="st">All Squads</div>
     <div class="squads-grid" id="squadsContainer"></div>
   </section>
@@ -1082,6 +1119,11 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <!-- STATS -->
 <div id="panel-stats" class="panel">
   <section>
+    <div class="tab-filters">
+      <button class="filter-btn active" onclick="setLocalFilter('stats', 'season8', this)">Season 8</button>
+      <button class="filter-btn" onclick="setLocalFilter('stats', 'season7', this)">Season 7</button>
+      <button class="filter-btn" onclick="setLocalFilter('stats', 'overall', this)">Overall</button>
+    </div>
     <div class="st">🟠 Orange Cap — Top Run Scorers</div>
     <div class="tbl-wrap"><table>
       <thead><tr><th>#</th><th>Player</th><th>Team</th><th>Inn</th><th>Runs</th><th>HS</th><th>Avg</th><th>SR</th><th>50s</th><th>100s</th></tr></thead>
@@ -1164,6 +1206,10 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <!-- PLAYOFFS -->
 <div id="panel-playoffs" class="panel">
   <section>
+    <div class="tab-filters">
+      <button class="filter-btn active" onclick="setLocalFilter('playoffs', 'season8', this)">Season 8</button>
+      <button class="filter-btn" onclick="setLocalFilter('playoffs', 'season7', this)">Season 7</button>
+    </div>
     <div class="st">Knockout Stage</div>
     <div id="playoffsContainer"></div>
   </section>
@@ -11578,8 +11624,15 @@ if (!MULTI_DB) {
   localStorage.setItem(STORE_KEY_MULTI, JSON.stringify(MULTI_DB));
 }
 
-let activeSeason = "season8";
-let DB = MULTI_DB[activeSeason];
+let localFilters = { table: 'season8', results: 'season8', schedule: 'season8', squads: 'season8', stats: 'season8', playoffs: 'season8' };
+function getLocalDB(panel) {
+  let s = localFilters[panel];
+  if (s === 'overall') return aggregateDB();
+  return MULTI_DB[s] || MULTI_DB.season8;
+}
+TEAMS = ALL_TEAMS;
+SQUADS = { ...SQUADS_S7, ...SQUADS_S8 };
+let DB = MULTI_DB.season8; // Fallback for saving
 
 function aggregateDB() {
   let agg = { table: [], results: [], batting: [], bowling: [] };
@@ -11636,41 +11689,20 @@ function aggregateDB() {
   return agg;
 }
 
-function changeSeason() {
-  activeSeason = document.getElementById('seasonSwitcher').value;
-  if (activeSeason === 'overall') {
-    DB = aggregateDB();
-    TEAMS = ALL_TEAMS;
-    SQUADS = { ...SQUADS_S7, ...SQUADS_S8 };
-    SCHEDULE = [...SCHEDULE_S7, ...SCHEDULE_S8];
-    document.getElementById('hdrSubtext').innerText = "All-Time Aggregated Statistics";
-    document.getElementById('hdrSeasonLabel').innerText = "All-Time";
-    document.getElementById('hdrTeamCount').innerText = TEAMS.length;
-    document.getElementById('hdrMatchCount').innerText = DB.results.length;
-  } else {
-    DB = MULTI_DB[activeSeason];
-    if (activeSeason === 'season7') {
-      TEAMS = TEAMS_S7;
-      SQUADS = SQUADS_S7;
-      SCHEDULE = SCHEDULE_S7;
-      document.getElementById('hdrSubtext').innerText = "Double Round-Robin · 42 League Matches · Top 4 Qualify";
-      document.getElementById('hdrSeasonLabel').innerText = "Season 7";
-      document.getElementById('hdrTeamCount').innerText = "6";
-      document.getElementById('hdrMatchCount').innerText = "46";
-    } else {
-      TEAMS = TEAMS_S8;
-      SQUADS = SQUADS_S8;
-      SCHEDULE = SCHEDULE_S8;
-      document.getElementById('hdrSubtext').innerText = "Phase 1 & Revenge Phase · 30 League Matches · Top 4 Qualify";
-      document.getElementById('hdrSeasonLabel').innerText = "Season 8";
-      document.getElementById('hdrTeamCount').innerText = "6";
-      document.getElementById('hdrMatchCount').innerText = "34";
-    }
-  }
-  populateTeamSelects();
-  renderAll();
+function setLocalFilter(panel, season, btn) {
+  localFilters[panel] = season;
+  // Update UI buttons
+  let parent = btn.parentElement;
+  parent.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // Re-render specific panel
+  if (panel === 'table') renderTable();
+  if (panel === 'results') renderResults();
+  if (panel === 'schedule') renderSchedule();
+  if (panel === 'squads') renderSquads();
+  if (panel === 'stats') renderStats();
+  if (panel === 'playoffs') renderPlayoffs();
 }
-
 function save(){ 
   if(activeSeason !== 'overall') {
     MULTI_DB[activeSeason] = DB;
@@ -11688,15 +11720,16 @@ function teamPill(id){
   const t=byId(id); if(!t) return id;
   return `<span style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;background:${t.color}15;padding:2px 8px;border-radius:12px;border:1px solid ${t.color}22">${t.emoji} <span style="color:${t.color};font-weight:600">${id}</span></span>`;
 }
-function computeMVP(){
+function computeMVP(lDB){
+  let lDB = getLocalDB("stats");
   const map={};
-  DB.batting.forEach(b=>{
+  lDB.batting.forEach(b=>{
     const k=b.name+"|"+b.team;
     if(!map[k]) map[k]={name:b.name,team:b.team,runs:0,wkts:0,catches:0,mom:0,fifties:0,hundreds:0,fourW:0};
     map[k].runs+=b.runs||0; map[k].mom+=b.mom||0;
     map[k].fifties+=b.fifties||0; map[k].hundreds+=b.hundreds||0; map[k].catches+=b.catches||0;
   });
-  DB.bowling.forEach(b=>{
+  lDB.bowling.forEach(b=>{
     const k=b.name+"|"+b.team;
     if(!map[k]) map[k]={name:b.name,team:b.team,runs:0,wkts:0,catches:0,mom:0,fifties:0,hundreds:0,fourW:0};
     map[k].wkts+=b.wkts||0; map[k].fourW+=b.fourW||0;
@@ -11716,8 +11749,9 @@ function renderAll(){
   if(typeof renderAwards === 'function') renderAwards();
 }
 
-function getTeamForm(teamId) {
-  const teamMatches = DB.results.filter(r => r.team1 === teamId || r.team2 === teamId).sort((a, b) => a.match - b.match);
+function getTeamForm(teamId, lDB) {
+  let lDB = getLocalDB("table");
+  const teamMatches = lDB.results.filter(r => r.team1 === teamId || r.team2 === teamId).sort((a, b) => a.match - b.match);
   if (teamMatches.length === 0) {
     return '<span style="color:var(--muted);font-style:italic;font-size:11px;">No matches</span>';
   }
@@ -11748,10 +11782,11 @@ function getTeamForm(teamId) {
 }
 
 function renderTable(){
-  const sorted=[...DB.table].sort((a,b)=>b.pts-a.pts||b.nrr-a.nrr);
+  let lDB = getLocalDB("table");
+  const sorted=[...lDB.table].sort((a,b)=>b.pts-a.pts||b.nrr-a.nrr);
   document.getElementById('tableBody').innerHTML=sorted.map((row,i)=>{
     const t=byId(row.id);
-    const formHtml = getTeamForm(row.id);
+    const formHtml = getTeamForm(row.id, lDB);
     return `<tr>
       <td><span class="rank">${i+1}</span>${i<4?'<span class="qualify-bar"></span>':''}${t?.emoji} <strong>${t?.name}</strong></td>
       <td style="color:var(--muted)">${row.m}</td>
@@ -11819,6 +11854,7 @@ function renderPlayoffsMatch(matchNum, team1Id, team2Id, seed1Val, seed2Val, res
 }
 
 function renderPlayoffs(){
+  let lDB = getLocalDB("playoffs");
   const html = getPlayoffsHtml();
   const c1 = document.getElementById('playoffsContainer');
   const c2 = document.getElementById('playoffsContainerSchedule');
@@ -11918,9 +11954,10 @@ function getPlayoffsHtml(){
 }
 
 function renderResults(){
+  let lDB = getLocalDB("results");
   const c=document.getElementById('resultsContainer');
-  if(!DB.results.length){c.innerHTML='<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:40px;text-align:center;color:var(--muted);font-style:italic">No results yet</div>';return;}
-  c.innerHTML=[...DB.results].reverse().map(r=>{
+  if(!lDB.results.length){c.innerHTML='<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:40px;text-align:center;color:var(--muted);font-style:italic">No results yet</div>';return;}
+  c.innerHTML=[...lDB.results].reverse().map(r=>{
     const t1=byId(r.team1),t2=byId(r.team2),win=byId(r.winner);
     const w1=r.winner===r.team1,w2=r.winner===r.team2;
     return `<div class="result-card" onclick="openScorecardModal('${r.match}')" style="cursor:pointer; border-color:${win?.color}33; --team-color:${win?.color}; --team-glow:${win?.color}22">
@@ -11946,11 +11983,12 @@ function renderResults(){
 }
 
 function renderSchedule(){
+  let lDB = getLocalDB("schedule");
   const c=document.getElementById('scheduleContainer');
-  c.innerHTML=SCHEDULE.map((round,ri)=>{
+  c.innerHTML=(localFilters.schedule === 'season7' ? SCHEDULE_S7 : SCHEDULE_S8).map((round,ri)=>{
     const divider=ri===7?'<div class="leg-divider">⸻ LEG 2 — REVERSE FIXTURES ⸻</div>':'';
     const matches=round.m.map(m=>{
-      const res=DB.results.find(r=>r.match===m.n);
+      const res=lDB.results.find(r=>r.match===m.n);
       const mt1=byId(m.t1),mt2=byId(m.t2);
       const isSwapped = res && res.team1 !== m.t1;
       const score1 = res ? (isSwapped ? res.score2 : res.score1) : '';
@@ -11979,7 +12017,8 @@ function renderSchedule(){
 }
 
 function renderSquads(){
-  document.getElementById('squadsContainer').innerHTML=TEAMS.map(team=>{
+  let lDB = getLocalDB("squads");
+  document.getElementById('squadsContainer').innerHTML=(localFilters.squads === 'season7' ? TEAMS_S7 : localFilters.squads === 'season8' ? TEAMS_S8 : ALL_TEAMS).map(team=>{
     const players=(SQUADS[team.id]||[]).map(p=>`<li><span class="p-num">${p.n}</span><span class="p-name player-link" onclick="openPlayerProfile('${p.p}', '${team.id}')">${p.p}</span>${badge(p.r)}</li>`).join('');
     return `<div class="squad-card">
       <div class="squad-hdr"><span class="squad-emoji">${team.emoji}</span>
@@ -11991,9 +12030,10 @@ function renderSquads(){
 }
 
 function renderStats(){
-  const bat=[...DB.batting].sort((a,b)=>b.runs-a.runs);
-  const bowl=[...DB.bowling].sort((a,b)=>b.wkts-a.wkts||a.econ-b.econ);
-  const mvp=computeMVP();
+  let lDB = getLocalDB("stats");
+  const bat=[...lDB.batting].sort((a,b)=>b.runs-a.runs);
+  const bowl=[...lDB.bowling].sort((a,b)=>b.wkts-a.wkts||a.econ-b.econ);
+  const mvp=computeMVP(lDB);
 
   document.getElementById('battingBody').innerHTML=bat.map((p,i)=>{
     const dismissals = p.dismissals !== undefined ? p.dismissals : p.inn;
@@ -12036,7 +12076,7 @@ function renderStats(){
   </tr>`).join('');
 
   const topBat=bat[0], topBowl=bowl[0], topMVP=mvp[0];
-  const momLeader=[...DB.batting].filter(x=>x.mom>0).sort((a,b)=>b.mom-a.mom)[0];
+  const momLeader=[...lDB.batting].filter(x=>x.mom>0).sort((a,b)=>b.mom-a.mom)[0];
   document.getElementById('milestonesContainer').innerHTML=[
     {icon:"🟠",label:"Orange Cap",  val:topBat?.name??"TBD",   sub:topBat?`${topBat.runs} runs`:"—"},
     {icon:"🟣",label:"Purple Cap",  val:topBowl?.name.split(" ").pop()??"TBD",  sub:topBowl?`${topBowl.wkts} wkts`:"—"},
@@ -12100,7 +12140,7 @@ function updateTableCell(i,k,v){ DB.table[i][k]=parseFloat(v)||0; }
 function saveResult(){
   const mn=parseInt(document.getElementById('f-mnum').value); if(!mn) return;
   const r={match:mn,team1:document.getElementById('f-t1').value,team2:document.getElementById('f-t2').value,venue:document.getElementById('f-venue').value,score1:document.getElementById('f-s1').value,overs1:document.getElementById('f-o1').value,score2:document.getElementById('f-s2').value,overs2:document.getElementById('f-o2').value,winner:document.getElementById('f-winner').value,margin:document.getElementById('f-margin').value,mom:document.getElementById('f-mom').value};
-  DB.results=DB.results.filter(x=>x.match!==mn); DB.results.push(r); DB.results.sort((a,b)=>a.match-b.match);
+  DB.results=lDB.results.filter(x=>x.match!==mn); DB.results.push(r); DB.results.sort((a,b)=>a.match-b.match);
   save(); renderAll(); flashSaved();
 }
 
@@ -12534,7 +12574,7 @@ function renderComparison() {
   
   const t1 = byId(id1), t2 = byId(id2);
   
-  const matches = DB.results.filter(r => 
+  const matches = lDB.results.filter(r => 
     (r.team1 === id1 && r.team2 === id2) || (r.team1 === id2 && r.team2 === id1)
   );
   
@@ -12697,7 +12737,7 @@ function renderStories() {
   if(!team) return;
 
   const row = DB.table.find(r => r.id === teamId);
-  const matches = DB.results.filter(r => r.team1 === teamId || r.team2 === teamId).sort((a,b)=>a.match-b.match);
+  const matches = lDB.results.filter(r => r.team1 === teamId || r.team2 === teamId).sort((a,b)=>a.match-b.match);
   
   if(!row || matches.length === 0) {
     container.innerHTML = `<div style="padding:40px; text-align:center; color:var(--muted); font-style:italic;">No matches played yet.</div>`;
