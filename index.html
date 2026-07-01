@@ -1038,7 +1038,7 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   <div class="pills">
     <div class="pill"><strong>Multi-Season</strong> Database</div>
     <div class="pill"><strong id="hdrTeamCount">8</strong> Teams Total</div>
-    <div class="pill"><strong id="hdrMatchCount">88</strong> Matches Total</div>
+    <div class="pill"><strong id="hdrMatchCount">102</strong> Matches Total</div>
   </div>
 </header>
 
@@ -1492,6 +1492,7 @@ const TEAMS_S7 = [
   {id:"VV",name:"Vivaan Victors",     emoji:"⚡",logo:"logos/vv.jpg",color:"#fbbf24"},
 ];
 const TEAMS_S8 = [
+  {id:"AS",name:"Anagh Savants",      emoji:"🗡️",color:"#f1f5f9"},
   {id:"AA",name:"Aarnav Aces",        emoji:"🛡️",logo:"logos/aa.jpg",color:"#34d399"},
   {id:"GB",name:"Gauransh Blazers",   emoji:"🔥",logo:"logos/gb.jpg",color:"#fb923c"},
   {id:"HH",name:"Harshit Harmobiles", emoji:"⚙️",logo:"logos/hh.jpg",color:"#60a5fa"},
@@ -1527,25 +1528,25 @@ const SCHEDULE_S7=[
   {r:14,l:2,b:["AA","HH"],m:[{n:41,t1:"TT",t2:"AS"},{n:42,t1:"VV",t2:"GB"}]},
 ];
 const SQUADS_S8 = {
-  HH: [], AA: [], GB: [], SM: [], TT: [], UU: [], VV: []
+  HH: [], AA: [], AS: [], GB: [], SM: [], TT: [], UU: [], VV: []
 };
 let SQUADS = SQUADS_S8;
 
 const SCHEDULE_S8 = [
-  {r:1,l:1,b:["VV"],m:[{n:1,t1:"AA",t2:"UU"},{n:2,t1:"GB",t2:"TT"},{n:3,t1:"HH",t2:"SM"}]},
-  {r:2,l:1,b:["UU"],m:[{n:4,t1:"VV",t2:"TT"},{n:5,t1:"AA",t2:"SM"},{n:6,t1:"GB",t2:"HH"}]},
-  {r:3,l:1,b:["TT"],m:[{n:7,t1:"UU",t2:"SM"},{n:8,t1:"VV",t2:"HH"},{n:9,t1:"AA",t2:"GB"}]},
-  {r:4,l:1,b:["SM"],m:[{n:10,t1:"TT",t2:"HH"},{n:11,t1:"UU",t2:"GB"},{n:12,t1:"VV",t2:"AA"}]},
-  {r:5,l:1,b:["HH"],m:[{n:13,t1:"SM",t2:"GB"},{n:14,t1:"TT",t2:"AA"},{n:15,t1:"UU",t2:"VV"}]},
-  {r:6,l:1,b:["GB"],m:[{n:16,t1:"HH",t2:"AA"},{n:17,t1:"SM",t2:"VV"},{n:18,t1:"TT",t2:"UU"}]},
-  {r:7,l:1,b:["AA"],m:[{n:19,t1:"GB",t2:"VV"},{n:20,t1:"HH",t2:"UU"},{n:21,t1:"SM",t2:"TT"}]},
-  {r:8,l:2,b:["VV"],m:[{n:22,t1:"UU",t2:"AA"},{n:23,t1:"TT",t2:"GB"},{n:24,t1:"SM",t2:"HH"}]},
-  {r:9,l:2,b:["UU"],m:[{n:25,t1:"TT",t2:"VV"},{n:26,t1:"SM",t2:"AA"},{n:27,t1:"HH",t2:"GB"}]},
-  {r:10,l:2,b:["TT"],m:[{n:28,t1:"SM",t2:"UU"},{n:29,t1:"HH",t2:"VV"},{n:30,t1:"GB",t2:"AA"}]},
-  {r:11,l:2,b:["SM"],m:[{n:31,t1:"HH",t2:"TT"},{n:32,t1:"GB",t2:"UU"},{n:33,t1:"AA",t2:"VV"}]},
-  {r:12,l:2,b:["HH"],m:[{n:34,t1:"GB",t2:"SM"},{n:35,t1:"AA",t2:"TT"},{n:36,t1:"VV",t2:"UU"}]},
-  {r:13,l:2,b:["GB"],m:[{n:37,t1:"AA",t2:"HH"},{n:38,t1:"VV",t2:"SM"},{n:39,t1:"UU",t2:"TT"}]},
-  {r:14,l:2,b:["AA"],m:[{n:40,t1:"VV",t2:"GB"},{n:41,t1:"UU",t2:"HH"},{n:42,t1:"TT",t2:"SM"}]}
+  {r:1,l:1,b:[],m:[{n:1,t1:"AA",t2:"VV"},{n:2,t1:"AS",t2:"UU"},{n:3,t1:"GB",t2:"TT"},{n:4,t1:"HH",t2:"SM"}]},
+  {r:2,l:1,b:[],m:[{n:5,t1:"AA",t2:"UU"},{n:6,t1:"VV",t2:"TT"},{n:7,t1:"AS",t2:"SM"},{n:8,t1:"GB",t2:"HH"}]},
+  {r:3,l:1,b:[],m:[{n:9,t1:"AA",t2:"TT"},{n:10,t1:"UU",t2:"SM"},{n:11,t1:"VV",t2:"HH"},{n:12,t1:"AS",t2:"GB"}]},
+  {r:4,l:1,b:[],m:[{n:13,t1:"AA",t2:"SM"},{n:14,t1:"TT",t2:"HH"},{n:15,t1:"UU",t2:"GB"},{n:16,t1:"VV",t2:"AS"}]},
+  {r:5,l:1,b:[],m:[{n:17,t1:"AA",t2:"HH"},{n:18,t1:"SM",t2:"GB"},{n:19,t1:"TT",t2:"AS"},{n:20,t1:"UU",t2:"VV"}]},
+  {r:6,l:1,b:[],m:[{n:21,t1:"AA",t2:"GB"},{n:22,t1:"HH",t2:"AS"},{n:23,t1:"SM",t2:"VV"},{n:24,t1:"TT",t2:"UU"}]},
+  {r:7,l:1,b:[],m:[{n:25,t1:"AA",t2:"AS"},{n:26,t1:"GB",t2:"VV"},{n:27,t1:"HH",t2:"UU"},{n:28,t1:"SM",t2:"TT"}]},
+  {r:8,l:2,b:[],m:[{n:29,t1:"VV",t2:"AA"},{n:30,t1:"UU",t2:"AS"},{n:31,t1:"TT",t2:"GB"},{n:32,t1:"SM",t2:"HH"}]},
+  {r:9,l:2,b:[],m:[{n:33,t1:"UU",t2:"AA"},{n:34,t1:"TT",t2:"VV"},{n:35,t1:"SM",t2:"AS"},{n:36,t1:"HH",t2:"GB"}]},
+  {r:10,l:2,b:[],m:[{n:37,t1:"TT",t2:"AA"},{n:38,t1:"SM",t2:"UU"},{n:39,t1:"HH",t2:"VV"},{n:40,t1:"GB",t2:"AS"}]},
+  {r:11,l:2,b:[],m:[{n:41,t1:"SM",t2:"AA"},{n:42,t1:"HH",t2:"TT"},{n:43,t1:"GB",t2:"UU"},{n:44,t1:"AS",t2:"VV"}]},
+  {r:12,l:2,b:[],m:[{n:45,t1:"HH",t2:"AA"},{n:46,t1:"GB",t2:"SM"},{n:47,t1:"AS",t2:"TT"},{n:48,t1:"VV",t2:"UU"}]},
+  {r:13,l:2,b:[],m:[{n:49,t1:"GB",t2:"AA"},{n:50,t1:"AS",t2:"HH"},{n:51,t1:"VV",t2:"SM"},{n:52,t1:"UU",t2:"TT"}]},
+  {r:14,l:2,b:[],m:[{n:53,t1:"AS",t2:"AA"},{n:54,t1:"VV",t2:"GB"},{n:55,t1:"UU",t2:"HH"},{n:56,t1:"TT",t2:"SM"}]}
 ];
 let SCHEDULE = SCHEDULE_S8;
 
@@ -11639,6 +11640,7 @@ if (!MULTI_DB) {
     season8: {
       table: [
         {id:"AA",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
+        {id:"AS",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
         {id:"GB",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
         {id:"HH",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
         {id:"SM",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
@@ -11652,10 +11654,14 @@ if (!MULTI_DB) {
     }
   };
   localStorage.setItem(STORE_KEY_MULTI, JSON.stringify(MULTI_DB));
-} else if (MULTI_DB.season8 && !MULTI_DB.season8.table.find(t => t.id === 'UU')) {
-  MULTI_DB.season8.table.push({id:"UU",m:0,w:0,l:0,nr:0,pts:0,nrr:0});
-  MULTI_DB.season8.table.sort((a,b) => a.id.localeCompare(b.id));
-  localStorage.setItem(STORE_KEY_MULTI, JSON.stringify(MULTI_DB));
+} else if (MULTI_DB.season8) {
+  let changed = false;
+  if (!MULTI_DB.season8.table.find(t => t.id === 'UU')) { MULTI_DB.season8.table.push({id:"UU",m:0,w:0,l:0,nr:0,pts:0,nrr:0}); changed = true; }
+  if (!MULTI_DB.season8.table.find(t => t.id === 'AS')) { MULTI_DB.season8.table.push({id:"AS",m:0,w:0,l:0,nr:0,pts:0,nrr:0}); changed = true; }
+  if (changed) {
+    MULTI_DB.season8.table.sort((a,b) => a.id.localeCompare(b.id));
+    localStorage.setItem(STORE_KEY_MULTI, JSON.stringify(MULTI_DB));
+  }
 }
 
 let localFilters = { table: 'season8', results: 'season8', schedule: 'season8', squads: 'season8', stats: 'season8', playoffs: 'season8', compare: 'season8', stories: 'season8', awards: 'season8' };
