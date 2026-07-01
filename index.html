@@ -1528,7 +1528,7 @@ const SCHEDULE_S7=[
   {r:14,l:2,b:["AA","HH"],m:[{n:41,t1:"TT",t2:"AS"},{n:42,t1:"VV",t2:"GB"}]},
 ];
 const SQUADS_S8 = {
-  HH: [], AA: [], AS: [], GB: [], SM: [], TT: [], UU: [], VV: []
+  HH: [], AA: [], AS: [{n:1,p:'Josh Philippe',r:'WK'},{n:2,p:'Maia Bouchier',r:'BAT'},{n:3,p:'Joe Denly',r:'BAT'},{n:4,p:'Arjun Potter',r:'BAT'},{n:5,p:'Rory Burns',r:'BAT'},{n:6,p:'Mahipal Lomror',r:'BAT'},{n:7,p:'Krishnappa Gowtham',r:'ALL'},{n:8,p:'Alex Carey',r:'WK'},{n:9,p:'Kuldeep Yadav',r:'BOWL'},{n:10,p:'Arshdeep Singh',r:'BOWL'},{n:11,p:'Y Chahal',r:'BOWL'}], GB: [], SM: [], TT: [], UU: [{n:1,p:'Michael Bracewell',r:'ALL'},{n:2,p:'Chris Lynn',r:'BAT'},{n:3,p:'Vaibhav Suryavanshi',r:'BAT'},{n:4,p:'Rilee Rossouw',r:'BAT'},{n:5,p:'Tom Blundell',r:'WK'},{n:6,p:'Kathryn Bryce',r:'ALL'},{n:7,p:'Mitchell Owen',r:'ALL'},{n:8,p:'Rahkeem Cornwall',r:'ALL'},{n:9,p:'Orla Prendergast',r:'ALL'},{n:10,p:'Fazalhaq Farooqi',r:'BOWL'},{n:11,p:'Issy Wong',r:'BOWL'},{n:12,p:'Shamar Springer',r:'BOWL'}], VV: []
 };
 let SQUADS = SQUADS_S8;
 
@@ -11640,12 +11640,12 @@ if (!MULTI_DB) {
     season8: {
       table: [
         {id:"AA",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
-        {id:"AS",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
+        {id:"AS",m:1,w:0,l:1,nr:0,pts:0,nrr:-2.507},
         {id:"GB",m:1,w:0,l:1,nr:0,pts:0,nrr:-1.4444},
         {id:"HH",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
         {id:"SM",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
         {id:"TT",m:1,w:1,l:0,nr:0,pts:2,nrr:1.4444},
-        {id:"UU",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
+        {id:"UU",m:1,w:1,l:0,nr:0,pts:2,nrr:2.507},
         {id:"VV",m:0,w:0,l:0,nr:0,pts:0,nrr:0}
       ],
       results: [
@@ -11829,9 +11829,255 @@ if (!MULTI_DB) {
   localStorage.setItem(STORE_KEY_MULTI, JSON.stringify(MULTI_DB));
 } else if (MULTI_DB.season8) {
   let changed = false;
-  if (!MULTI_DB.season8.table.find(t => t.id === 'UU')) { MULTI_DB.season8.table.push({id:"UU",m:0,w:0,l:0,nr:0,pts:0,nrr:0}); changed = true; }
-  if (!MULTI_DB.season8.table.find(t => t.id === 'AS')) { MULTI_DB.season8.table.push({id:"AS",m:0,w:0,l:0,nr:0,pts:0,nrr:0}); changed = true; }
+  if (!MULTI_DB.season8.table.find(t => t.id === 'UU')) { MULTI_DB.season8.table.push({id:"UU",m:1,w:1,l:0,nr:0,pts:2,nrr:2.507}); changed = true; }
+  if (!MULTI_DB.season8.table.find(t => t.id === 'AS')) { MULTI_DB.season8.table.push({id:"AS",m:1,w:0,l:1,nr:0,pts:0,nrr:-2.507}); changed = true; }
   if (!MULTI_DB.season8.results) MULTI_DB.season8.results = [];
+  
+  if (!MULTI_DB.season8.results.find(m => m.match === 2)) {
+    MULTI_DB.season8.results.push({
+        "match": 2,
+        "team1": "AS",
+        "team2": "UU",
+        "score1": "134/10",
+        "overs1": "18.0",
+        "score2": "136/7",
+        "overs2": "13.4",
+        "winner": "UU",
+        "margin": "3 wickets",
+        "mom": "Kuldeep Yadav (AS) \u2014 5-39 & 14",
+        "scorecard": {
+                "t1Inn": {
+                        "bat": [
+                                {
+                                        "name": "Josh Philippe",
+                                        "dismissal": "c Blundell b Farooqi",
+                                        "runs": 10,
+                                        "balls": 7
+                                },
+                                {
+                                        "name": "Maia Bouchier",
+                                        "dismissal": "c Blundell b Bracewell",
+                                        "runs": 27,
+                                        "balls": 14
+                                },
+                                {
+                                        "name": "Joe Denly",
+                                        "dismissal": "b Farooqi",
+                                        "runs": 3,
+                                        "balls": 3
+                                },
+                                {
+                                        "name": "Arjun Potter",
+                                        "dismissal": "c Blundell b Bracewell",
+                                        "runs": 18,
+                                        "balls": 12
+                                },
+                                {
+                                        "name": "Rory Burns",
+                                        "dismissal": "c Blundell b Wong",
+                                        "runs": 10,
+                                        "balls": 5
+                                },
+                                {
+                                        "name": "Mahipal Lomror",
+                                        "dismissal": "c Lynn b Wong",
+                                        "runs": 2,
+                                        "balls": 2
+                                },
+                                {
+                                        "name": "Krishnappa Gowtham",
+                                        "dismissal": "b Cornwall",
+                                        "runs": 2,
+                                        "balls": 4
+                                },
+                                {
+                                        "name": "Alex Carey",
+                                        "dismissal": "c Blundell b Wong",
+                                        "runs": 41,
+                                        "balls": 19
+                                },
+                                {
+                                        "name": "Kuldeep Yadav",
+                                        "dismissal": "lbw Springer",
+                                        "runs": 14,
+                                        "balls": 23
+                                },
+                                {
+                                        "name": "Arshdeep Singh",
+                                        "dismissal": "lbw Cornwall",
+                                        "runs": 3,
+                                        "balls": 10
+                                },
+                                {
+                                        "name": "Y Chahal",
+                                        "dismissal": "not out",
+                                        "runs": 2,
+                                        "balls": 9
+                                }
+                        ],
+                        "fow": [],
+                        "extras": 2,
+                        "bowl": [
+                                {
+                                        "name": "Shamar Springer",
+                                        "overs": "4.0",
+                                        "dots": 8,
+                                        "runs": 35,
+                                        "wkts": 1
+                                },
+                                {
+                                        "name": "Fazalhaq Farooqi",
+                                        "overs": "3.0",
+                                        "dots": 5,
+                                        "runs": 39,
+                                        "wkts": 2
+                                },
+                                {
+                                        "name": "Issy Wong",
+                                        "overs": "3.0",
+                                        "dots": 7,
+                                        "runs": 20,
+                                        "wkts": 3
+                                },
+                                {
+                                        "name": "Michael Bracewell",
+                                        "overs": "4.0",
+                                        "dots": 14,
+                                        "runs": 15,
+                                        "wkts": 2
+                                },
+                                {
+                                        "name": "Rahkeem Cornwall",
+                                        "overs": "2.0",
+                                        "dots": 8,
+                                        "runs": 10,
+                                        "wkts": 2
+                                },
+                                {
+                                        "name": "Mitchell Owen",
+                                        "overs": "2.0",
+                                        "dots": 2,
+                                        "runs": 14,
+                                        "wkts": 0
+                                }
+                        ]
+                },
+                "t2Inn": {
+                        "bat": [
+                                {
+                                        "name": "Michael Bracewell",
+                                        "dismissal": "b Yadav",
+                                        "runs": 20,
+                                        "balls": 7
+                                },
+                                {
+                                        "name": "Chris Lynn",
+                                        "dismissal": "c Potter b Chahal",
+                                        "runs": 45,
+                                        "balls": 20
+                                },
+                                {
+                                        "name": "Vaibhav Suryavanshi",
+                                        "dismissal": "c Gowtham b Yadav",
+                                        "runs": 13,
+                                        "balls": 7
+                                },
+                                {
+                                        "name": "Rilee Rossouw",
+                                        "dismissal": "c Carey b Yadav",
+                                        "runs": 8,
+                                        "balls": 4
+                                },
+                                {
+                                        "name": "Tom Blundell",
+                                        "dismissal": "not out",
+                                        "runs": 22,
+                                        "balls": 20
+                                },
+                                {
+                                        "name": "Kathryn Bryce",
+                                        "dismissal": "lbw Yadav",
+                                        "runs": 11,
+                                        "balls": 6
+                                },
+                                {
+                                        "name": "Mitchell Owen",
+                                        "dismissal": "lbw Yadav",
+                                        "runs": 0,
+                                        "balls": 1
+                                },
+                                {
+                                        "name": "Rahkeem Cornwall",
+                                        "dismissal": "c Bouchier b Chahal",
+                                        "runs": 1,
+                                        "balls": 4
+                                },
+                                {
+                                        "name": "Orla Prendergast",
+                                        "dismissal": "not out",
+                                        "runs": 16,
+                                        "balls": 13
+                                }
+                        ],
+                        "fow": [],
+                        "extras": 0,
+                        "bowl": [
+                                {
+                                        "name": "Arshdeep Singh",
+                                        "overs": "3.0",
+                                        "dots": 4,
+                                        "runs": 30,
+                                        "wkts": 0
+                                },
+                                {
+                                        "name": "Krishnappa Gowtham",
+                                        "overs": "2.0",
+                                        "dots": 1,
+                                        "runs": 32,
+                                        "wkts": 0
+                                },
+                                {
+                                        "name": "Kuldeep Yadav",
+                                        "overs": "4.0",
+                                        "dots": 8,
+                                        "runs": 39,
+                                        "wkts": 5
+                                },
+                                {
+                                        "name": "Y Chahal",
+                                        "overs": "4.0",
+                                        "dots": 12,
+                                        "runs": 31,
+                                        "wkts": 2
+                                },
+                                {
+                                        "name": "Maia Bouchier",
+                                        "overs": "0.4",
+                                        "dots": 1,
+                                        "runs": 4,
+                                        "wkts": 0
+                                }
+                        ]
+                }
+        }
+});
+    changed = true;
+    
+    const s8t = MULTI_DB.season8.table;
+    let tAS = s8t.find(t=>t.id==='AS');
+    let tUU = s8t.find(t=>t.id==='UU');
+    
+    tAS.m++; tAS.l++;
+    // NRR: AS scored 134 in 18 (7.444), allowed 136 in 13.666 (9.951)
+    // 7.444 - 9.951 = -2.507
+    tAS.nrr -= 2.507; 
+    
+    tUU.m++; tUU.w++; tUU.pts += 2;
+    // UU scored 136 in 13.666 (9.951), allowed 134 in 18 (7.444)
+    // 9.951 - 7.444 = 2.507
+    tUU.nrr += 2.507;
+  }
+
   if (!MULTI_DB.season8.results.find(m => m.match === 3)) {
     MULTI_DB.season8.results.push({
         "match": 3,
