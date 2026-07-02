@@ -11695,7 +11695,7 @@ const SEED = {
   ]
 };
 
-const STORE_KEY_MULTI = "bcl_multi_v12";
+const STORE_KEY_MULTI = "bcl_multi_v13";
 
 let MULTI_DB = JSON.parse(localStorage.getItem(STORE_KEY_MULTI));
 if (!MULTI_DB) {
@@ -16173,7 +16173,7 @@ function renderResults(){
   let lDB = getLocalDB("results");
   const c=document.getElementById('resultsContainer');
   if(!lDB.results.length){c.innerHTML='<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:40px;text-align:center;color:var(--muted);font-style:italic">No results yet</div>';return;}
-  c.innerHTML=[...lDB.results].reverse().map(r=>{
+  c.innerHTML=[...lDB.results].sort((a,b)=>b.match-a.match).map(r=>{
     const t1=byId(r.team1),t2=byId(r.team2),win=byId(r.winner);
     const w1=r.winner===r.team1,w2=r.winner===r.team2;
     return `<div class="result-card" onclick="openScorecardModal('${r.match}')" style="cursor:pointer; border-color:${win?.color}33; --team-color:${win?.color}; --team-glow:${win?.color}22">
