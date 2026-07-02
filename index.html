@@ -1027,6 +1027,163 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 }
 .filter-btn:hover { color: var(--text); background: rgba(255,255,255,0.05); }
 .filter-btn.active { background: var(--card); color: var(--acc); box-shadow: var(--shadow); }
+
+/* BCL BUDDY AI */
+.bcl-buddy-fab {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+  z-index: 9999;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.bcl-buddy-fab:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+}
+
+.bcl-buddy-panel {
+  position: fixed;
+  bottom: 100px;
+  right: 30px;
+  width: 350px;
+  height: 500px;
+  background: var(--bg-blur);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  z-index: 9998;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: opacity 0.3s, transform 0.3s;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  overflow: hidden;
+}
+.bcl-buddy-panel.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+@media(max-width: 500px) {
+  .bcl-buddy-panel {
+    width: calc(100% - 40px);
+    right: 20px;
+    bottom: 90px;
+  }
+}
+
+.bcl-buddy-header {
+  padding: 15px 20px;
+  background: rgba(16, 185, 129, 0.15);
+  border-bottom: 1px solid rgba(16, 185, 129, 0.3);
+  font-weight: 700;
+  color: #10b981;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.bcl-buddy-header-close {
+  cursor: pointer;
+  color: var(--muted);
+}
+.bcl-buddy-header-close:hover { color: var(--text); }
+
+.bcl-buddy-messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.bb-msg {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.9em;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+.bb-msg.user {
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+.bb-msg.ai {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+.bb-msg-card-btn {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 6px 12px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  border-radius: 6px;
+  font-size: 0.85em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.bb-msg-card-btn:hover {
+  background: rgba(16, 185, 129, 0.3);
+}
+.bcl-buddy-typing {
+  font-style: italic;
+  color: var(--muted);
+  font-size: 0.85em;
+}
+
+.bcl-buddy-input-area {
+  padding: 12px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+}
+.bcl-buddy-input {
+  flex: 1;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--text);
+  font-family: inherit;
+  outline: none;
+  font-size: 0.9em;
+}
+.bcl-buddy-input:focus {
+  border-color: rgba(16, 185, 129, 0.5);
+}
+.bcl-buddy-send {
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
 </style>
 </head>
 <body>
@@ -18406,5 +18563,22 @@ if(document.getElementById('c-team2')) {
 renderComparison();
 renderAll();
 </script>
+
+  <!-- BCL BUDDY AI -->
+  <div class="bcl-buddy-fab" id="bclBuddyFab" onclick="toggleBclBuddy()">🤖</div>
+  <div class="bcl-buddy-panel" id="bclBuddyPanel">
+    <div class="bcl-buddy-header">
+      <div>BCL Buddy AI</div>
+      <div class="bcl-buddy-header-close" onclick="toggleBclBuddy()">✕</div>
+    </div>
+    <div class="bcl-buddy-messages" id="bclBuddyMessages">
+      <div class="bb-msg ai">Hi! I'm BCL Buddy 🤖. Ask me anything about the Backyard Cricket League matches, stats, or crazy moments!</div>
+    </div>
+    <div class="bcl-buddy-input-area">
+      <input type="text" class="bcl-buddy-input" id="bclBuddyInput" placeholder="Ask about a match..." onkeypress="if(event.key==='Enter') sendBclBuddyMessage()">
+      <button class="bcl-buddy-send" onclick="sendBclBuddyMessage()">➔</button>
+    </div>
+  </div>
+
 </body>
 </html>
