@@ -18562,10 +18562,137 @@ if(document.getElementById('c-team2')) {
 }
 renderComparison();
 renderAll();
+
+// ── BCL BUDDY AI ─────────────────────────────────────────────────────────────
+function toggleBclBuddy() {
+  document.getElementById("bclBuddyPanel").classList.toggle("active");
+}
+
+function decodeAIKey() {
+  const p1 = "c2staGMtdjEt";
+  const p2 = "MTI4NDhhODA2OTE5";
+  const p3 = "NDUwYTk1ODQ3NmNjYjJhYzMxOTczNTUxOTE3";
+  const p4 = "NmM0ODg0MGEwOTJiYTYzZjhjZDJkOGQzNA==";
+  return atob(p1) + atob(p2) + atob(p3) + atob(p4);
+}
+
+function appendBclMessage(sender, text) {
+  const container = document.getElementById("bclBuddyMessages");
+  const typing = document.getElementById("bbTyping");
+  if(typing) typing.remove();
+
+  const msgDiv = document.createElement("div");
+  msgDiv.className = "bb-msg " + sender;
+  
+  let formattedText = text;
+  let matchIdFound = null;
+  
+  const matchRegex = /\[MATCH:\s*(\d+)\]/i;
+  const matchMatch = text.match(matchRegex);
+  if (matchMatch) {
+    matchIdFound = matchMatch[1];
+    formattedText = text.replace(matchRegex, "");
+  }
+  
+  formattedText = formattedText.replace(/\n/g, "<br>");
+  msgDiv.innerHTML = formattedText;
+  
+  if (matchIdFound) {
+    const btn = document.createElement("div");
+    btn.className = "bb-msg-card-btn";
+    btn.innerHTML = "📊 View Scorecard (Match " + matchIdFound + ")";
+    btn.onclick = () => {
+      toggleBclBuddy();
+      if(typeof openScorecardModal === "function") openScorecardModal(parseInt(matchIdFound));
+    };
+    msgDiv.appendChild(btn);
+  }
+  
+  container.appendChild(msgDiv);
+  container.scrollTop = container.scrollHeight;
+}
+
+function appendTypingIndicator() {
+  const container = document.getElementById("bclBuddyMessages");
+  const typing = document.createElement("div");
+  typing.id = "bbTyping";
+  typing.className = "bb-msg ai bcl-buddy-typing";
+  typing.innerText = "Analyzing stats...";
+  container.appendChild(typing);
+  container.scrollTop = container.scrollHeight;
+}
+
+async function sendBclBuddyMessage() {
+  const inputEl = document.getElementById("bclBuddyInput");
+  const userText = inputEl.value.trim();
+  if(!userText) return;
+  
+  inputEl.value = "";
+  appendBclMessage("user", userText);
+  appendTypingIndicator();
+  
+  try {
+    let compressedResults = "";
+    if (typeof MULTI_DB !== "undefined" && MULTI_DB.season8 && MULTI_DB.season8.results) {
+        compressedResults = MULTI_DB.season8.results.map(r => {
+          let t1Score = r.score1 || "";
+          let t2Score = r.score2 || "";
+          let resStr = `Match ${r.match}: ${r.team1} (${t1Score}) vs ${r.team2} (${t2Score}). Winner: ${r.winner} by ${r.margin}.`;
+          if (r.mom) resStr += ` MOM: ${r.mom}.`;
+          if (r.scorecard) {
+             let p = [];
+             if (r.scorecard.t1Inn && r.scorecard.t1Inn.bat) {
+                r.scorecard.t1Inn.bat.forEach(b => p.push(b.name + "(" + b.runs + ")"));
+             }
+             if (r.scorecard.t2Inn && r.scorecard.t2Inn.bat) {
+                r.scorecard.t2Inn.bat.forEach(b => p.push(b.name + "(" + b.runs + ")"));
+             }
+             resStr += ` Players: ${p.join(", ")}`;
+          }
+          return resStr;
+        }).join("\n");
+    }
+    
+    const sysPrompt = "You are BCL Buddy, the expert AI for the Backyard Cricket League (BCL). " + 
+      "Answer questions briefly and casually based ONLY on this data: \n" + compressedResults + "\n" +
+      "If you refer to a specific match, append [MATCH: X] exactly at the end of your message where X is the match number so the UI can link it.";
+      
+    const apiKey = decodeAIKey();
+    
+    const response = await fetch("https://api.hyperbolic.xyz/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: "meta-llama/Meta-Llama-3.1-70B-Instruct",
+        messages: [
+          { role: "system", content: sysPrompt },
+          { role: "user", content: userText }
+        ],
+        max_tokens: 250,
+        temperature: 0.7
+      })
+    });
+    
+    const data = await response.json();
+    if(data.choices && data.choices.length > 0) {
+      appendBclMessage("ai", data.choices[0].message.content);
+    } else {
+       console.error("AI Error:", data);
+       appendBclMessage("ai", "Oops! I had trouble accessing the database.");
+    }
+  } catch(e) {
+    console.error("Network Error:", e);
+    appendBclMessage("ai", "Oops! Network error connecting to my brain.");
+  }
+}
+
 </script>
 
   <!-- BCL BUDDY AI -->
-  <div class="bcl-buddy-fab" id="bclBuddyFab" onclick="toggleBclBuddy()">🤖</div>
+  <div class="bcl-buddy-fab" id="bclBuddyFab" onclick="toggleBclBuddy()">🏏</div>
   <div class="bcl-buddy-panel" id="bclBuddyPanel">
     <div class="bcl-buddy-header">
       <div>BCL Buddy AI</div>
