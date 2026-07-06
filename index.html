@@ -11865,7 +11865,7 @@ const SEED = {
   ]
 };
 
-const STORE_KEY_MULTI = "bcl_multi_v65"; // Cache bust 27
+const STORE_KEY_MULTI = "bcl_multi_v66"; // Cache bust 27
 
 let MULTI_DB = JSON.parse(localStorage.getItem(STORE_KEY_MULTI));
 if (!MULTI_DB) {
@@ -26189,6 +26189,7 @@ function getPlayoffsHtml(lDB){
   `;
 }
 
+function renderResults(){
   let lDB = getLocalDB("results");
   const c=document.getElementById('resultsContainer');
   if(!lDB.results.length){c.innerHTML='<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:40px;text-align:center;color:var(--muted);font-style:italic">No results yet</div>';return;}
