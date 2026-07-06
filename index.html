@@ -11865,7 +11865,7 @@ const SEED = {
   ]
 };
 
-const STORE_KEY_MULTI = "bcl_multi_v64"; // Cache bust 27
+const STORE_KEY_MULTI = "bcl_multi_v65"; // Cache bust 27
 
 let MULTI_DB = JSON.parse(localStorage.getItem(STORE_KEY_MULTI));
 if (!MULTI_DB) {
@@ -26087,75 +26087,79 @@ function renderPlayoffsMatch(matchNum, team1Id, team2Id, seed1Val, seed2Val, res
 
 function renderPlayoffs(){
   let lDB = getLocalDB("playoffs");
-  const html = getPlayoffsHtml();
+  const html = getPlayoffsHtml(lDB);
   const c1 = document.getElementById('playoffsContainer');
   const c2 = document.getElementById('playoffsContainerSchedule');
   if(c1) c1.innerHTML = html;
   if(c2) c2.innerHTML = html;
 }
 
-function getPlayoffsHtml(){
-  const sortedStandings = [...DB.table].sort((a,b)=>b.pts-a.pts||b.nrr-a.nrr);
+function getPlayoffsHtml(lDB){
+  const isS8 = localFilters["playoffs"] === "season8";
+  const mStart = isS8 ? 57 : 43;
+  const seasonStr = isS8 ? "8" : "7";
+
+  const sortedStandings = [...lDB.table].sort((a,b)=>b.pts-a.pts||b.nrr-a.nrr);
   const rank1 = sortedStandings[0]?.id || "Rank 1";
   const rank2 = sortedStandings[1]?.id || "Rank 2";
   const rank3 = sortedStandings[2]?.id || "Rank 3";
   const rank4 = sortedStandings[3]?.id || "Rank 4";
   
-  const m43 = DB.results.find(r => r.match === 43); // Qualifier 1
-  const m44 = DB.results.find(r => r.match === 44); // Eliminator
-  const m45 = DB.results.find(r => r.match === 45); // Qualifier 2
-  const m46 = DB.results.find(r => r.match === 46); // Final
+  const mQ1 = lDB.results.find(r => r.match === mStart); // Qualifier 1
+  const mElim = lDB.results.find(r => r.match === mStart + 1); // Eliminator
+  const mQ2 = lDB.results.find(r => r.match === mStart + 2); // Qualifier 2
+  const mFinal = lDB.results.find(r => r.match === mStart + 3); // Final
   
   // Qualifier 1
-  const q1Team1 = m43 ? m43.team1 : rank1;
-  const q1Team2 = m43 ? m43.team2 : rank2;
+  const q1Team1 = mQ1 ? mQ1.team1 : rank1;
+  const q1Team2 = mQ1 ? mQ1.team2 : rank2;
   
   // Eliminator
-  const elimTeam1 = m44 ? m44.team1 : rank3;
-  const elimTeam2 = m44 ? m44.team2 : rank4;
+  const elimTeam1 = mElim ? mElim.team1 : rank3;
+  const elimTeam2 = mElim ? mElim.team2 : rank4;
   
   // Qualifier 2 Teams
   let q2Team1 = "Loser Q1";
   let q2Team2 = "Winner Elim";
-  if (m43) q2Team1 = m43.winner === m43.team1 ? m43.team2 : m43.team1;
-  if (m44) q2Team2 = m44.winner;
-  if (m45) {
-    q2Team1 = m45.team1;
-    q2Team2 = m45.team2;
+  if (mQ1) q2Team1 = mQ1.winner === mQ1.team1 ? mQ1.team2 : mQ1.team1;
+  if (mElim) q2Team2 = mElim.winner;
+  if (mQ2) {
+    q2Team1 = mQ2.team1;
+    q2Team2 = mQ2.team2;
   }
   
   // Final Teams
   let finalTeam1 = "Winner Q1";
   let finalTeam2 = "Winner Q2";
-  if (m43) finalTeam1 = m43.winner;
-  if (m45) finalTeam2 = m45.winner;
-  if (m46) {
-    finalTeam1 = m46.team1;
-    finalTeam2 = m46.team2;
+  if (mQ1) finalTeam1 = mQ1.winner;
+  if (mQ2) finalTeam2 = mQ2.winner;
+  if (mFinal) {
+    finalTeam1 = mFinal.team1;
+    finalTeam2 = mFinal.team2;
   }
   
-  const q1Html = renderPlayoffsMatch(43, q1Team1, q1Team2, 1, 2, m43, "Qualifier 1");
-  const elimHtml = renderPlayoffsMatch(44, elimTeam1, elimTeam2, 3, 4, m44, "Eliminator");
-  const q2Html = renderPlayoffsMatch(45, q2Team1, q2Team2, null, null, m45, "Qualifier 2");
-  const finalHtml = renderPlayoffsMatch(46, finalTeam1, finalTeam2, null, null, m46, "Final");
+  const q1Html = renderPlayoffsMatch(mStart, q1Team1, q1Team2, 1, 2, mQ1, "Qualifier 1");
+  const elimHtml = renderPlayoffsMatch(mStart + 1, elimTeam1, elimTeam2, 3, 4, mElim, "Eliminator");
+  const q2Html = renderPlayoffsMatch(mStart + 2, q2Team1, q2Team2, null, null, mQ2, "Qualifier 2");
+  const finalHtml = renderPlayoffsMatch(mStart + 3, finalTeam1, finalTeam2, null, null, mFinal, "Final");
   
   // Champion Card
   let champCardHtml = "";
-  if (m46 && m46.winner) {
-    const champ = byId(m46.winner);
+  if (mFinal && mFinal.winner) {
+    const champ = byId(mFinal.winner);
     champCardHtml = `
       <div class="bracket-champ-card">
         <div class="champ-trophy">🏆</div>
-        <div class="champ-subtitle">BCL Season 7 Champion</div>
-        <div class="champ-title">${champ ? teamIcon(champ) + ' ' + champ.name : m46.winner}</div>
-        <div style="font-size:12px; color:var(--green); font-weight:700; margin-top:4px;">Won by ${m46.margin}</div>
+        <div class="champ-subtitle">BCL Season ${seasonStr} Champion</div>
+        <div class="champ-title">${champ ? teamIcon(champ) + ' ' + champ.name : mFinal.winner}</div>
+        <div style="font-size:12px; color:var(--green); font-weight:700; margin-top:4px;">Won by ${mFinal.margin}</div>
       </div>
     `;
   } else {
     champCardHtml = `
       <div class="bracket-champ-card" style="opacity: 0.6; border-color: var(--border);">
         <div class="champ-trophy" style="animation: none; opacity: 0.5;">🏆</div>
-        <div class="champ-subtitle">BCL Season 7 Champion</div>
+        <div class="champ-subtitle">BCL Season ${seasonStr} Champion</div>
         <div class="champ-title" style="color: var(--muted);">TBD</div>
       </div>
     `;
@@ -26185,7 +26189,6 @@ function getPlayoffsHtml(){
   `;
 }
 
-function renderResults(){
   let lDB = getLocalDB("results");
   const c=document.getElementById('resultsContainer');
   if(!lDB.results.length){c.innerHTML='<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:40px;text-align:center;color:var(--muted);font-style:italic">No results yet</div>';return;}
