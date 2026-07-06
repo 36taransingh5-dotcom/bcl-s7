@@ -27,10 +27,16 @@ jobs:
         uses: actions/configure-pages@v5
         with:
           enablement: true
+      - name: Build site
+        run: |
+          mkdir dist
+          cp index.html dist/
+          cp -r logos dist/
+          cp .nojekyll dist/ || true
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: './dist'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
