@@ -1,8 +1,7 @@
 name: Deploy static content to Pages
 
+# DISABLED - using branch-based deployment instead (Settings > Pages > Deploy from branch)
 on:
-  push:
-    branches: ["main"]
   workflow_dispatch:
 
 permissions:
