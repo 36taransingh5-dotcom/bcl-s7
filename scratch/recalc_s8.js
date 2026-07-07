@@ -44,7 +44,8 @@ function parseScore(scoreStr) {
     const parts = scoreStr.split('/');
     return {r: parseInt(parts[0]) || 0, w: parseInt(parts[1]) || 0};
 }
-function parseOvers(oversStr, allOut) {
+function parseOvers(oversStr, allOut, matchNum) {
+    if(allOut && matchNum !== 55) return 20.0;
     const o = parseFloat(oversStr);
     const intO = Math.floor(o);
     const balls = Math.round((o - intO) * 10);
@@ -58,8 +59,8 @@ results.forEach(res => {
     const s2 = parseScore(res.score2);
     
     // Check if team was all out
-    const o1 = parseOvers(res.overs1, s1.w === 10);
-    const o2 = parseOvers(res.overs2, s2.w === 10);
+    const o1 = parseOvers(res.overs1, s1.w === 10, res.match);
+    const o2 = parseOvers(res.overs2, s2.w === 10, res.match);
     
     stats[t1].runsFor += s1.r;
     stats[t1].oversFor += o1;
