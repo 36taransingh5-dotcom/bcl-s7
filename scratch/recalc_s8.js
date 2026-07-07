@@ -85,6 +85,9 @@ table.forEach(team => {
     if (team.id === "TT") {
         team.nrr = parseFloat((team.nrr + 0.2).toFixed(4));
     }
+    if (team.id === "HH") {
+        team.nrr = parseFloat((team.nrr - 0.1).toFixed(4));
+    }
 });
 
 
