@@ -45,7 +45,6 @@ function parseScore(scoreStr) {
     return {r: parseInt(parts[0]) || 0, w: parseInt(parts[1]) || 0};
 }
 function parseOvers(oversStr, allOut) {
-    if(allOut) return 20.0;
     const o = parseFloat(oversStr);
     const intO = Math.floor(o);
     const balls = Math.round((o - intO) * 10);
