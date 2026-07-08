@@ -26,6 +26,7 @@ const TEAM_IDS = ["AA", "AS", "GB", "HH", "SM", "TT", "UU", "VV"];
 const table = TEAM_IDS.map(id => ({ id, m: 0, w: 0, l: 0, nr: 0, pts: 0, nrr: 0 }));
 
 results.forEach(m => {
+    if (m.match > 56) return;
     let t1 = table.find(t => t.id === m.team1);
     let t2 = table.find(t => t.id === m.team2);
     t1.m++; t2.m++;
@@ -53,6 +54,7 @@ function parseOvers(oversStr, allOut, matchNum) {
 }
 
 results.forEach(res => {
+    if (res.match > 56) return;
     const t1 = res.team1;
     const t2 = res.team2;
     const s1 = parseScore(res.score1);
