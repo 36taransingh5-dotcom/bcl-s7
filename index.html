@@ -11865,7 +11865,7 @@ const SEED = {
   ]
 };
 
-const STORE_KEY_MULTI = "bcl_multi_v89"; // Cache bust 27
+const STORE_KEY_MULTI = "bcl_multi_v90"; // Cache bust 27
 
 let MULTI_DB = JSON.parse(localStorage.getItem(STORE_KEY_MULTI));
 if (!MULTI_DB) {
@@ -31178,18 +31178,18 @@ function renderAwards() {
 
   // 3. Render Team of the Tournament
       const teamXI = [
-    { name: "Travis Head", team: "AA", pos: "Opener", top: "15%", left: "30%" },
-    { name: "David Warner", team: "AA", pos: "Opener (C)", top: "15%", left: "70%" },
-    { name: "Virat Kohli", team: "VV", pos: "No. 3", top: "27%", left: "50%" },
-    { name: "Ellyse Perry", team: "GB", pos: "No. 4", top: "39%", left: "50%" },
+    { name: "David Warner", team: "AA", pos: "Opener (VC)", top: "15%", left: "30%" },
+    { name: "Ishan Kishan", team: "GB", pos: "Opener / WK (C)", top: "15%", left: "70%" },
+    { name: "Vivaan Anandabd", team: "VV", pos: "No. 3", top: "27%", left: "50%" },
+    { name: "Virat Kohli", team: "VV", pos: "No. 4", top: "39%", left: "50%" },
     { name: "Glenn Maxwell", team: "GB", pos: "No. 5", top: "50%", left: "50%" },
-    { name: "Will Jacks", team: "AA", pos: "No. 6 All-rounder", top: "60%", left: "28%" },
-    { name: "Shivam Dube", team: "SM", pos: "No. 7", top: "60%", left: "72%" },
-    { name: "Hardik Pandya", team: "TT", pos: "No. 8", top: "72%", left: "50%" },
-    { name: "Liam Dawson", team: "SM", pos: "No. 9 Spinner", top: "83%", left: "22%" },
-    { name: "Josh Hazlewood", team: "HH", pos: "No. 10 Pacer", top: "85%", left: "50%" },
-    { name: "Noor Ahmad", team: "GB", pos: "No. 11 Spinner", top: "83%", left: "78%" },
-    { name: "Jess Jonassen", team: "HH", pos: "Impact Player (BOWL)", top: "7%", left: "50%" }
+    { name: "Will Jacks", team: "AA", pos: "No. 6", top: "60%", left: "28%" },
+    { name: "Hardik Pandya", team: "TT", pos: "No. 7", top: "60%", left: "72%" },
+    { name: "Amelia Kerr", team: "VV", pos: "No. 8", top: "72%", left: "50%" },
+    { name: "Marco Jansen", team: "GB", pos: "No. 9", top: "83%", left: "22%" },
+    { name: "Noor Ahmad", team: "GB", pos: "No. 10", top: "85%", left: "50%" },
+    { name: "Josh Hazlewood", team: "HH", pos: "No. 11", top: "83%", left: "78%" },
+    { name: "Liam Dawson", team: "SM", pos: "Impact Player", top: "7%", left: "50%" }
   ];
 
   const fieldPlayersHtml = teamXI.map(p => {
