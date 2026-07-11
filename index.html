@@ -29002,6 +29002,168 @@ if (!MULTI_DB) {
     changed = true;
   }
 
+
+  // Season 9 Match 3 migration
+  if (!MULTI_DB.season9.results.find(r => r.match === 3)) {
+    // Update table
+    const s9AA = MULTI_DB.season9.table.find(t => t.id === 'AA');
+    const s9UU = MULTI_DB.season9.table.find(t => t.id === 'UU');
+    
+    if (s9AA) { s9AA.m += 1; s9AA.w += 1; s9AA.pts += 2; }
+    if (s9UU) { s9UU.m += 1; s9UU.l += 1; }
+
+    // AA played 2 matches. M1: 203/20 scored, 185/20 conceded. M3: 245/20 scored, 185/20 conceded.
+    // Total AA scored: 203 + 245 = 448 / 40. Total conceded: 185 + 185 = 370 / 40.
+    // NRR = (448/40) - (370/40) = 11.2 - 9.25 = +1.95
+    if (s9AA) { s9AA.nrr = 1.95; }
+    
+    // UU played 2 matches. M2: 181/20 scored, 182/14.5 conceded. M3: 185/20 scored, 245/20 conceded.
+    // Total UU scored: 181 + 185 = 366 / 40 = 9.15. Total conceded: 182 + 245 = 427 / 34.5 = 12.3768.
+    // NRR = 9.15 - 12.3768 = -3.2268
+    if (s9UU) { s9UU.nrr = -3.2268; }
+
+    // Result + full scorecard
+    MULTI_DB.season9.results.push({
+      match:3, team1:"AA", team2:"UU", venue:"Providence Stadium",
+      score1:"245/6", overs1:"20.0", score2:"185/8", overs2:"20.0",
+      winner:"AA", margin:"60 runs", mom:"Will Jacks (AA) — 35 off 17 & 3/26",
+      scorecard:{
+        t1Inn:{
+          bat:[
+            {name:"Travis Head",dismissal:"c Blundell b Joseph",runs:43,balls:22},
+            {name:"David Warner",dismissal:"b Hardie",runs:49,balls:21},
+            {name:"Q de Kock",dismissal:"b Wong",runs:41,balls:25},
+            {name:"Mitchell Marsh",dismissal:"c Suryavanshi b Mortaza",runs:9,balls:7},
+            {name:"Will Jacks",dismissal:"not out",runs:35,balls:17},
+            {name:"Aarav Roy",dismissal:"c Blundell b Bracewell",runs:26,balls:10},
+            {name:"Ben Stokes",dismissal:"c Blundell b Mortaza",runs:10,balls:7},
+            {name:"Nat Sciver",dismissal:"not out",runs:32,balls:11},
+            {name:"Tim David",dismissal:"did not bat",runs:0,balls:0},
+            {name:"Jasprit Bumrah",dismissal:"did not bat",runs:0,balls:0},
+            {name:"Varun Chakravarthy",dismissal:"did not bat",runs:0,balls:0}
+          ],
+          fow:[86,94,121,145,185,207],
+          extras:0,
+          bowl:[
+            {name:"Mashrafe Mortaza",overs:"4.0",dots:8,runs:37,wkts:2},
+            {name:"Aaron Hardie",overs:"4.0",dots:6,runs:48,wkts:1},
+            {name:"Michael Bracewell",overs:"2.0",dots:2,runs:34,wkts:1},
+            {name:"Shamar Springer",overs:"2.0",dots:5,runs:26,wkts:0},
+            {name:"Issy Wong",overs:"4.0",dots:2,runs:54,wkts:1},
+            {name:"Shamar Joseph",overs:"4.0",dots:9,runs:46,wkts:1}
+          ]
+        },
+        t2Inn:{
+          bat:[
+            {name:"Chris Lynn",dismissal:"c Chakravarthy b Bumrah",runs:14,balls:12},
+            {name:"Vaibhav Suryavanshi",dismissal:"c Bumrah b Jacks",runs:62,balls:32},
+            {name:"Matt Short",dismissal:"b Jacks",runs:10,balls:9},
+            {name:"Aaron Hardie",dismissal:"c de Kock b Jacks",runs:10,balls:7},
+            {name:"Kathryn Bryce",dismissal:"c Siraj b Sciver",runs:8,balls:12},
+            {name:"Tom Blundell",dismissal:"b Roy",runs:12,balls:7},
+            {name:"Michael Bracewell",dismissal:"c de Kock b Bumrah",runs:38,balls:17},
+            {name:"Orla Prendergast",dismissal:"c de Kock b Chakravarthy",runs:3,balls:4},
+            {name:"Mashrafe Mortaza",dismissal:"not out",runs:11,balls:13},
+            {name:"Shamar Springer",dismissal:"not out",runs:11,balls:8},
+            {name:"Shamar Joseph",dismissal:"did not bat",runs:0,balls:0}
+          ],
+          fow:[33,45,59,77,104,138,143,159],
+          extras:6,
+          bowl:[
+            {name:"Mohd Siraj",overs:"3.0",dots:7,runs:22,wkts:0},
+            {name:"Jasprit Bumrah",overs:"3.0",dots:6,runs:29,wkts:2},
+            {name:"Will Jacks",overs:"4.0",dots:13,runs:26,wkts:3},
+            {name:"Varun Chakravarthy",overs:"4.0",dots:12,runs:19,wkts:1},
+            {name:"Aarav Roy",overs:"2.0",dots:3,runs:29,wkts:1},
+            {name:"Nat Sciver",overs:"2.0",dots:3,runs:27,wkts:1},
+            {name:"Ben Stokes",overs:"1.0",dots:1,runs:17,wkts:0},
+            {name:"Mitchell Marsh",overs:"1.0",dots:1,runs:16,wkts:0}
+          ]
+        }
+      }
+    });
+
+    // Update Batting stats
+    const updateBat = (team, name, runs, isOut) => {
+      let b = MULTI_DB.season9.batting.find(x => x.name === name && x.team === team);
+      if (!b) return;
+      b.inn += 1;
+      b.runs += runs;
+      b.hs = Math.max(b.hs, runs);
+      b.dismissals += (isOut ? 1 : 0);
+      b.avg = b.dismissals > 0 ? b.runs / b.dismissals : b.runs;
+      if (runs >= 50 && runs < 100) b.fifties += 1;
+      if (runs >= 100) b.hundreds += 1;
+    };
+    
+    updateBat('AA', "Travis Head", 43, true);
+    updateBat('AA', "David Warner", 49, true);
+    updateBat('AA', "Q de Kock", 41, true);
+    updateBat('AA', "Mitchell Marsh", 9, true);
+    updateBat('AA', "Will Jacks", 35, false);
+    let wj = MULTI_DB.season9.batting.find(x => x.name === "Will Jacks" && x.team === 'AA');
+    if (wj) wj.mom += 1;
+    updateBat('AA', "Aarav Roy", 26, true);
+    updateBat('AA', "Ben Stokes", 10, true);
+    updateBat('AA', "Nat Sciver", 32, false);
+    
+    updateBat('UU', "Chris Lynn", 14, true);
+    updateBat('UU', "Vaibhav Suryavanshi", 62, true);
+    updateBat('UU', "Matt Short", 10, true);
+    updateBat('UU', "Aaron Hardie", 10, true);
+    updateBat('UU', "Kathryn Bryce", 8, true);
+    updateBat('UU', "Tom Blundell", 12, true);
+    updateBat('UU', "Michael Bracewell", 38, true);
+    updateBat('UU', "Orla Prendergast", 3, true);
+    updateBat('UU', "Mashrafe Mortaza", 11, false);
+    updateBat('UU', "Shamar Springer", 11, false);
+
+    // Update Bowling stats
+    const updateBowl = (team, name, wkts, runs, overs, bbi) => {
+      let b = MULTI_DB.season9.bowling.find(x => x.name === name && x.team === team);
+      if (!b) {
+        // Just in case it's their first bowl
+        b = {name, team, inn:0, wkts:0, bbi:"0/0", avg:0, econ:0, sr:0, fourW:0, overs:0};
+        MULTI_DB.season9.bowling.push(b);
+      }
+      b.inn += 1;
+      b.wkts += wkts;
+      let totalRuns = (b.econ * (b.overs||0)) + runs;
+      b.overs = (b.overs||0) + overs;
+      b.econ = totalRuns / b.overs;
+      b.avg = b.wkts > 0 ? totalRuns / b.wkts : 0;
+      if (wkts >= 4) b.fourW += 1;
+      
+      let oldW = 0, oldR = 0;
+      if (b.bbi) {
+        let parts = b.bbi.split('/');
+        oldW = parseInt(parts[0]) || 0;
+        oldR = parseInt(parts[1]) || 0;
+      }
+      if (wkts > oldW || (wkts === oldW && runs < oldR)) {
+        b.bbi = bbi;
+      }
+    };
+    
+    updateBowl('UU', "Mashrafe Mortaza", 2, 37, 4, "2/37");
+    updateBowl('UU', "Aaron Hardie", 1, 48, 4, "1/48");
+    updateBowl('UU', "Michael Bracewell", 1, 34, 2, "1/34");
+    updateBowl('UU', "Shamar Springer", 0, 26, 2, "0/26");
+    updateBowl('UU', "Issy Wong", 1, 54, 4, "1/54");
+    updateBowl('UU', "Shamar Joseph", 1, 46, 4, "1/46");
+    
+    updateBowl('AA', "Mohd Siraj", 0, 22, 3, "0/22");
+    updateBowl('AA', "Jasprit Bumrah", 2, 29, 3, "2/29");
+    updateBowl('AA', "Will Jacks", 3, 26, 4, "3/26");
+    updateBowl('AA', "Varun Chakravarthy", 1, 19, 4, "1/19");
+    updateBowl('AA', "Aarav Roy", 1, 29, 2, "1/29");
+    updateBowl('AA', "Nat Sciver", 1, 27, 2, "1/27");
+    updateBowl('AA', "Ben Stokes", 0, 17, 1, "0/17");
+    updateBowl('AA', "Mitchell Marsh", 0, 16, 1, "0/16");
+
+    changed = true;
+  }
+
   
   // RECALC ALL IN MIGRATION
   MULTI_DB.season8.table = [{"id":"AA","m":14,"w":9,"l":5,"nr":0,"pts":18,"nrr":2.6939},{"id":"AS","m":14,"w":2,"l":11,"nr":1,"pts":5,"nrr":-2.7226},{"id":"GB","m":14,"w":8,"l":6,"nr":0,"pts":16,"nrr":1.0758},{"id":"HH","m":14,"w":8,"l":6,"nr":0,"pts":16,"nrr":0.2193},{"id":"SM","m":14,"w":9,"l":5,"nr":0,"pts":18,"nrr":0.6682},{"id":"TT","m":14,"w":8,"l":6,"nr":0,"pts":16,"nrr":0.5665},{"id":"UU","m":14,"w":2,"l":11,"nr":1,"pts":5,"nrr":-4.2988},{"id":"VV","m":14,"w":9,"l":5,"nr":0,"pts":18,"nrr":1.4109}];
