@@ -29164,6 +29164,170 @@ if (!MULTI_DB) {
     changed = true;
   }
 
+
+  // Season 9 Match 4 migration
+  if (!MULTI_DB.season9.results.find(r => r.match === 4)) {
+    // Update table
+    const s9AA = MULTI_DB.season9.table.find(t => t.id === 'AA');
+    const s9AS = MULTI_DB.season9.table.find(t => t.id === 'AS');
+    
+    if (s9AA) { s9AA.m += 1; s9AA.w += 1; s9AA.pts += 2; }
+    if (s9AS) { s9AS.m += 1; s9AS.l += 1; }
+
+    // NRR Calculation
+    // AA: M1 (203/20, 185/20), M3 (245/20, 185/20), M4 (210/19, 105/19 - AS all out so quota is 19 or 20. Let's use 20 for AS all out and 20 for AA quota to be safe, but since AA played 19.0 overs we'll add 19 to faced and 20 for conceded)
+    // Actually standard BCL NRR is: total runs scored / total overs faced - total runs conceded / total overs bowled.
+    // If team is all out, overs = 20.
+    // AA: scored 203(20) + 245(20) + 210(19) = 658 / 59 = 11.1525
+    // AA: conceded 185(20) + 185(20) + 105(20) = 475 / 60 = 7.9166
+    // AA NRR = 11.1525 - 7.9166 = 3.2359
+    if (s9AA) { s9AA.nrr = 3.2359; }
+    
+    // AS: M4 (105/20 scored, 210/19 conceded)
+    // AS scored: 105 / 20 = 5.25
+    // AS conceded: 210 / 19 = 11.0526
+    // AS NRR = 5.25 - 11.0526 = -5.8026
+    if (s9AS) { s9AS.nrr = -5.8026; }
+
+    // Result + full scorecard
+    MULTI_DB.season9.results.push({
+      match:4, team1:"AA", team2:"AS", venue:"Headingley",
+      score1:"210/7", overs1:"19.0", score2:"105/10", overs2:"12.5",
+      winner:"AA", margin:"105 runs", mom:"Nat Sciver (AA) — 32* off 14 & 3/17",
+      scorecard:{
+        t1Inn:{
+          bat:[
+            {name:"David Warner",dismissal:"lbw Chahal",runs:23,balls:20},
+            {name:"Travis Head",dismissal:"c & b Chahal",runs:36,balls:19},
+            {name:"Q de Kock",dismissal:"lbw Yadav",runs:22,balls:13},
+            {name:"Mitchell Marsh",dismissal:"lbw Chahal",runs:24,balls:15},
+            {name:"Tim David",dismissal:"c Carey b Allen",runs:18,balls:10},
+            {name:"Aarav Roy",dismissal:"lbw Allen",runs:11,balls:6},
+            {name:"Will Jacks",dismissal:"c Carey b Gowtham",runs:14,balls:5},
+            {name:"Ben Stokes",dismissal:"not out",runs:18,balls:13},
+            {name:"Nat Sciver",dismissal:"not out",runs:32,balls:14},
+            {name:"Jasprit Bumrah",dismissal:"did not bat",runs:0,balls:0},
+            {name:"Varun Chakravarthy",dismissal:"did not bat",runs:0,balls:0}
+          ],
+          fow:[55,70,98,114,131,146,158],
+          extras:12,
+          bowl:[
+            {name:"Arshdeep Singh",overs:"4.0",dots:3,runs:47,wkts:0},
+            {name:"Fabian Allen",overs:"4.0",dots:5,runs:52,wkts:2},
+            {name:"Kuldeep Yadav",overs:"4.0",dots:4,runs:43,wkts:1},
+            {name:"Y Chahal",overs:"4.0",dots:6,runs:26,wkts:3},
+            {name:"Krishnappa Gowtham",overs:"3.0",dots:6,runs:34,wkts:1}
+          ]
+        },
+        t2Inn:{
+          bat:[
+            {name:"Danni Wyatt",dismissal:"lbw Siraj",runs:16,balls:16},
+            {name:"Rory Burns",dismissal:"b Jacks",runs:21,balls:13},
+            {name:"Arjun Potter",dismissal:"c de Kock b Siraj",runs:1,balls:2},
+            {name:"Joe Denly",dismissal:"c de Kock b Sciver",runs:23,balls:16},
+            {name:"Josh Inglis",dismissal:"b Jacks",runs:12,balls:5},
+            {name:"Krishnappa Gowtham",dismissal:"c de Kock b Sciver",runs:9,balls:6},
+            {name:"Fabian Allen",dismissal:"c de Kock b Sciver",runs:16,balls:9},
+            {name:"Alex Carey",dismissal:"c de Kock b Jacks",runs:4,balls:4},
+            {name:"Kyle Jamieson",dismissal:"not out",runs:0,balls:0},
+            {name:"Kuldeep Yadav",dismissal:"b Chakravarthy",runs:1,balls:5},
+            {name:"Arshdeep Singh",dismissal:"lbw Chakravarthy",runs:0,balls:1}
+          ],
+          fow:[36,38,44,62,84,87,96,104,105,105],
+          extras:2,
+          bowl:[
+            {name:"Mohd Siraj",overs:"3.0",dots:8,runs:20,wkts:2},
+            {name:"Jasprit Bumrah",overs:"2.0",dots:2,runs:21,wkts:0},
+            {name:"Will Jacks",overs:"3.0",dots:5,runs:29,wkts:3},
+            {name:"Varun Chakravarthy",overs:"2.5",dots:8,runs:16,wkts:2},
+            {name:"Nat Sciver",overs:"2.0",dots:5,runs:17,wkts:3}
+          ]
+        }
+      }
+    });
+
+    // Update Batting stats
+    const updateBat = (team, name, runs, isOut) => {
+      let b = MULTI_DB.season9.batting.find(x => x.name === name && x.team === team);
+      if (!b) {
+        b = {name, team, inn:0, runs:0, hs:0, avg:0, sr:0, fifties:0, hundreds:0, mom:0, catches:0, dismissals:0, mostCommonPos:1};
+        MULTI_DB.season9.batting.push(b);
+      }
+      b.inn += 1;
+      b.runs += runs;
+      b.hs = Math.max(b.hs, runs);
+      b.dismissals += (isOut ? 1 : 0);
+      b.avg = b.dismissals > 0 ? b.runs / b.dismissals : b.runs;
+      if (runs >= 50 && runs < 100) b.fifties += 1;
+      if (runs >= 100) b.hundreds += 1;
+    };
+    
+    updateBat('AA', "David Warner", 23, true);
+    updateBat('AA', "Travis Head", 36, true);
+    updateBat('AA', "Q de Kock", 22, true);
+    updateBat('AA', "Mitchell Marsh", 24, true);
+    updateBat('AA', "Tim David", 18, true);
+    updateBat('AA', "Aarav Roy", 11, true);
+    updateBat('AA', "Will Jacks", 14, true);
+    updateBat('AA', "Ben Stokes", 18, false);
+    updateBat('AA', "Nat Sciver", 32, false);
+    
+    let ns = MULTI_DB.season9.batting.find(x => x.name === "Nat Sciver" && x.team === 'AA');
+    if (ns) ns.mom += 1;
+    
+    updateBat('AS', "Danni Wyatt", 16, true);
+    updateBat('AS', "Rory Burns", 21, true);
+    updateBat('AS', "Arjun Potter", 1, true);
+    updateBat('AS', "Joe Denly", 23, true);
+    updateBat('AS', "Josh Inglis", 12, true);
+    updateBat('AS', "Krishnappa Gowtham", 9, true);
+    updateBat('AS', "Fabian Allen", 16, true);
+    updateBat('AS', "Alex Carey", 4, true);
+    updateBat('AS', "Kyle Jamieson", 0, false);
+    updateBat('AS', "Kuldeep Yadav", 1, true);
+    updateBat('AS', "Arshdeep Singh", 0, true);
+
+    // Update Bowling stats
+    const updateBowl = (team, name, wkts, runs, overs, bbi) => {
+      let b = MULTI_DB.season9.bowling.find(x => x.name === name && x.team === team);
+      if (!b) {
+        b = {name, team, inn:0, wkts:0, bbi:"0/0", avg:0, econ:0, sr:0, fourW:0, overs:0};
+        MULTI_DB.season9.bowling.push(b);
+      }
+      b.inn += 1;
+      b.wkts += wkts;
+      let totalRuns = (b.econ * (b.overs||0)) + runs;
+      b.overs = (b.overs||0) + overs;
+      b.econ = totalRuns / b.overs;
+      b.avg = b.wkts > 0 ? totalRuns / b.wkts : 0;
+      if (wkts >= 4) b.fourW += 1;
+      
+      let oldW = 0, oldR = 0;
+      if (b.bbi) {
+        let parts = b.bbi.split('/');
+        oldW = parseInt(parts[0]) || 0;
+        oldR = parseInt(parts[1]) || 0;
+      }
+      if (wkts > oldW || (wkts === oldW && runs < oldR)) {
+        b.bbi = bbi;
+      }
+    };
+    
+    updateBowl('AS', "Arshdeep Singh", 0, 47, 4, "0/47");
+    updateBowl('AS', "Fabian Allen", 2, 52, 4, "2/52");
+    updateBowl('AS', "Kuldeep Yadav", 1, 43, 4, "1/43");
+    updateBowl('AS', "Y Chahal", 3, 26, 4, "3/26");
+    updateBowl('AS', "Krishnappa Gowtham", 1, 34, 3, "1/34");
+    
+    updateBowl('AA', "Mohd Siraj", 2, 20, 3, "2/20");
+    updateBowl('AA', "Jasprit Bumrah", 0, 21, 2, "0/21");
+    updateBowl('AA', "Will Jacks", 3, 29, 3, "3/29");
+    updateBowl('AA', "Varun Chakravarthy", 2, 16, 2.833, "2/16");
+    updateBowl('AA', "Nat Sciver", 3, 17, 2, "3/17");
+
+    changed = true;
+  }
+
   
   // RECALC ALL IN MIGRATION
   MULTI_DB.season8.table = [{"id":"AA","m":14,"w":9,"l":5,"nr":0,"pts":18,"nrr":2.6939},{"id":"AS","m":14,"w":2,"l":11,"nr":1,"pts":5,"nrr":-2.7226},{"id":"GB","m":14,"w":8,"l":6,"nr":0,"pts":16,"nrr":1.0758},{"id":"HH","m":14,"w":8,"l":6,"nr":0,"pts":16,"nrr":0.2193},{"id":"SM","m":14,"w":9,"l":5,"nr":0,"pts":18,"nrr":0.6682},{"id":"TT","m":14,"w":8,"l":6,"nr":0,"pts":16,"nrr":0.5665},{"id":"UU","m":14,"w":2,"l":11,"nr":1,"pts":5,"nrr":-4.2988},{"id":"VV","m":14,"w":9,"l":5,"nr":0,"pts":18,"nrr":1.4109}];
