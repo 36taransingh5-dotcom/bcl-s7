@@ -1216,7 +1216,7 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   <section>
     <div class="tab-filters">
       <button class="filter-btn active" onclick="setLocalFilter('table', 'season9', this)">Season 9</button>
-      <button class="filter-btn" onclick="setLocalFilter('table', 'season8', this)">Season 9</button>
+      <button class="filter-btn" onclick="setLocalFilter('table', 'season8', this)">Season 8</button>
       <button class="filter-btn" onclick="setLocalFilter('table', 'season7', this)">Season 7</button>
       
     </div>
@@ -1234,7 +1234,7 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   <section>
     <div class="tab-filters">
       <button class="filter-btn active" onclick="setLocalFilter('results', 'season9', this)">Season 9</button>
-      <button class="filter-btn" onclick="setLocalFilter('results', 'season8', this)">Season 9</button>
+      <button class="filter-btn" onclick="setLocalFilter('results', 'season8', this)">Season 8</button>
       <button class="filter-btn" onclick="setLocalFilter('results', 'season7', this)">Season 7</button>
       
     </div>
@@ -1248,7 +1248,7 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   <section>
     <div class="tab-filters">
       <button class="filter-btn active" onclick="setLocalFilter('schedule', 'season9', this)">Season 9</button>
-      <button class="filter-btn" onclick="setLocalFilter('schedule', 'season8', this)">Season 9</button>
+      <button class="filter-btn" onclick="setLocalFilter('schedule', 'season8', this)">Season 8</button>
       <button class="filter-btn" onclick="setLocalFilter('schedule', 'season7', this)">Season 7</button>
     </div>
     <div class="st">League Schedule</div>
@@ -1265,7 +1265,7 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   <section>
     <div class="tab-filters">
       <button class="filter-btn active" onclick="setLocalFilter('squads', 'season9', this)">Season 9</button>
-      <button class="filter-btn" onclick="setLocalFilter('squads', 'season8', this)">Season 9</button>
+      <button class="filter-btn" onclick="setLocalFilter('squads', 'season8', this)">Season 8</button>
       <button class="filter-btn" onclick="setLocalFilter('squads', 'season7', this)">Season 7</button>
       
     </div>
@@ -1280,7 +1280,7 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
     <div style="display:flex; flex-direction:column; gap:12px;">
       <div class="tab-filters" style="margin-bottom:0;">
         <button class="filter-btn active" onclick="setLocalFilter('stats', 'season9', this)">Season 9</button>
-      <button class="filter-btn" onclick="setLocalFilter('stats', 'season8', this)">Season 9</button>
+      <button class="filter-btn" onclick="setLocalFilter('stats', 'season8', this)">Season 8</button>
         <button class="filter-btn" onclick="setLocalFilter('stats', 'season7', this)">Season 7</button>
         <button class="filter-btn" onclick="setLocalFilter('stats', 'overall', this)">Overall</button>
       </div>
@@ -1325,7 +1325,7 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   <section>
     <div class="tab-filters">
       <button class="filter-btn active" onclick="setLocalFilter('compare', 'season9', this)">Season 9</button>
-      <button class="filter-btn" onclick="setLocalFilter('compare', 'season8', this)">Season 9</button>
+      <button class="filter-btn" onclick="setLocalFilter('compare', 'season8', this)">Season 8</button>
       <button class="filter-btn" onclick="setLocalFilter('compare', 'season7', this)">Season 7</button>
       <button class="filter-btn" onclick="setLocalFilter('compare', 'overall', this)">Overall</button>
     </div>
@@ -1369,7 +1369,7 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   <section>
     <div class="tab-filters">
       <button class="filter-btn active" onclick="setLocalFilter('stories', 'season9', this)">Season 9</button>
-      <button class="filter-btn" onclick="setLocalFilter('stories', 'season8', this)">Season 9</button>
+      <button class="filter-btn" onclick="setLocalFilter('stories', 'season8', this)">Season 8</button>
       <button class="filter-btn" onclick="setLocalFilter('stories', 'season7', this)">Season 7</button>
     </div>
     <div class="st">Team Stories & Narratives</div>
@@ -1388,7 +1388,7 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   <section>
     <div class="tab-filters">
       <button class="filter-btn active" onclick="setLocalFilter('playoffs', 'season9', this)">Season 9</button>
-      <button class="filter-btn" onclick="setLocalFilter('playoffs', 'season8', this)">Season 9</button>
+      <button class="filter-btn" onclick="setLocalFilter('playoffs', 'season8', this)">Season 8</button>
       <button class="filter-btn" onclick="setLocalFilter('playoffs', 'season7', this)">Season 7</button>
     </div>
     <div class="st">Knockout Stage</div>
@@ -1401,7 +1401,7 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   <section>
     <div class="tab-filters">
       <button class="filter-btn active" onclick="setLocalFilter('awards', 'season9', this)">Season 9</button>
-      <button class="filter-btn" onclick="setLocalFilter('awards', 'season8', this)">Season 9</button>
+      <button class="filter-btn" onclick="setLocalFilter('awards', 'season8', this)">Season 8</button>
       <button class="filter-btn" onclick="setLocalFilter('awards', 'season7', this)">Season 7</button>
     </div>
     <div class="st">Tournament Awards</div>
@@ -13216,7 +13216,8 @@ if (!MULTI_DB) {
     }
   };
     changed = true;
-  } else if (MULTI_DB.season8) {
+  }
+  if (MULTI_DB.season8) {
   let changed = false;
   if (!MULTI_DB.season9) {
     MULTI_DB.season9 = {
