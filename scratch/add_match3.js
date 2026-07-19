@@ -1,67 +1,91 @@
 const fs = require('fs');
-let html = fs.readFileSync('/Users/taran/Desktop/EX-Desktop/minicw/bcl/index.html', 'utf8');
 
-const seedStart = html.indexOf('const SEED = {');
-const seedEnd = html.indexOf('\nlet DB', seedStart);
-const seed = JSON.parse(html.slice(seedStart + 'const SEED = '.length, seedEnd).trim().replace(/;$/, ''));
+let currentHtml = fs.readFileSync('index.html', 'utf8');
 
-// Update Match 3
-const matchIndex = seed.results.findIndex(r => r.match === 3);
-if (matchIndex !== -1) {
-    seed.results[matchIndex].scorecard = {
-        t1Inn: { // VV Batting
-            bat: [
-                { name: "Rohit Sharma",     dismissal: "b Singh",               runs: 8,  balls: 4 },
-                { name: "KL Rahul",         dismissal: "b Chakravarthy",        runs: 0,  balls: 1 },
-                { name: "Virat Kohli",      dismissal: "b Shami",               runs: 71, balls: 33 },
-                { name: "Yashasvi Jaiswal", dismissal: "c Samson b Chakravarthy", runs: 4,  balls: 3 },
-                { name: "Joe Root",         dismissal: "lbw Shami",             runs: 56, balls: 21 },
-                { name: "Vivaan Armstrong", dismissal: "c Joseph b Shami",      runs: 0,  balls: 1 },
-                { name: "Rachin Ravindra",  dismissal: "c Chakravarthy b Pandya", runs: 20, balls: 14 },
-                { name: "Alyssa Healy",     dismissal: "b Chakravarthy",        runs: 24, balls: 12 },
-                { name: "Mitchell Santner", dismissal: "c Pandya b Singh",      runs: 17, balls: 13 },
-                { name: "Kagiso Rabada",    dismissal: "not out",               runs: 9,  balls: 9 },
-                { name: "Matt Henry",       dismissal: "not out",               runs: 5,  balls: 8 }
-            ],
-            fow: [],
-            extras: 6,
-            bowl: [
-                { name: "Yuvraj Singh",       overs: "3.4", dots: 0, runs: 36, wkts: 2 },
-                { name: "Varun Chakravarthy", overs: "4.0", dots: 0, runs: 48, wkts: 3 },
-                { name: "Alzarri Joseph",     overs: "3.0", dots: 0, runs: 42, wkts: 0 },
-                { name: "Ravi Shastri",       overs: "1.0", dots: 0, runs: 14, wkts: 0 },
-                { name: "Mohammed Shami",     overs: "4.0", dots: 0, runs: 48, wkts: 3 },
-                { name: "Hardik Pandya",      overs: "4.0", dots: 0, runs: 32, wkts: 1 }
-            ]
-        },
-        t2Inn: { // TT Batting
-            bat: [
-                { name: "Sanju Samson",          dismissal: "lbw Rabada",       runs: 58, balls: 42 },
-                { name: "Laura Wolvaardt",       dismissal: "c Boult b Henry",  runs: 29, balls: 19 },
-                { name: "Yuvraj Singh",          dismissal: "lbw Ravindra",     runs: 16, balls: 10 },
-                { name: "Aiden Markram",         dismissal: "c Healy b Rabada", runs: 26, balls: 11 },
-                { name: "Rassie van der Dussen", dismissal: "lbw Henry",        runs: 53, balls: 24 },
-                { name: "Hardik Pandya",         dismissal: "c Henry b Boult",  runs: 13, balls: 6 },
-                { name: "Dewald Brevis",         dismissal: "c Healy b Santner",runs: 15, balls: 7 },
-                { name: "Ravi Shastri",          dismissal: "not out",          runs: 4,  balls: 3 },
-                { name: "Mohammed Shami",        dismissal: "not out",          runs: 2,  balls: 1 },
-                { name: "Varun Chakravarthy",    dismissal: "did not bat",      runs: 0,  balls: 0 },
-                { name: "Alzarri Joseph",        dismissal: "did not bat",      runs: 0,  balls: 0 }
-            ],
-            fow: [],
-            extras: 3,
-            bowl: [
-                { name: "Rachin Ravindra",  overs: "4.0", dots: 0, runs: 43, wkts: 1 },
-                { name: "Trent Boult",      overs: "4.0", dots: 0, runs: 35, wkts: 1 },
-                { name: "Kagiso Rabada",    overs: "4.0", dots: 0, runs: 53, wkts: 2 },
-                { name: "Matt Henry",       overs: "4.0", dots: 0, runs: 43, wkts: 2 },
-                { name: "Mitchell Santner", overs: "4.0", dots: 0, runs: 45, wkts: 1 }
-            ]
-        }
-    };
-    console.log('Match 3 scorecard added.');
+const resultsMatch = currentHtml.match(/results:\s*(\[[\s\S]*?\]),\s*batting:/);
+if (!resultsMatch) {
+    console.error("Could not find results array.");
+    process.exit(1);
 }
 
-const newSeedStr = JSON.stringify(seed, null, 2);
-html = html.slice(0, seedStart + 'const SEED = '.length) + newSeedStr + ';\n' + html.slice(seedEnd + 1);
-fs.writeFileSync('/Users/taran/Desktop/EX-Desktop/minicw/bcl/index.html', html);
+// Ensure we match MULTI_DB.season9.results correctly
+const season9ResultsMatch = currentHtml.match(/MULTI_DB\.season9\.results = (\[[\s\S]*?\]);/);
+let season9Results = season9ResultsMatch ? JSON.parse(season9ResultsMatch[1]) : [];
+
+// Check if match 3 is already there
+if (season9Results.find(r => r.match === 3)) {
+    console.log("Match 3 already exists. Removing it to re-add.");
+    season9Results = season9Results.filter(r => r.match !== 3);
+}
+
+const match3Data = {
+    match: 3,
+    team1: "GB",
+    team2: "AA",
+    venue: "Rajiv Gandhi International Cricket Stadium",
+    score1: "226/7",
+    overs1: "20.0",
+    score2: "219/9",
+    overs2: "20.0",
+    winner: "GB",
+    margin: "7 runs",
+    mom: "Ellyse Perry (GB) — 119 (66)",
+    scorecard: {
+        t1Inn: {
+            bat: [
+                { name: "Smriti Mandhana", dismissal: "b BUMRAH", runs: 5, balls: 4 },
+                { name: "Ishan Kishan", dismissal: "c MARSH b BUMRAH", runs: 18, balls: 9 },
+                { name: "Ellyse Perry", dismissal: "not out", runs: 119, balls: 66 },
+                { name: "Glenn Maxwell", dismissal: "b SIRAJ", runs: 1, balls: 3 },
+                { name: "Grant Bauer", dismissal: "b JACKS", runs: 4, balls: 4 },
+                { name: "Abhishek Sharma", dismissal: "lbw SCIVER", runs: 40, balls: 16 },
+                { name: "Ravindra Jadeja", dismissal: "c STOKES b CHAKRAVARTHY", runs: 20, balls: 6 },
+                { name: "Shashank Singh", dismissal: "c DE KOCK b JACKS", runs: 5, balls: 5 },
+                { name: "Marco Jansen", dismissal: "not out", runs: 13, balls: 8 },
+                { name: "Noor Ahmad", dismissal: "did not bat", runs: 0, balls: 0 },
+                { name: "Bhuvneshwar Kumar", dismissal: "did not bat", runs: 0, balls: 0 }
+            ],
+            bowl: [
+                { name: "Mohd Siraj", overs: "4.0", maidens: 0, runs: 48, wkts: 1 },
+                { name: "Jasprit Bumrah", overs: "4.0", maidens: 0, runs: 31, wkts: 2 },
+                { name: "Will Jacks", overs: "4.0", maidens: 0, runs: 53, wkts: 2 },
+                { name: "Varun Chakravarthy", overs: "4.0", maidens: 0, runs: 51, wkts: 1 },
+                { name: "Nat Sciver", overs: "4.0", maidens: 0, runs: 43, wkts: 1 }
+            ],
+            fow: "1-17, 2-38, 3-39, 4-54, 5-140, 6-181, 7-203"
+        },
+        t2Inn: {
+            bat: [
+                { name: "David Warner", dismissal: "run out MANDHANA", runs: 62, balls: 29 },
+                { name: "Travis Head", dismissal: "lbw JANSEN", runs: 16, balls: 12 },
+                { name: "Q de Kock", dismissal: "c JADEJA b AHMAD", runs: 4, balls: 6 },
+                { name: "Mitchell Marsh", dismissal: "c SHARMA b SINGH", runs: 5, balls: 3 },
+                { name: "Tim David", dismissal: "c KISHAN b JADEJA", runs: 27, balls: 14 },
+                { name: "Will Jacks", dismissal: "c KISHAN b AHMAD", runs: 6, balls: 4 },
+                { name: "Ben Stokes", dismissal: "b SINGH", runs: 49, balls: 21 },
+                { name: "Aarav Roy", dismissal: "lbw JADEJA", runs: 29, balls: 21 },
+                { name: "Nat Sciver", dismissal: "lbw KUMAR", runs: 17, balls: 7 },
+                { name: "Jasprit Bumrah", dismissal: "not out", runs: 1, balls: 1 },
+                { name: "Mohd Siraj", dismissal: "not out", runs: 1, balls: 2 }
+            ],
+            bowl: [
+                { name: "Bhuvneshwar Kumar", overs: "4.0", maidens: 0, runs: 46, wkts: 1 },
+                { name: "Marco Jansen", overs: "4.0", maidens: 0, runs: 50, wkts: 1 },
+                { name: "Noor Ahmad", overs: "4.0", maidens: 0, runs: 31, wkts: 2 },
+                { name: "Harbhajan Singh", overs: "4.0", maidens: 0, runs: 50, wkts: 2 },
+                { name: "Ravindra Jadeja", overs: "4.0", maidens: 0, runs: 40, wkts: 2 }
+            ],
+            fow: "1-46, 2-66, 3-73, 4-106, 5-119, 6-123, 7-189, 8-210, 9-218"
+        }
+    }
+};
+
+season9Results.push(match3Data);
+
+currentHtml = currentHtml.replace(
+    /MULTI_DB\.season9\.results = \[[\s\S]*?\];/,
+    `MULTI_DB.season9.results = ${JSON.stringify(season9Results)};`
+);
+
+fs.writeFileSync('index.html', currentHtml);
+console.log("Match 3 data successfully injected into index.html!");
