@@ -2,81 +2,87 @@ const fs = require('fs');
 
 let currentHtml = fs.readFileSync('index.html', 'utf8');
 
-const resultsMatch = currentHtml.match(/results:\s*(\[[\s\S]*?\]),\s*batting:/);
-if (!resultsMatch) {
-    console.error("Could not find results array.");
+const season9ResultsMatch = currentHtml.match(/MULTI_DB\.season9\.results = (\[[\s\S]*?\]);/);
+if (!season9ResultsMatch) {
+    console.error("Could not find MULTI_DB.season9.results array.");
     process.exit(1);
 }
 
-let results = eval(resultsMatch[1]);
-results = results.filter(m => m.match !== 7);
+let season9Results = JSON.parse(season9ResultsMatch[1]);
 
-const newMatch = {
-  "match": 7,
-  "team1": "AS",
-  "team2": "SM",
-  "score1": "193/7",
-  "overs1": "20.0",
-  "score2": "114/10",
-  "overs2": "11.2",
-  "winner": "AS",
-  "margin": "79 runs",
-  "mom": "Josh Philippe (AS) — 70 (41)",
-  "scorecard": {
-    "t1Inn": {
-      "bat": [
-        { "name": "Danni Wyatt", "dismissal": "b NARINE", "runs": 30, "balls": 11 },
-        { "name": "Rory Burns", "dismissal": "lbw STARC", "runs": 1, "balls": 2 },
-        { "name": "Mahipal Lomror", "dismissal": "run out GAMBHIR", "runs": 29, "balls": 21 },
-        { "name": "Joe Denly", "dismissal": "b CURRAN", "runs": 13, "balls": 9 },
-        { "name": "Josh Philippe", "dismissal": "lbw STARC", "runs": 70, "balls": 41 },
-        { "name": "Arjun Potter", "dismissal": "lbw CURRAN", "runs": 4, "balls": 4 },
-        { "name": "Krishnappa Gowtham", "dismissal": "b DOTTIN", "runs": 12, "balls": 11 },
-        { "name": "Alex Carey", "dismissal": "not out", "runs": 32, "balls": 18 },
-        { "name": "Arshdeep Singh", "dismissal": "not out", "runs": 2, "balls": 3 },
-        { "name": "Y Chahal", "dismissal": "did not bat", "runs": 0, "balls": 0 },
-        { "name": "Kuldeep Yadav", "dismissal": "did not bat", "runs": 0, "balls": 0 }
-      ],
-      "bowl": [
-        { "name": "Sunil Narine", "overs": "3.0", "maidens": 0, "runs": 49, "wkts": 1 },
-        { "name": "Mitchell Starc", "overs": "4.0", "maidens": 0, "runs": 26, "wkts": 2 },
-        { "name": "Liam Dawson", "overs": "4.0", "maidens": 0, "runs": 42, "wkts": 0 },
-        { "name": "Tom Curran", "overs": "4.0", "maidens": 0, "runs": 35, "wkts": 2 },
-        { "name": "Andre Russell", "overs": "2.0", "maidens": 0, "runs": 20, "wkts": 0 },
-        { "name": "Deandra Dottin", "overs": "3.0", "maidens": 0, "runs": 21, "wkts": 1 }
-      ],
-      "fow": "1-14, 2-32, 3-61, 4-84, 5-110, 6-156, 7-180"
-    },
-    "t2Inn": {
-      "bat": [
-        { "name": "Sunil Narine", "dismissal": "c CAREY b GOWTHAM", "runs": 15, "balls": 7 },
-        { "name": "Yashasvi Jaiswal", "dismissal": "b GOWTHAM", "runs": 6, "balls": 4 },
-        { "name": "Gautam Gambhir", "dismissal": "c CAREY b SINGH", "runs": 5, "balls": 3 },
-        { "name": "Sanju Samson", "dismissal": "c LOMROR b CHAHAL", "runs": 23, "balls": 12 },
-        { "name": "Andre Russell", "dismissal": "b YADAV", "runs": 15, "balls": 8 },
-        { "name": "Shivam Dube", "dismissal": "b CHAHAL", "runs": 5, "balls": 4 },
-        { "name": "Shreyas Iyer", "dismissal": "lbw CHAHAL", "runs": 12, "balls": 8 },
-        { "name": "Deandra Dottin", "dismissal": "b YADAV", "runs": 15, "balls": 6 },
-        { "name": "Shane Miller", "dismissal": "lbw CHAHAL", "runs": 7, "balls": 9 },
-        { "name": "Mitchell Starc", "dismissal": "c CAREY b GOWTHAM", "runs": 9, "balls": 5 },
-        { "name": "Liam Dawson", "dismissal": "not out", "runs": 2, "balls": 2 }
-      ],
-      "bowl": [
-        { "name": "Arshdeep Singh", "overs": "2.0", "maidens": 0, "runs": 28, "wkts": 1 },
-        { "name": "Krishnappa Gowtham", "overs": "3.0", "maidens": 0, "runs": 32, "wkts": 3 },
-        { "name": "Kuldeep Yadav", "overs": "3.0", "maidens": 0, "runs": 31, "wkts": 2 },
-        { "name": "Y Chahal", "overs": "3.2", "maidens": 0, "runs": 23, "wkts": 4 }
-      ],
-      "fow": "1-15, 2-24, 3-26, 4-58, 5-65, 6-81, 7-82, 8-98, 9-108, 10-114"
+if (season9Results.find(r => r.match === 7)) {
+    console.log("Match 7 already exists. Removing it to re-add.");
+    season9Results = season9Results.filter(r => r.match !== 7);
+}
+
+const match7Data = {
+    match: 7,
+    team1: "AS",
+    team2: "HH",
+    venue: "Providence Stadium",
+    score1: "174/10",
+    overs1: "18.2",
+    score2: "178/7",
+    overs2: "19.3",
+    winner: "HH",
+    margin: "3 wickets",
+    mom: "Krunal Pandya (HH) — 20 & 2/33",
+    scorecard: {
+        t1Inn: {
+            bat: [
+                { name: "Jason Roy", dismissal: "b JONASSEN", runs: 53, balls: 31 },
+                { name: "Arjun Potter", dismissal: "c & b HAZLEWOOD", runs: 0, balls: 1 },
+                { name: "Josh Inglis", dismissal: "lbw JONASSEN", runs: 15, balls: 10 },
+                { name: "Andrew Strauss", dismissal: "c RICKELTON b SWEPSON", runs: 30, balls: 14 },
+                { name: "Joe Denly", dismissal: "b SWEPSON", runs: 4, balls: 2 },
+                { name: "Nitish Reddy", dismissal: "c & b PATEL", runs: 17, balls: 8 },
+                { name: "Rilee Rossouw", dismissal: "c DHAWAN b PANDYA", runs: 41, balls: 24 },
+                { name: "Fabian Allen", dismissal: "b SWEPSON", runs: 7, balls: 6 },
+                { name: "Blessing Muzarabani", dismissal: "c RICKELTON b PATEL", runs: 6, balls: 9 },
+                { name: "Kuldeep Yadav", dismissal: "c JONASSEN b PANDYA", runs: 1, balls: 5 },
+                { name: "Arshdeep Singh", dismissal: "not out", runs: 0, balls: 0 }
+            ],
+            bowl: [
+                { name: "Josh Hazlewood", overs: "4.0", maidens: 0, runs: 30, wkts: 1 },
+                { name: "Jess Jonassen", overs: "4.0", maidens: 0, runs: 41, wkts: 2 },
+                { name: "Krunal Pandya", overs: "3.2", maidens: 0, runs: 33, wkts: 2 },
+                { name: "Mitchell Swepson", overs: "4.0", maidens: 0, runs: 38, wkts: 3 },
+                { name: "Axar Patel", overs: "3.0", maidens: 0, runs: 32, wkts: 2 }
+            ],
+            fow: "1-1, 2-34, 3-80, 4-84, 5-101, 6-156, 7-160, 8-172, 9-174, 10-174"
+        },
+        t2Inn: {
+            bat: [
+                { name: "Shikhar Dhawan", dismissal: "c & b MUZARABANI", runs: 15, balls: 6 },
+                { name: "Sai Sudharsan", dismissal: "c INGLIS b MUZARABANI", runs: 21, balls: 12 },
+                { name: "Steve Smith", dismissal: "c REDDY b YADAV", runs: 43, balls: 21 },
+                { name: "Suryakumar Yadav", dismissal: "c MUZARABANI b CHAHAL", runs: 23, balls: 17 },
+                { name: "Ryan Rickelton", dismissal: "not out", runs: 37, balls: 27 },
+                { name: "Shubman Gill", dismissal: "lbw ALLEN", runs: 5, balls: 5 },
+                { name: "Axar Patel", dismissal: "c REDDY b CHAHAL", runs: 2, balls: 6 },
+                { name: "Krunal Pandya", dismissal: "b ALLEN", runs: 20, balls: 18 },
+                { name: "Heinrich Klaasen", dismissal: "not out", runs: 8, balls: 6 },
+                { name: "Jess Jonassen", dismissal: "did not bat", runs: 0, balls: 0 },
+                { name: "Josh Hazlewood", dismissal: "did not bat", runs: 0, balls: 0 }
+            ],
+            bowl: [
+                { name: "Arshdeep Singh", overs: "3.3", maidens: 0, runs: 44, wkts: 0 },
+                { name: "Blessing Muzarabani", overs: "4.0", maidens: 0, runs: 48, wkts: 2 },
+                { name: "Kuldeep Yadav", overs: "4.0", maidens: 0, runs: 24, wkts: 1 },
+                { name: "Y Chahal", overs: "4.0", maidens: 0, runs: 24, wkts: 2 },
+                { name: "Fabian Allen", overs: "4.0", maidens: 0, runs: 35, wkts: 2 }
+            ],
+            fow: "1-29, 2-54, 3-100, 4-104, 5-120, 6-123, 7-161"
+        }
     }
-  }
 };
 
-results.push(newMatch);
+season9Results.push(match7Data);
 
-const newResultsStr = "results: " + JSON.stringify(results, null, 8).replace(/\n/g, '\n      ') + ",\n      batting:";
-
-currentHtml = currentHtml.replace(/results:\s*\[[\s\S]*?\],\s*batting:/, newResultsStr);
+currentHtml = currentHtml.replace(
+    /MULTI_DB\.season9\.results = \[[\s\S]*?\];/,
+    `MULTI_DB.season9.results = ${JSON.stringify(season9Results)};`
+);
 
 fs.writeFileSync('index.html', currentHtml);
-console.log("Match 7 added successfully!");
+console.log("Match 7 (Season 9) data successfully injected into index.html!");
