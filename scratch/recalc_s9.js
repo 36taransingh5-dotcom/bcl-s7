@@ -22,7 +22,7 @@ try {
 }
 
 // 1. Recalculate Table (M, W, L, Pts)
-const TEAM_IDS = ["AA", "AS", "GB", "HH", "SM", "TT", "UU", "VV"];
+const TEAM_IDS = ["AA", "AS", "GB", "HH", "SM", "TT", "VV"];
 const table = TEAM_IDS.map(id => ({ id, m: 0, w: 0, l: 0, nr: 0, pts: 0, nrr: 0 }));
 
 results.forEach(m => {
