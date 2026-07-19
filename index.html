@@ -20107,14 +20107,6 @@ function toggleBclBuddy() {
   document.getElementById('bclBuddyPanel').classList.toggle('active');
 }
 
-function decodeAIKey() {
-  const p1 = "c2staGMtdjEt";
-  const p2 = "MTI4NDhhODA2OTE5";
-  const p3 = "NDUwYTk1ODQ3NmNjYjJhYzMxOTczNTUxOTE3";
-  const p4 = "NmM0ODg0MGEwOTJiYTYzZjhjZDJkOGQzNA==";
-  return atob(p1) + atob(p2) + atob(p3) + atob(p4);
-}
-
 function appendBclMessage(sender, text) {
   const container = document.getElementById('bclBuddyMessages');
   const typing = document.getElementById('bbTyping');
@@ -20161,88 +20153,182 @@ function appendTypingIndicator() {
   container.scrollTop = container.scrollHeight;
 }
 
-function getSimulatedResponse(text) {
-  const txt = text.toLowerCase();
-  const db = MULTI_DB.season8.results;
-  
-  if (txt.includes('best team')) {
-    return "It's hard to pick just one! Aarnav Aces (AA) have been dominant with some huge margins, and Vivaan Vipers (VV) have also pulled off incredible chases. [MATCH: 25]";
-  }
-  if (txt.includes('highest score') || txt.includes('most runs')) {
-    return "The highest individual score we've seen so far is Trevor Singh's 91 off 41 balls for Taran Tranquils! [MATCH: 24]";
-  }
-  if (txt.includes('chase') || txt.includes('crazy chase')) {
-    return "Vivaan Vipers chased down 189 easily against Taran Tranquils! Quinton de Kock smashed 73 runs off 28 balls! [MATCH: 2]";
-  }
-  if (txt.includes('aarnav') && txt.includes('urvaksh')) {
-    return "In their first matchup, Urvaksh Uttamnagris were bowled out for 91. Aarnav Aces chased it down easily, winning by 7 wickets! Nat Sciver was the hero. [MATCH: 5]";
-  }
-  if (txt.match(/match\s*(\d+)/)) {
-    const m = txt.match(/match\s*(\d+)/)[1];
-    const matchData = db.find(x => x.match == m);
-    if(matchData) {
-      return `Ah, Match ${m}! ${matchData.winner} won by ${matchData.margin}. The Man of the Match was ${matchData.mom}! [MATCH: ${m}]`;
-    }
-    return `I don't have the details for Match ${m} right now.`;
-  }
-  
-  return "I'm still learning! My live connection to the Hack Club AI is blocked by your browser's security policies, so I'm using my offline backup brain. Try asking about 'the best team', 'highest score', 'crazy chase', or a specific match like 'match 24'!";
+const BB_SEASON_ORDER = ['season9', 'season8', 'season7'];
+const BB_CURRENT_SEASON = 'season9';
+
+function bbSeasonLabel(s) { return s.replace('season', 'Season '); }
+
+function bbMatchInSeason(season, m) {
+  const db = MULTI_DB[season];
+  if (!db || !db.results) return null;
+  return db.results.find(r => String(r.match) === String(m)) || null;
 }
 
-async function sendBclBuddyMessage() {
+function bbFindMatchAnySeason(m) {
+  for (const s of BB_SEASON_ORDER) {
+    const match = bbMatchInSeason(s, m);
+    if (match) return { season: s, match };
+  }
+  return null;
+}
+
+function bbPointsLeader(season) {
+  const db = MULTI_DB[season];
+  if (!db || !db.table || !db.table.length) return null;
+  return [...db.table].sort((a, b) => b.pts - a.pts || b.nrr - a.nrr)[0];
+}
+
+function bbTopBatter(season) {
+  const db = MULTI_DB[season];
+  if (!db || !db.batting || !db.batting.length) return null;
+  return [...db.batting].sort((a, b) => b.runs - a.runs)[0];
+}
+
+function bbTopBowler(season) {
+  const db = MULTI_DB[season];
+  if (!db || !db.bowling || !db.bowling.length) return null;
+  return [...db.bowling].sort((a, b) => b.wkts - a.wkts)[0];
+}
+
+function bbHighestIndividualScore(season) {
+  const db = MULTI_DB[season];
+  if (!db || !db.results) return null;
+  let best = null;
+  db.results.forEach(r => {
+    if (!r.scorecard) return;
+    [r.scorecard.t1Inn, r.scorecard.t2Inn].forEach(inn => {
+      if (!inn || !inn.bat) return;
+      inn.bat.forEach(b => {
+        if (!best || b.runs > best.runs) best = { ...b, match: r.match };
+      });
+    });
+  });
+  return best;
+}
+
+function bbBestBowlingFigures(season) {
+  const db = MULTI_DB[season];
+  if (!db || !db.results) return null;
+  let best = null;
+  db.results.forEach(r => {
+    if (!r.scorecard) return;
+    [r.scorecard.t1Inn, r.scorecard.t2Inn].forEach(inn => {
+      if (!inn || !inn.bowl) return;
+      inn.bowl.forEach(b => {
+        if (!best || b.wkts > best.wkts || (b.wkts === best.wkts && b.runs < best.runs)) {
+          best = { ...b, match: r.match };
+        }
+      });
+    });
+  });
+  return best;
+}
+
+function bbHeadToHead(season, id1, id2) {
+  const db = MULTI_DB[season];
+  if (!db || !db.results) return [];
+  return db.results.filter(r =>
+    (r.team1 === id1 && r.team2 === id2) || (r.team1 === id2 && r.team2 === id1)
+  );
+}
+
+function bbTeamsMentioned(txt) {
+  return ALL_TEAMS.filter(t =>
+    txt.includes(t.name.toLowerCase()) || new RegExp(`\\b${t.id.toLowerCase()}\\b`).test(txt)
+  );
+}
+
+function getSmartResponse(text) {
+  const txt = text.toLowerCase();
+
+  const matchNumMatch = txt.match(/match\s*#?\s*(\d+)/);
+  if (matchNumMatch) {
+    const m = matchNumMatch[1];
+    const seasonMatch = txt.match(/season\s*(\d+)/);
+    let found = null;
+    if (seasonMatch) {
+      const s = 'season' + seasonMatch[1];
+      const mt = bbMatchInSeason(s, m);
+      if (mt) found = { season: s, match: mt };
+    } else {
+      found = bbFindMatchAnySeason(m);
+    }
+    if (found) {
+      const { season: s, match } = found;
+      let resp = `${bbSeasonLabel(s)}, Match ${m}: ${byId(match.team1)?.name || match.team1} vs ${byId(match.team2)?.name || match.team2}. ${byId(match.winner)?.name || match.winner} won by ${match.margin}.`;
+      if (match.mom) resp += ` Man of the Match: ${match.mom}.`;
+      resp += ` [MATCH: ${m}]`;
+      return resp;
+    }
+    return `I couldn't find Match ${m} in my records.`;
+  }
+
+  if (txt.includes('points table') || txt.includes('standings') || txt.includes('leading') || txt.includes('top of the table') || txt.includes('best team')) {
+    const leader = bbPointsLeader(BB_CURRENT_SEASON);
+    if (leader) {
+      const t = byId(leader.id);
+      const nrrStr = (leader.nrr > 0 ? '+' : '') + leader.nrr;
+      return `${t?.name || leader.id} are topping the Season 9 table with ${leader.pts} points from ${leader.m} matches (NRR ${nrrStr}).`;
+    }
+  }
+
+  if (txt.includes('orange cap') || txt.includes('top scorer') || txt.includes('most runs') || txt.includes('run scorer')) {
+    const top = bbTopBatter(BB_CURRENT_SEASON);
+    if (top) return `${top.name} (${top.team}) leads the Season 9 run charts with ${top.runs} runs.`;
+  }
+
+  if (txt.includes('purple cap') || txt.includes('most wickets') || txt.includes('top bowler') || txt.includes('wicket taker')) {
+    const top = bbTopBowler(BB_CURRENT_SEASON);
+    if (top) return `${top.name} (${top.team}) leads the Season 9 wicket charts with ${top.wkts} wickets.`;
+  }
+
+  if (txt.includes('highest score') || txt.includes('highest individual')) {
+    const best = bbHighestIndividualScore(BB_CURRENT_SEASON);
+    if (best) return `The highest individual score in Season 9 is ${best.name}'s ${best.runs} off ${best.balls} balls, in Match ${best.match}! [MATCH: ${best.match}]`;
+  }
+
+  if (txt.includes('best bowling') || txt.includes('best figures')) {
+    const best = bbBestBowlingFigures(BB_CURRENT_SEASON);
+    if (best) return `The best bowling figures in Season 9 are ${best.name}'s ${best.wkts}/${best.runs}, in Match ${best.match}! [MATCH: ${best.match}]`;
+  }
+
+  const teamsMentioned = bbTeamsMentioned(txt);
+  if (teamsMentioned.length >= 2) {
+    const [t1, t2] = teamsMentioned;
+    const meetings = bbHeadToHead(BB_CURRENT_SEASON, t1.id, t2.id);
+    if (meetings.length) {
+      const summary = meetings.map(m => `Match ${m.match}: ${byId(m.winner)?.name || m.winner} won by ${m.margin}`).join('. ');
+      return `${t1.name} and ${t2.name} have met ${meetings.length} time(s) in Season 9. ${summary}.`;
+    }
+    return `${t1.name} and ${t2.name} haven't played each other yet in Season 9.`;
+  }
+
+  if (txt.includes('chase')) {
+    const db = MULTI_DB[BB_CURRENT_SEASON];
+    if (db && db.results) {
+      const chases = db.results.filter(r => r.winner === r.team2 && parseInt(r.score1) > 150);
+      if (chases.length) {
+        const best = chases.sort((a, b) => parseInt(b.score2) - parseInt(a.score2))[0];
+        return `One of the biggest chases this season: ${byId(best.team2)?.name} ran down ${best.score1} against ${byId(best.team1)?.name} in Match ${best.match}! [MATCH: ${best.match}]`;
+      }
+    }
+  }
+
+  return "I can answer questions about the Season 9 points table, top run scorers, top wicket takers, the highest individual score, the best bowling figures, head-to-head records (e.g. \"Aarnav Aces vs Vivaan Victors\"), or a specific match (e.g. \"match 12\"). What would you like to know?";
+}
+
+function sendBclBuddyMessage() {
   const inputEl = document.getElementById('bclBuddyInput');
   const userText = inputEl.value.trim();
   if(!userText) return;
-  
+
   inputEl.value = '';
   appendBclMessage('user', userText);
   appendTypingIndicator();
-  
-  try {
-    let compressedResults = "";
-    if (typeof MULTI_DB !== 'undefined' && MULTI_DB.season8 && MULTI_DB.season8.results) {
-        compressedResults = MULTI_DB.season8.results.map(r => {
-          let resStr = `Match ${r.match}: ${r.team1} vs ${r.team2}. Winner: ${r.winner} by ${r.margin}.`;
-          if (r.mom) resStr += ` MOM: ${r.mom}.`;
-          return resStr;
-        }).join("\n");
-    }
-    
-    const sysPrompt = "You are BCL Buddy, the expert AI for the Backyard Cricket League (BCL). Answer questions based ONLY on this data: \n" + compressedResults + "\nIf you refer to a specific match, append [MATCH: X] exactly at the end of your message.";
-      
-    const apiKey = decodeAIKey();
-    
-    // Hack Club AI Proxy
-    const response = await fetch('https://ai.hackclub.com/proxy/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: sysPrompt },
-          { role: "user", content: userText }
-        ],
-        max_tokens: 150,
-        temperature: 0.7
-      })
-    });
-    
-    const data = await response.json();
-    if(data.choices && data.choices.length > 0) {
-      appendBclMessage('ai', data.choices[0].message.content);
-    } else {
-       throw new Error("No data choices");
-    }
-  } catch(e) {
-    // FALLBACK TO SIMULATED AI!
-    console.warn("Live AI blocked by CORS, falling back to simulated AI.");
-    setTimeout(() => {
-        appendBclMessage('ai', getSimulatedResponse(userText));
-    }, 800);
-  }
+
+  setTimeout(() => {
+    appendBclMessage('ai', getSmartResponse(userText));
+  }, 400);
 }
 
 </script>
