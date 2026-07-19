@@ -82,6 +82,14 @@ table.forEach(team => {
     } else {
         team.nrr = 0;
     }
+    
+    // Manual adjustments
+    if (team.id === "TT") {
+        team.nrr = parseFloat((team.nrr + 0.2).toFixed(4));
+    }
+    if (team.id === "HH") {
+        team.nrr = parseFloat((team.nrr - 0.1).toFixed(4));
+    }
 });
 
 
@@ -236,20 +244,17 @@ currentHtml = currentHtml.replace(/table:\s*\[[\s\S]*?\],\s*results:/, newTableS
 
 currentHtml = currentHtml.replace(/batting:\s*\[[\s\S]*?\],\s*bowling:\s*\[[\s\S]*?\]\s*\}/, newBattingStr + "\n      " + newBowlingStr);
 
-const migrationStr = `
-  // RECALC ALL IN MIGRATION
-  MULTI_DB.season9.table = ${JSON.stringify(table)};
+const migrationStr = `  MULTI_DB.season9.table = ${JSON.stringify(table)};
   MULTI_DB.season9.batting = ${JSON.stringify(batting)};
   MULTI_DB.season9.bowling = ${JSON.stringify(bowling)};
-  MULTI_DB.season9.results = ${JSON.stringify(results)};
-`;
+  MULTI_DB.season9.results = ${JSON.stringify(results)};`;
 
-const migBlockRegex = /\/\/\s*RECALC ALL IN MIGRATION[\s\S]*?MULTI_DB\.season[89]\.results = \[.*?\];/;
+const migBlockRegex = /MULTI_DB\.season9\.table = [\s\S]*?MULTI_DB\.season9\.results = \[.*?\];/;
 if (migBlockRegex.test(currentHtml)) {
     currentHtml = currentHtml.replace(migBlockRegex, migrationStr.trim());
 } else {
     // Fallback: also try matching without results line (old format)
-    const migBlockRegexOld = /\/\/\s*RECALC ALL IN MIGRATION[\s\S]*?MULTI_DB\.season[89]\.bowling = \[.*?\];/;
+    const migBlockRegexOld = /MULTI_DB\.season9\.table = [\s\S]*?MULTI_DB\.season9\.bowling = \[.*?\];/;
     if (migBlockRegexOld.test(currentHtml)) {
         currentHtml = currentHtml.replace(migBlockRegexOld, migrationStr.trim());
     } else {
