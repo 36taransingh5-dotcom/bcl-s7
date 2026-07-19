@@ -11899,7 +11899,7 @@ const SEED = {
   ]
 };
 
-const STORE_KEY_MULTI = "bcl_multi_v95"; // Cache bust 28 - Season 9
+const STORE_KEY_MULTI = "bcl_multi_v96"; // Cache bust 28 - Season 9
 
 let MULTI_DB = JSON.parse(localStorage.getItem(STORE_KEY_MULTI));
 if (!MULTI_DB) {
@@ -13213,7 +13213,8 @@ if (!MULTI_DB) {
                       "overs": 1
               }
       ]
-    };
+    }
+  };
     changed = true;
   }
 
@@ -14258,7 +14259,6 @@ if (!MULTI_DB) {
     MULTI_DB.season8.table.sort((a,b) => a.id.localeCompare(b.id));
     localStorage.setItem(STORE_KEY_MULTI, JSON.stringify(MULTI_DB));
   }
-}
 
 let localFilters = { table: 'season9', results: 'season9', schedule: 'season9', squads: 'season9', stats: 'season9', playoffs: 'season9', compare: 'season9', stories: 'season9', awards: 'season9' };
 function getLocalDB(panel) {
