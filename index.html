@@ -18525,10 +18525,10 @@ function aggregateDB() {
               }
       ]
     };
-  agg.results = [...MULTI_DB.season7.results, ...MULTI_DB.season8.results].sort((a,b)=>a.match-b.match);
-  
+  agg.results = [...MULTI_DB.season7.results, ...MULTI_DB.season8.results, ...MULTI_DB.season9.results].sort((a,b)=>a.match-b.match);
+
   let batMap = {};
-  [...MULTI_DB.season7.batting, ...MULTI_DB.season8.batting].forEach(b => {
+  [...MULTI_DB.season7.batting, ...MULTI_DB.season8.batting, ...MULTI_DB.season9.batting].forEach(b => {
     let k = b.name;
     if (!batMap[k]) batMap[k] = { name:b.name, team:b.team, inn:0, runs:0, hs:0, fifties:0, hundreds:0, mom:0, catches:0, dismissals:0, note: b.note };
     batMap[k].inn += b.inn||0;
@@ -18547,7 +18547,7 @@ function aggregateDB() {
   });
   
   let bowlMap = {};
-  [...MULTI_DB.season7.bowling, ...MULTI_DB.season8.bowling].forEach(b => {
+  [...MULTI_DB.season7.bowling, ...MULTI_DB.season8.bowling, ...MULTI_DB.season9.bowling].forEach(b => {
     let k = b.name;
     if (!bowlMap[k]) bowlMap[k] = { name:b.name, team:b.team, inn:0, wkts:0, bbi:b.bbi, fourW:0, runsConceded:0, oversBowled:0 };
     bowlMap[k].inn += b.inn||0;
