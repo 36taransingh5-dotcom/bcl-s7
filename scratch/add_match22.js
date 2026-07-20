@@ -1,90 +1,88 @@
 const fs = require('fs');
-let html = fs.readFileSync('/Users/taran/Desktop/EX-Desktop/minicw/bcl/index.html', 'utf8');
 
-const seedStart = html.indexOf('const SEED = {');
-const seedEnd = html.indexOf('\nlet DB', seedStart);
-const seed = JSON.parse(html.slice(seedStart + 'const SEED = '.length, seedEnd).trim().replace(/;$/, ''));
+let currentHtml = fs.readFileSync('index.html', 'utf8');
 
-// ── NEW MATCH: M22 AS vs HH ──────────────────────────────────────────────────
-// AS batted first: 128/10 in 13.0
-// HH chased: 129/4 in 13.3
-// HH win by 6 wickets
-// Venue: Rajiv Gandhi International Cricket Stadium
-// MOM: Krunal Pandya (HH) — 26* off 22 & 5/31
+const season9ResultsMatch = currentHtml.match(/MULTI_DB\.season9\.results = (\[[\s\S]*?\]);/);
+if (!season9ResultsMatch) {
+    console.error("Could not find MULTI_DB.season9.results array.");
+    process.exit(1);
+}
 
-const newMatch = {
-  match: 22,
-  team1: "AS",
-  team2: "HH",
-  venue: "Rajiv Gandhi International Cricket Stadium",
-  score1: "128/10",
-  overs1: "13.0",
-  score2: "129/4",
-  overs2: "13.3",
-  winner: "HH",
-  margin: "6 wickets",
-  mom: "Krunal Pandya (HH) — 26 off 22 & 5/31",
-  scorecard: {
-    t1Inn: {  // AS batting
-      bat: [
-        { name: "Jordan Hermann",    dismissal: "c Dhawan b Jonassen", runs: 51, balls: 20 },
-        { name: "Mitchell Marsh",    dismissal: "c Klaasen b Jonassen", runs: 11, balls: 4 },
-        { name: "Josh Inglis",       dismissal: "c Klaasen b Pandya",  runs: 20, balls: 13 },
-        { name: "Sophie Devine",     dismissal: "c Swepson b Pandya",  runs: 0,  balls: 1 },
-        { name: "Michael Bracewell", dismissal: "c Klaasen b Pandya",  runs: 5,  balls: 7 },
-        { name: "David Miller",      dismissal: "lbw Jonassen",        runs: 3,  balls: 4 },
-        { name: "Alex Carey",        dismissal: "c Klaasen b Pandya",  runs: 3,  balls: 3 },
-        { name: "Marcus Stoinis",    dismissal: "c Sundar b Pandya",   runs: 0,  balls: 2 },
-        { name: "Arjun Potter",      dismissal: "lbw Farooqi",         runs: 20, balls: 9 },
-        { name: "Ajit Agarkar",      dismissal: "b Swepson",           runs: 13, balls: 16 },
-        { name: "Alana King",        dismissal: "not out",             runs: 0,  balls: 1 }
-      ],
-      fow: [26, 53, 53, 77, 90, 93, 93, 97, 128, 128],
-      extras: 6,
-      bowl: [  // HH bowling
-        { name: "Fazalhaq Farooqi",  overs: "1.1", dots: 1, runs: 19, wkts: 1 },
-        { name: "Jess Jonassen",     overs: "4.0", dots: 9, runs: 39, wkts: 3 },
-        { name: "Krunal Pandya",     overs: "4.0", dots: 11, runs: 31, wkts: 5 },
-        { name: "Washington Sundar", overs: "2.0", dots: 3, runs: 29, wkts: 0 },
-        { name: "Mitchell Swepson",  overs: "2.0", dots: 7, runs: 9, wkts: 1 }
-      ]
-    },
-    t2Inn: {  // HH batting
-      bat: [
-        { name: "Steve Smith",       dismissal: "lbw Bracewell", runs: 33, balls: 20 },
-        { name: "Martin Guptill",    dismissal: "b King",        runs: 27, balls: 13 },
-        { name: "Shikhar Dhawan",    dismissal: "c Inglis b King", runs: 10, balls: 5 },
-        { name: "Harmanpreet Kaur",  dismissal: "c Inglis b Bracewell", runs: 0, balls: 1 },
-        { name: "Krunal Pandya",     dismissal: "not out",       runs: 26, balls: 22 },
-        { name: "Shubman Gill",      dismissal: "not out",       runs: 29, balls: 20 }
-      ],
-      fow: [47, 57, 68, 73],
-      extras: 4,
-      bowl: [  // AS bowling
-        { name: "Ajit Agarkar",      overs: "1.0", dots: 1, runs: 10, wkts: 0 },
-        { name: "Marcus Stoinis",    overs: "1.0", dots: 1, runs: 16, wkts: 0 },
-        { name: "Yuzvendra Chahal",  overs: "2.3", dots: 4, runs: 29, wkts: 0 },
-        { name: "Michael Bracewell", overs: "4.0", dots: 10, runs: 34, wkts: 2 },
-        { name: "Alana King",        overs: "4.0", dots: 10, runs: 29, wkts: 2 },
-        { name: "Sophie Devine",     overs: "1.0", dots: 1, runs: 7, wkts: 0 }
-      ]
+let season9Results = JSON.parse(season9ResultsMatch[1]);
+
+if (season9Results.find(r => r.match === 22)) {
+    console.log("Match 22 already exists. Removing it to re-add.");
+    season9Results = season9Results.filter(r => r.match !== 22);
+}
+
+const match22Data = {
+    match: 22,
+    team1: "HH",
+    team2: "TT",
+    venue: "Sher-e-Bangla National Cricket Stadium",
+    score1: "249/7",
+    overs1: "20.0",
+    score2: "274/5",
+    overs2: "20.0",
+    winner: "TT",
+    margin: "5 wickets",
+    mom: "Tim Seifert (TT) — 118",
+    scorecard: {
+        t1Inn: {
+            bat: [
+                { name: "Shikhar Dhawan", dismissal: "c SEIFERT b JOHNSON", runs: 4, balls: 2 },
+                { name: "Sai Sudharsan", dismissal: "lbw SCHUTT", runs: 32, balls: 10 },
+                { name: "Suryakumar Yadav", dismissal: "lbw SCHUTT", runs: 50, balls: 26 },
+                { name: "Ryan Rickelton", dismissal: "lbw PANDYA", runs: 29, balls: 21 },
+                { name: "Steve Smith", dismissal: "lbw PANDYA", runs: 30, balls: 11 },
+                { name: "Shubman Gill", dismissal: "c SEIFERT b KING", runs: 10, balls: 8 },
+                { name: "Heinrich Klaasen", dismissal: "not out", runs: 43, balls: 19 },
+                { name: "Krunal Pandya", dismissal: "c BREVIS b KING", runs: 21, balls: 13 },
+                { name: "Axar Patel", dismissal: "not out", runs: 26, balls: 10 },
+                { name: "Jess Jonassen", dismissal: "did not bat", runs: 0, balls: 0 },
+                { name: "Josh Hazlewood", dismissal: "did not bat", runs: 0, balls: 0 }
+            ],
+            bowl: [
+                { name: "Mitchell Johnson", overs: "4.0", maidens: 0, runs: 66, wkts: 1 },
+                { name: "Trevor Singh", overs: "4.0", maidens: 0, runs: 51, wkts: 0 },
+                { name: "Megan Schutt", overs: "4.0", maidens: 0, runs: 37, wkts: 2 },
+                { name: "Hardik Pandya", overs: "4.0", maidens: 0, runs: 47, wkts: 2 },
+                { name: "Alana King", overs: "4.0", maidens: 0, runs: 44, wkts: 2 }
+            ],
+            fow: "1-4, 2-67, 3-94, 4-135, 5-159, 6-161, 7-219"
+        },
+        t2Inn: {
+            bat: [
+                { name: "Tim Seifert", dismissal: "c HAZLEWOOD b PANDYA", runs: 118, balls: 49 },
+                { name: "Dewald Brevis", dismissal: "c DHAWAN b HAZLEWOOD", runs: 15, balls: 11 },
+                { name: "Trevor Singh", dismissal: "lbw JONASSEN", runs: 7, balls: 4 },
+                { name: "Laura Wolvaardt", dismissal: "c PATEL b SWEPSON", runs: 23, balls: 13 },
+                { name: "Ravi Shastri", dismissal: "b HAZLEWOOD", runs: 21, balls: 15 },
+                { name: "Aiden Markram", dismissal: "not out", runs: 45, balls: 13 },
+                { name: "Jordan Hermann", dismissal: "not out", runs: 44, balls: 15 },
+                { name: "Hardik Pandya", dismissal: "did not bat", runs: 0, balls: 0 },
+                { name: "Mitchell Johnson", dismissal: "did not bat", runs: 0, balls: 0 },
+                { name: "Megan Schutt", dismissal: "did not bat", runs: 0, balls: 0 },
+                { name: "Alana King", dismissal: "did not bat", runs: 0, balls: 0 }
+            ],
+            bowl: [
+                { name: "Josh Hazlewood", overs: "4.0", maidens: 0, runs: 40, wkts: 2 },
+                { name: "Jess Jonassen", overs: "4.0", maidens: 0, runs: 45, wkts: 1 },
+                { name: "Krunal Pandya", overs: "4.0", maidens: 0, runs: 83, wkts: 1 },
+                { name: "Mitchell Swepson", overs: "4.0", maidens: 0, runs: 56, wkts: 1 },
+                { name: "Axar Patel", overs: "4.0", maidens: 0, runs: 49, wkts: 0 }
+            ],
+            fow: "1-27, 2-36, 3-116, 4-160, 5-200"
+        }
     }
-  }
 };
 
-// Check if match already exists
-seed.results = seed.results.filter(r => r.match !== 22);
-seed.results.push(newMatch);
-seed.results.sort((a, b) => (a.match || a.n) - (b.match || b.n));
+season9Results.push(match22Data);
 
-// ── ADD NEW PLAYERS TO SQUADS IF NEEDED ──────────────────────────────────────
-const htmlMatch = html.match(/const SQUADS = (\{[\s\S]*?\});/);
-let squadsStr = htmlMatch[1];
-// I'll manually modify the HTML for squads later, or I'll just rely on stats engine to handle it.
-// Actually, it's better to just recalculate everything completely cleanly.
+currentHtml = currentHtml.replace(
+    /MULTI_DB\.season9\.results = \[[\s\S]*?\];/,
+    `MULTI_DB.season9.results = ${JSON.stringify(season9Results)};`
+);
 
-const newSeedStr = JSON.stringify(seed, null, 2);
-html = html.slice(0, seedStart + 'const SEED = '.length) + newSeedStr + ';\n' + html.slice(seedEnd + 1);
-
-fs.writeFileSync('/Users/taran/Desktop/EX-Desktop/minicw/bcl/index.html', html);
-console.log('Added Match 22 data to seed.');
+fs.writeFileSync('index.html', currentHtml);
+console.log("Match 22 (Season 9) data successfully injected into index.html!");
