@@ -2,77 +2,87 @@ const fs = require('fs');
 
 let currentHtml = fs.readFileSync('index.html', 'utf8');
 
-const resultsMatch = currentHtml.match(/results:\s*(\[[\s\S]*?\]),\s*batting:/);
-if (!resultsMatch) {
-    console.error("Could not find results array.");
+const season9ResultsMatch = currentHtml.match(/MULTI_DB\.season9\.results = (\[[\s\S]*?\]);/);
+if (!season9ResultsMatch) {
+    console.error("Could not find MULTI_DB.season9.results array.");
     process.exit(1);
 }
 
-let results = eval(resultsMatch[1]);
-results = results.filter(m => m.match !== 57);
+let season9Results = JSON.parse(season9ResultsMatch[1]);
 
-const newMatch = {
-  "match": 57,
-  "team1": "AA",
-  "team2": "VV",
-  "score1": "163/4",
-  "overs1": "16.5",
-  "score2": "159/9",
-  "overs2": "20.0",
-  "winner": "AA",
-  "margin": "4 runs",
-  "mom": "David Warner (AA) — 74 (40)",
-  "scorecard": {
-    "t1Inn": {
-      "bat": [
-        { "name": "Travis Head", "dismissal": "lbw BOULT", "runs": 1, "balls": 2 },
-        { "name": "David Warner", "dismissal": "c KERR b SANTNER", "runs": 74, "balls": 40 },
-        { "name": "Q de Kock", "dismissal": "b BOULT", "runs": 4, "balls": 6 },
-        { "name": "Mitchell Marsh", "dismissal": "lbw SANTNER", "runs": 0, "balls": 5 },
-        { "name": "Will Jacks", "dismissal": "not out", "runs": 53, "balls": 32 },
-        { "name": "Aarav Roy", "dismissal": "not out", "runs": 29, "balls": 16 }
-      ],
-      "bowl": [
-        { "name": "Trent Boult", "overs": "4.0", "maidens": 0, "runs": 32, "wkts": 2 },
-        { "name": "Kagiso Rabada", "overs": "3.0", "maidens": 0, "runs": 33, "wkts": 0 },
-        { "name": "Mitchell Santner", "overs": "3.5", "maidens": 0, "runs": 44, "wkts": 2 },
-        { "name": "Amelia Kerr", "overs": "4.0", "maidens": 0, "runs": 35, "wkts": 0 },
-        { "name": "Imran Tahir", "overs": "1.0", "maidens": 0, "runs": 12, "wkts": 0 },
-        { "name": "Rachin Ravindra", "overs": "1.0", "maidens": 0, "runs": 5, "wkts": 0 }
-      ],
-      "fow": "1-2, 2-18, 3-45, 4-112"
-    },
-    "t2Inn": {
-      "bat": [
-        { "name": "Rohit Sharma", "dismissal": "c SCIVER b SIRAJ", "runs": 8, "balls": 4 },
-        { "name": "KL Rahul", "dismissal": "lbw JACKS", "runs": 30, "balls": 19 },
-        { "name": "Virat Kohli", "dismissal": "c DE KOCK b SIRAJ", "runs": 6, "balls": 2 },
-        { "name": "Joe Root", "dismissal": "lbw BUMRAH", "runs": 11, "balls": 7 },
-        { "name": "Vivaan Anandabd", "dismissal": "lbw CHAKRAVARTHY", "runs": 26, "balls": 11 },
-        { "name": "Amelia Kerr", "dismissal": "lbw CHAKRAVARTHY", "runs": 0, "balls": 2 },
-        { "name": "Mitchell Santner", "dismissal": "c JACKS b SIRAJ", "runs": 18, "balls": 22 },
-        { "name": "Rachin Ravindra", "dismissal": "b CHAKRAVARTHY", "runs": 35, "balls": 33 },
-        { "name": "Alyssa Healy", "dismissal": "c HEAD b SCIVER", "runs": 16, "balls": 14 },
-        { "name": "Trent Boult", "dismissal": "not out", "runs": 4, "balls": 5 },
-        { "name": "Kagiso Rabada", "dismissal": "not out", "runs": 1, "balls": 1 }
-      ],
-      "bowl": [
-        { "name": "Mohd Siraj", "overs": "4.0", "maidens": 0, "runs": 36, "wkts": 3 },
-        { "name": "Jasprit Bumrah", "overs": "4.0", "maidens": 0, "runs": 46, "wkts": 1 },
-        { "name": "Will Jacks", "overs": "4.0", "maidens": 0, "runs": 25, "wkts": 1 },
-        { "name": "Varun Chakravarthy", "overs": "4.0", "maidens": 0, "runs": 24, "wkts": 3 },
-        { "name": "Nat Sciver", "overs": "4.0", "maidens": 0, "runs": 27, "wkts": 1 }
-      ],
-      "fow": "1-8, 2-14, 3-42, 4-81, 5-81, 6-85, 7-125, 8-145, 9-158"
+if (season9Results.find(r => r.match === 57)) {
+    console.log("Match 57 already exists. Removing it to re-add.");
+    season9Results = season9Results.filter(r => r.match !== 57);
+}
+
+const match57Data = {
+    match: 57,
+    team1: "GB",
+    team2: "VV",
+    venue: "Kabul International Stadium",
+    score1: "210/6",
+    overs1: "20.0",
+    score2: "211/8",
+    overs2: "19.4",
+    winner: "VV",
+    margin: "2 wickets",
+    mom: "Joe Root (VV) — 48",
+    scorecard: {
+        t1Inn: {
+            bat: [
+                { name: "Smriti Mandhana", dismissal: "b SANTNER", runs: 12, balls: 14 },
+                { name: "Ishan Kishan", dismissal: "b RABADA", runs: 8, balls: 6 },
+                { name: "Ellyse Perry", dismissal: "b TAHIR", runs: 75, balls: 42 },
+                { name: "Glenn Maxwell", dismissal: "c TAHIR b SANTNER", runs: 36, balls: 22 },
+                { name: "Harmanpreet Kaur", dismissal: "b RABADA", runs: 19, balls: 13 },
+                { name: "Grant Bauer", dismissal: "b TAHIR", runs: 0, balls: 2 },
+                { name: "Ravindra Jadeja", dismissal: "not out", runs: 30, balls: 11 },
+                { name: "Shashank Singh", dismissal: "not out", runs: 23, balls: 11 },
+                { name: "Marco Jansen", dismissal: "did not bat", runs: 0, balls: 0 },
+                { name: "Noor Ahmad", dismissal: "did not bat", runs: 0, balls: 0 },
+                { name: "Bhuvneshwar Kumar", dismissal: "did not bat", runs: 0, balls: 0 }
+            ],
+            bowl: [
+                { name: "Trent Boult", overs: "4.0", maidens: 0, runs: 34, wkts: 0 },
+                { name: "Kagiso Rabada", overs: "4.0", maidens: 0, runs: 34, wkts: 2 },
+                { name: "Mitchell Santner", overs: "4.0", maidens: 0, runs: 31, wkts: 2 },
+                { name: "Amelia Kerr", overs: "4.0", maidens: 0, runs: 48, wkts: 0 },
+                { name: "Imran Tahir", overs: "4.0", maidens: 0, runs: 58, wkts: 2 }
+            ],
+            fow: "1-16, 2-34, 3-103, 4-148, 5-148, 6-160"
+        },
+        t2Inn: {
+            bat: [
+                { name: "Rohit Sharma", dismissal: "c SINGH b KUMAR", runs: 10, balls: 8 },
+                { name: "KL Rahul", dismissal: "c PERRY b KUMAR", runs: 16, balls: 14 },
+                { name: "Virat Kohli", dismissal: "c KISHAN b AHMAD", runs: 7, balls: 10 },
+                { name: "Rajat Patidar", dismissal: "lbw AHMAD", runs: 27, balls: 13 },
+                { name: "Mitchell Santner", dismissal: "b SINGH", runs: 2, balls: 4 },
+                { name: "Vivaan Anandabd", dismissal: "c KISHAN b JANSEN", runs: 48, balls: 26 },
+                { name: "Joe Root", dismissal: "lbw JADEJA", runs: 48, balls: 21 },
+                { name: "Alyssa Healy", dismissal: "c BAUER b KUMAR", runs: 32, balls: 12 },
+                { name: "Amelia Kerr", dismissal: "not out", runs: 15, balls: 10 },
+                { name: "Kagiso Rabada", dismissal: "not out", runs: 0, balls: 0 },
+                { name: "Trent Boult", dismissal: "did not bat", runs: 0, balls: 0 }
+            ],
+            bowl: [
+                { name: "Bhuvneshwar Kumar", overs: "4.0", maidens: 0, runs: 42, wkts: 3 },
+                { name: "Marco Jansen", overs: "4.0", maidens: 0, runs: 34, wkts: 1 },
+                { name: "Harbhajan Singh", overs: "4.0", maidens: 0, runs: 42, wkts: 1 },
+                { name: "Noor Ahmad", overs: "4.0", maidens: 0, runs: 45, wkts: 2 },
+                { name: "Ravindra Jadeja", overs: "3.4", maidens: 0, runs: 42, wkts: 1 }
+            ],
+            fow: "1-20, 2-31, 3-50, 4-61, 5-75, 6-153, 7-165, 8-202"
+        }
     }
-  }
 };
 
-results.push(newMatch);
+season9Results.push(match57Data);
 
-const newResultsStr = "results: " + JSON.stringify(results, null, 8).replace(/\n/g, '\n      ') + ",\n      batting:";
-
-currentHtml = currentHtml.replace(/results:\s*\[[\s\S]*?\],\s*batting:/, newResultsStr);
+currentHtml = currentHtml.replace(
+    /MULTI_DB\.season9\.results = \[[\s\S]*?\];/,
+    `MULTI_DB.season9.results = ${JSON.stringify(season9Results)};`
+);
 
 fs.writeFileSync('index.html', currentHtml);
-console.log("Match 57 added successfully!");
+console.log("Match 57 (Qualifier 1, Season 9) data successfully injected into index.html!");
