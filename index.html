@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BCL Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Oswald:wght@400;500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #121212;
@@ -1184,14 +1184,306 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   cursor: pointer;
 }
 
+/* ── SEASON 10 — NSL broadcast identity (scoped; other seasons unchanged) ── */
+.s10-only { display: none; }
+.s10-empty {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--muted);
+}
+.s10-empty .s10-soon-kicker,
+.squad-coming-soon .s10-soon-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--acc);
+  margin-bottom: 8px;
+}
+.s10-empty .s10-soon-title,
+.squad-coming-soon .s10-soon-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 1px;
+  color: var(--text);
+}
+.squad-coming-soon {
+  padding: 32px 20px;
+  text-align: center;
+}
+.squad-coming-soon .s10-soon-sub {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+body.theme-s10 {
+  --bg: #070708;
+  --card: #101012;
+  --border: rgba(201, 162, 74, 0.28);
+  --acc: #C9A24A;
+  --red: #FF5A5A;
+  --text: #F4F1EA;
+  --text-light: #FFF6DE;
+  --muted: #9A9386;
+  --green: #3DDC97;
+  --loss: #FF5A5A;
+  --purple: #C084FC;
+  --yellow: #E8C872;
+  --shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
+  background:
+    radial-gradient(1200px 560px at 8% -8%, rgba(201, 162, 74, 0.14), transparent 55%),
+    radial-gradient(900px 420px at 108% 0%, rgba(201, 162, 74, 0.08), transparent 50%),
+    #070708;
+  color: var(--text);
+  font-family: 'Barlow', 'DM Sans', sans-serif;
+}
+body.theme-s10::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    repeating-linear-gradient(-18deg, transparent 0 42px, rgba(201, 162, 74, 0.03) 42px 43px);
+  mix-blend-mode: screen;
+}
+body.theme-s10 .s10-broadcast-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin: 0 auto 18px;
+  padding: 8px 16px;
+  width: fit-content;
+  max-width: 100%;
+  background: #C9A24A;
+  color: #0A0A0A;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+}
+body.theme-s10 .s10-broadcast-bar span + span {
+  border-left: 1px solid rgba(10, 10, 10, 0.28);
+  padding-left: 18px;
+}
+body.theme-s10 .s10-live-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #0A0A0A;
+  margin-right: 8px;
+  animation: s10Pulse 1.4s ease-in-out infinite;
+}
+@keyframes s10Pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+body.theme-s10 header {
+  border-bottom: 1px solid var(--border);
+  padding: 36px 0 28px;
+}
+body.theme-s10 h1 {
+  font-family: 'Oswald', 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+body.theme-s10 h1 span {
+  color: var(--acc);
+}
+body.theme-s10 .sub {
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 13px;
+  opacity: 0.8;
+}
+body.theme-s10 .pill {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--text);
+  box-shadow: none;
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+body.theme-s10 .pill strong { color: var(--acc); }
+body.theme-s10 .admin-btn {
+  border-radius: 2px;
+  border: 1px solid var(--border);
+  background: transparent;
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.16em;
+}
+body.theme-s10 .tabs {
+  background: transparent;
+  border-radius: 0;
+  border-bottom: 1px solid var(--border);
+  padding: 0;
+  gap: 0;
+}
+body.theme-s10 .tab {
+  border-radius: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 14px 18px;
+  color: var(--muted);
+}
+body.theme-s10 .tab:hover {
+  background: rgba(201, 162, 74, 0.08);
+  color: var(--text-light);
+}
+body.theme-s10 .tab.active {
+  background: var(--acc);
+  color: #0A0A0A;
+  box-shadow: none;
+}
+body.theme-s10 .st {
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 22px;
+  border-left: 3px solid var(--acc);
+  padding-left: 12px;
+}
+body.theme-s10 .tab-filters {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 4px;
+}
+body.theme-s10 .filter-btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.12em;
+  border-radius: 2px;
+}
+body.theme-s10 .filter-btn.active {
+  background: var(--acc);
+  color: #0A0A0A;
+  box-shadow: none;
+}
+body.theme-s10 .tbl-wrap,
+body.theme-s10 .result-card,
+body.theme-s10 .ko-card,
+body.theme-s10 .round-card,
+body.theme-s10 .squad-card,
+body.theme-s10 .ms-card,
+body.theme-s10 .award-card {
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: inset 0 2px 0 var(--acc), var(--shadow);
+}
+body.theme-s10 thead {
+  background: #0A0A0A;
+}
+body.theme-s10 th {
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.14em;
+  color: var(--acc);
+}
+body.theme-s10 .pts-cell { color: var(--acc); }
+body.theme-s10 .squad-hdr {
+  background: #0A0A0A;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+body.theme-s10 .squad-hdr::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 6px;
+  background: var(--team-accent, var(--acc));
+}
+body.theme-s10 .squad-team {
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+body.theme-s10 .squad-coming-soon {
+  padding: 36px 20px 32px;
+  text-align: center;
+  background:
+    linear-gradient(180deg, rgba(201, 162, 74, 0.06), transparent 70%);
+}
+body.theme-s10 .squad-coming-soon .s10-soon-kicker {
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.28em;
+  font-size: 11px;
+  color: var(--acc);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+body.theme-s10 .squad-coming-soon .s10-soon-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  line-height: 1;
+}
+body.theme-s10 .squad-coming-soon .s10-soon-sub {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+body.theme-s10 .s10-empty {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 48px 24px;
+  text-align: center;
+  box-shadow: inset 0 2px 0 var(--acc);
+}
+body.theme-s10 .s10-empty .s10-soon-kicker {
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.28em;
+  font-size: 11px;
+  color: var(--acc);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+body.theme-s10 .s10-empty .s10-soon-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 32px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+body.theme-s10 footer { color: var(--muted); }
+body.theme-s10 .match-row:hover { background: rgba(201, 162, 74, 0.06); }
+body.theme-s10 .m-num.pending {
+  color: var(--acc);
+  background: rgba(201, 162, 74, 0.12);
+  border-radius: 2px;
+}
+body.theme-s10 .round-title,
+body.theme-s10 .leg-divider {
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 0.16em;
+}
+
 </style>
 </head>
-<body>
+<body class="theme-s10">
 <div class="wrap">
 
 <header>
+  <div class="s10-only s10-broadcast-bar"><span><i class="s10-live-dot"></i>Season 10</span><span>BCL Broadcast</span><span>8 Teams</span></div>
   <h1>BCL <span>Dashboard</span></h1>
-  <p class="sub" id="hdrSubtext">All Statistics, Matches, and Data Tracking</p>
+  <p class="sub" id="hdrSubtext">Eight teams. One stage. The new era starts now.</p>
   <div class="pills">
     <div class="pill"><strong>Multi-Season</strong> Database</div>
     <div class="pill"><strong id="hdrTeamCount">8</strong> Teams Total</div>
@@ -1215,7 +1507,8 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <div id="panel-table" class="panel active">
   <section>
     <div class="tab-filters">
-      <button class="filter-btn active" onclick="setLocalFilter('table', 'season9', this)">Season 9</button>
+      <button class="filter-btn active" onclick="setLocalFilter('table', 'season10', this)">Season 10</button>
+      <button class="filter-btn" onclick="setLocalFilter('table', 'season9', this)">Season 9</button>
       <button class="filter-btn" onclick="setLocalFilter('table', 'season8', this)">Season 8</button>
       <button class="filter-btn" onclick="setLocalFilter('table', 'season7', this)">Season 7</button>
       
@@ -1233,7 +1526,8 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <div id="panel-results" class="panel">
   <section>
     <div class="tab-filters">
-      <button class="filter-btn active" onclick="setLocalFilter('results', 'season9', this)">Season 9</button>
+      <button class="filter-btn active" onclick="setLocalFilter('results', 'season10', this)">Season 10</button>
+      <button class="filter-btn" onclick="setLocalFilter('results', 'season9', this)">Season 9</button>
       <button class="filter-btn" onclick="setLocalFilter('results', 'season8', this)">Season 8</button>
       <button class="filter-btn" onclick="setLocalFilter('results', 'season7', this)">Season 7</button>
       
@@ -1247,7 +1541,8 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <div id="panel-schedule" class="panel">
   <section>
     <div class="tab-filters">
-      <button class="filter-btn active" onclick="setLocalFilter('schedule', 'season9', this)">Season 9</button>
+      <button class="filter-btn active" onclick="setLocalFilter('schedule', 'season10', this)">Season 10</button>
+      <button class="filter-btn" onclick="setLocalFilter('schedule', 'season9', this)">Season 9</button>
       <button class="filter-btn" onclick="setLocalFilter('schedule', 'season8', this)">Season 8</button>
       <button class="filter-btn" onclick="setLocalFilter('schedule', 'season7', this)">Season 7</button>
     </div>
@@ -1264,7 +1559,8 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <div id="panel-squads" class="panel">
   <section>
     <div class="tab-filters">
-      <button class="filter-btn active" onclick="setLocalFilter('squads', 'season9', this)">Season 9</button>
+      <button class="filter-btn active" onclick="setLocalFilter('squads', 'season10', this)">Season 10</button>
+      <button class="filter-btn" onclick="setLocalFilter('squads', 'season9', this)">Season 9</button>
       <button class="filter-btn" onclick="setLocalFilter('squads', 'season8', this)">Season 8</button>
       <button class="filter-btn" onclick="setLocalFilter('squads', 'season7', this)">Season 7</button>
       
@@ -1279,7 +1575,8 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   <section style="border:none; padding-bottom:0; margin-bottom:12px;">
     <div style="display:flex; flex-direction:column; gap:12px;">
       <div class="tab-filters" style="margin-bottom:0;">
-        <button class="filter-btn active" onclick="setLocalFilter('stats', 'season9', this)">Season 9</button>
+        <button class="filter-btn active" onclick="setLocalFilter('stats', 'season10', this)">Season 10</button>
+        <button class="filter-btn" onclick="setLocalFilter('stats', 'season9', this)">Season 9</button>
       <button class="filter-btn" onclick="setLocalFilter('stats', 'season8', this)">Season 8</button>
         <button class="filter-btn" onclick="setLocalFilter('stats', 'season7', this)">Season 7</button>
         <button class="filter-btn" onclick="setLocalFilter('stats', 'overall', this)">Overall</button>
@@ -1324,7 +1621,8 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <div id="panel-compare" class="panel">
   <section>
     <div class="tab-filters">
-      <button class="filter-btn active" onclick="setLocalFilter('compare', 'season9', this)">Season 9</button>
+      <button class="filter-btn active" onclick="setLocalFilter('compare', 'season10', this)">Season 10</button>
+      <button class="filter-btn" onclick="setLocalFilter('compare', 'season9', this)">Season 9</button>
       <button class="filter-btn" onclick="setLocalFilter('compare', 'season8', this)">Season 8</button>
       <button class="filter-btn" onclick="setLocalFilter('compare', 'season7', this)">Season 7</button>
       <button class="filter-btn" onclick="setLocalFilter('compare', 'overall', this)">Overall</button>
@@ -1368,7 +1666,8 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <div id="panel-stories" class="panel">
   <section>
     <div class="tab-filters">
-      <button class="filter-btn active" onclick="setLocalFilter('stories', 'season9', this)">Season 9</button>
+      <button class="filter-btn active" onclick="setLocalFilter('stories', 'season10', this)">Season 10</button>
+      <button class="filter-btn" onclick="setLocalFilter('stories', 'season9', this)">Season 9</button>
       <button class="filter-btn" onclick="setLocalFilter('stories', 'season8', this)">Season 8</button>
       <button class="filter-btn" onclick="setLocalFilter('stories', 'season7', this)">Season 7</button>
     </div>
@@ -1387,7 +1686,8 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <div id="panel-playoffs" class="panel">
   <section>
     <div class="tab-filters">
-      <button class="filter-btn active" onclick="setLocalFilter('playoffs', 'season9', this)">Season 9</button>
+      <button class="filter-btn active" onclick="setLocalFilter('playoffs', 'season10', this)">Season 10</button>
+      <button class="filter-btn" onclick="setLocalFilter('playoffs', 'season9', this)">Season 9</button>
       <button class="filter-btn" onclick="setLocalFilter('playoffs', 'season8', this)">Season 8</button>
       <button class="filter-btn" onclick="setLocalFilter('playoffs', 'season7', this)">Season 7</button>
     </div>
@@ -1400,7 +1700,8 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
 <div id="panel-awards" class="panel">
   <section>
     <div class="tab-filters">
-      <button class="filter-btn active" onclick="setLocalFilter('awards', 'season9', this)">Season 9</button>
+      <button class="filter-btn active" onclick="setLocalFilter('awards', 'season10', this)">Season 10</button>
+      <button class="filter-btn" onclick="setLocalFilter('awards', 'season9', this)">Season 9</button>
       <button class="filter-btn" onclick="setLocalFilter('awards', 'season8', this)">Season 8</button>
       <button class="filter-btn" onclick="setLocalFilter('awards', 'season7', this)">Season 7</button>
     </div>
@@ -1668,8 +1969,9 @@ const TEAMS_S8 = [
   {id:"VV",name:"Vivaan Victors",     emoji:"⚡",logo:"logos/vv.jpg",color:"#fbbf24"}
 ];
 const TEAMS_S9 = TEAMS_S8.filter(t => t.id !== "UU");
-const ALL_TEAMS = [...new Map([...TEAMS_S7, ...TEAMS_S8, ...TEAMS_S9].map(item => [item.id, item])).values()];
-let TEAMS = TEAMS_S9;
+const TEAMS_S10 = TEAMS_S8.slice();
+const ALL_TEAMS = [...new Map([...TEAMS_S7, ...TEAMS_S8, ...TEAMS_S9, ...TEAMS_S10].map(item => [item.id, item])).values()];
+let TEAMS = TEAMS_S10;
 const SQUADS_S7 = {
   TT:[{n:1,p:"Sanju Samson",r:"WK"},{n:2,p:"Laura Wolvaardt",r:"BAT"},{n:3,p:"Aiden Markram",r:"BAT"},{n:4,p:"Rassie van der Dussen",r:"BAT"},{n:5,p:"Dewald Brevis",r:"BAT"},{n:6,p:"Yuvraj Singh",r:"C"},{n:7,p:"Hardik Pandya",r:"ALL"},{n:8,p:"Ravi Shastri",r:"ALL"},{n:9,p:"Mohammed Shami",r:"BOWL"},{n:10,p:"Varun Chakravarthy",r:"BOWL"},{n:11,p:"Alzarri Joseph",r:"BOWL"},{n:12,p:"Trevor Singh",r:"SUB"}],
   AA:[{n:1,p:"David Warner",r:"BAT"},{n:2,p:"Travis Head",r:"BAT"},{n:3,p:"Quinton de Kock",r:"WK"},{n:4,p:"Ben Stokes",r:"C"},{n:5,p:"Will Jacks",r:"ALL"},{n:6,p:"Tim David",r:"BAT"},{n:7,p:"Aarav Roy",r:"BAT"},{n:8,p:"Jasprit Bumrah",r:"BOWL"},{n:9,p:"Mohammed Siraj",r:"BOWL"},{n:10,p:"Kuldeep Yadav",r:"BOWL"},{n:11,p:"Ravi Bishnoi",r:"BOWL"},{n:12,p:"Evin Lewis",r:"SUB"}],
@@ -1797,7 +2099,10 @@ const SQUADS_S9 = {
   TT: SQUADS_S8.TT,
   VV: SQUADS_S8.VV
 };
-let SQUADS = SQUADS_S9;
+const SQUADS_S10 = {
+  HH: [], AA: [], AS: [], GB: [], SM: [], TT: [], UU: [], VV: []
+};
+let SQUADS = SQUADS_S10;
 
 const SCHEDULE_S8 = [
   {r:1,l:1,b:[],m:[{n:1,t1:"AA",t2:"VV"},{n:2,t1:"AS",t2:"UU"},{n:3,t1:"GB",t2:"TT"},{n:4,t1:"HH",t2:"SM"}]},
@@ -1817,6 +2122,12 @@ const SCHEDULE_S8 = [
 ];
 let SCHEDULE = SCHEDULE_S8;
 const SCHEDULE_S9 = [];
+const SCHEDULE_S10 = SCHEDULE_S8.map(round => ({
+  r: round.r,
+  l: round.l,
+  b: Array.isArray(round.b) ? round.b.slice() : round.b,
+  m: round.m.map(m => ({ n: m.n, t1: m.t1, t2: m.t2 }))
+}));
 
 const ROLE_COLORS={C:"#f5c842",WK:"#63b3ed","C/WK":"#f5c842",ALL:"#a78bfa",BAT:"#6ee7b7",BOWL:"#fca5a5",SUB:"#6b7280"};
 const ADMIN_PWD = "bcl7admin";
@@ -11898,7 +12209,7 @@ const SEED = {
   ]
 };
 
-const STORE_KEY_MULTI = "bcl_multi_v113"; // Cache bust 28 - Season 9
+const STORE_KEY_MULTI = "bcl_multi_v114"; // Cache bust 29 - Season 10
 
 let MULTI_DB = JSON.parse(localStorage.getItem(STORE_KEY_MULTI));
 if (!MULTI_DB) {
@@ -24868,6 +25179,24 @@ if (!MULTI_DB) {
     };
     changed = true;
   }
+  if (!MULTI_DB.season10) {
+    MULTI_DB.season10 = {
+      table: [
+        {id:"AA",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
+        {id:"AS",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
+        {id:"GB",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
+        {id:"HH",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
+        {id:"SM",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
+        {id:"TT",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
+        {id:"UU",m:0,w:0,l:0,nr:0,pts:0,nrr:0},
+        {id:"VV",m:0,w:0,l:0,nr:0,pts:0,nrr:0}
+      ],
+      results: [],
+      batting: [],
+      bowling: []
+    };
+    changed = true;
+  }
 
 MULTI_DB.season8.table = [{"id":"AA","m":14,"w":9,"l":5,"nr":0,"pts":18,"nrr":2.6939},{"id":"AS","m":14,"w":2,"l":11,"nr":1,"pts":5,"nrr":-2.7226},{"id":"GB","m":14,"w":8,"l":6,"nr":0,"pts":16,"nrr":1.0758},{"id":"HH","m":14,"w":8,"l":6,"nr":0,"pts":16,"nrr":0.2193},{"id":"SM","m":14,"w":9,"l":5,"nr":0,"pts":18,"nrr":0.6682},{"id":"TT","m":14,"w":8,"l":6,"nr":0,"pts":16,"nrr":0.5665},{"id":"UU","m":14,"w":2,"l":11,"nr":1,"pts":5,"nrr":-4.2988},{"id":"VV","m":14,"w":9,"l":5,"nr":0,"pts":18,"nrr":1.4109}];
   MULTI_DB.season8.batting = [{"name":"Rohit Sharma","team":"VV","inn":16,"runs":315,"hs":46,"avg":19.69,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":16,"mostCommonPos":1},{"name":"KL Rahul","team":"VV","inn":16,"runs":383,"hs":97,"avg":23.94,"sr":0,"fifties":3,"hundreds":0,"mom":1,"catches":0,"dismissals":16,"mostCommonPos":2},{"name":"Virat Kohli","team":"VV","inn":16,"runs":444,"hs":78,"avg":31.71,"sr":0,"fifties":3,"hundreds":0,"mom":1,"catches":0,"dismissals":14,"mostCommonPos":3},{"name":"Joe Root","team":"VV","inn":16,"runs":374,"hs":77,"avg":24.93,"sr":0,"fifties":1,"hundreds":0,"mom":0,"catches":0,"dismissals":15,"mostCommonPos":4},{"name":"Vivaan Anandabd","team":"VV","inn":16,"runs":491,"hs":79,"avg":35.07,"sr":0,"fifties":4,"hundreds":0,"mom":3,"catches":0,"dismissals":14,"mostCommonPos":5},{"name":"Amelia Kerr","team":"VV","inn":16,"runs":280,"hs":58,"avg":23.33,"sr":0,"fifties":1,"hundreds":0,"mom":1,"catches":0,"dismissals":12,"mostCommonPos":6},{"name":"Alyssa Healy","team":"VV","inn":14,"runs":305,"hs":48,"avg":27.73,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":11,"mostCommonPos":8},{"name":"Rachin Ravindra","team":"VV","inn":13,"runs":277,"hs":60,"avg":25.18,"sr":0,"fifties":1,"hundreds":0,"mom":0,"catches":0,"dismissals":11,"mostCommonPos":7},{"name":"Mitchell Santner","team":"VV","inn":12,"runs":181,"hs":29,"avg":30.17,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":6,"mostCommonPos":9},{"name":"Trent Boult","team":"VV","inn":5,"runs":15,"hs":6,"avg":15,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":0,"mostCommonPos":11},{"name":"Kagiso Rabada","team":"VV","inn":8,"runs":21,"hs":9,"avg":3.5,"sr":0,"fifties":0,"hundreds":0,"mom":2,"catches":0,"dismissals":6,"mostCommonPos":10},{"name":"David Warner","team":"AA","inn":15,"runs":530,"hs":112,"avg":35.33,"sr":0,"fifties":3,"hundreds":1,"mom":2,"catches":0,"dismissals":15,"mostCommonPos":2},{"name":"Travis Head","team":"AA","inn":16,"runs":436,"hs":80,"avg":29.07,"sr":0,"fifties":4,"hundreds":0,"mom":0,"catches":0,"dismissals":15,"mostCommonPos":1},{"name":"Quinton de Kock","team":"AA","inn":8,"runs":231,"hs":73,"avg":33,"sr":0,"fifties":2,"hundreds":0,"mom":1,"catches":0,"dismissals":7,"mostCommonPos":3},{"name":"Mitchell Marsh","team":"AA","inn":15,"runs":284,"hs":91,"avg":21.85,"sr":0,"fifties":1,"hundreds":0,"mom":1,"catches":0,"dismissals":13,"mostCommonPos":4},{"name":"Will Jacks","team":"AA","inn":16,"runs":404,"hs":75,"avg":40.4,"sr":0,"fifties":3,"hundreds":0,"mom":3,"catches":0,"dismissals":10,"mostCommonPos":5},{"name":"Aarav Roy","team":"AA","inn":14,"runs":308,"hs":65,"avg":28,"sr":0,"fifties":1,"hundreds":0,"mom":2,"catches":0,"dismissals":11,"mostCommonPos":6},{"name":"Nat Sciver-Brunt","team":"AA","inn":10,"runs":218,"hs":62,"avg":109,"sr":0,"fifties":2,"hundreds":0,"mom":1,"catches":0,"dismissals":2,"mostCommonPos":7},{"name":"Ben Stokes","team":"AA","inn":11,"runs":200,"hs":47,"avg":25,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":8,"mostCommonPos":8},{"name":"Tim David","team":"AA","inn":11,"runs":232,"hs":79,"avg":29,"sr":0,"fifties":2,"hundreds":0,"mom":1,"catches":0,"dismissals":8,"mostCommonPos":9},{"name":"Jasprit Bumrah","team":"AA","inn":4,"runs":10,"hs":7,"avg":10,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":1,"mostCommonPos":10},{"name":"Varun Chakravarthy","team":"AA","inn":2,"runs":9,"hs":8,"avg":9,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":0,"mostCommonPos":11},{"name":"Josh Philippe","team":"AS","inn":13,"runs":242,"hs":70,"avg":18.62,"sr":0,"fifties":1,"hundreds":0,"mom":1,"catches":0,"dismissals":13,"mostCommonPos":1},{"name":"Maia Bouchier","team":"AS","inn":11,"runs":140,"hs":48,"avg":12.73,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":11,"mostCommonPos":1},{"name":"Joe Denly","team":"AS","inn":13,"runs":213,"hs":66,"avg":16.38,"sr":0,"fifties":2,"hundreds":0,"mom":0,"catches":0,"dismissals":13,"mostCommonPos":3},{"name":"Arjun Potter","team":"AS","inn":12,"runs":314,"hs":125,"avg":28.55,"sr":0,"fifties":1,"hundreds":1,"mom":1,"catches":0,"dismissals":11,"mostCommonPos":6},{"name":"Rory Burns","team":"AS","inn":13,"runs":161,"hs":38,"avg":13.42,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":12,"mostCommonPos":4},{"name":"Mahipal Lomror","team":"AS","inn":13,"runs":206,"hs":47,"avg":17.17,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":12,"mostCommonPos":5},{"name":"Krishnappa Gowtham","team":"AS","inn":13,"runs":200,"hs":51,"avg":16.67,"sr":0,"fifties":1,"hundreds":0,"mom":0,"catches":0,"dismissals":12,"mostCommonPos":7},{"name":"Alex Carey","team":"AS","inn":13,"runs":282,"hs":54,"avg":23.5,"sr":0,"fifties":1,"hundreds":0,"mom":0,"catches":0,"dismissals":12,"mostCommonPos":8},{"name":"Kuldeep Yadav","team":"AS","inn":10,"runs":32,"hs":14,"avg":4,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":8,"mostCommonPos":9},{"name":"Arshdeep Singh","team":"AS","inn":10,"runs":24,"hs":7,"avg":4.8,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":5,"mostCommonPos":10},{"name":"Y Chahal","team":"AS","inn":4,"runs":14,"hs":6,"avg":4.67,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":3,"mostCommonPos":11},{"name":"Michael Bracewell","team":"UU","inn":12,"runs":158,"hs":46,"avg":14.36,"sr":0,"fifties":0,"hundreds":0,"mom":1,"catches":0,"dismissals":11,"mostCommonPos":7},{"name":"Chris Lynn","team":"UU","inn":13,"runs":285,"hs":54,"avg":21.92,"sr":0,"fifties":1,"hundreds":0,"mom":0,"catches":0,"dismissals":13,"mostCommonPos":2},{"name":"Vaibhav Suryavanshi","team":"UU","inn":13,"runs":273,"hs":69,"avg":21,"sr":0,"fifties":1,"hundreds":0,"mom":0,"catches":0,"dismissals":13,"mostCommonPos":1},{"name":"Rilee Rossouw","team":"UU","inn":12,"runs":104,"hs":21,"avg":8.67,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":12,"mostCommonPos":8},{"name":"Tom Blundell","team":"UU","inn":13,"runs":211,"hs":41,"avg":19.18,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":11,"mostCommonPos":4},{"name":"Kathryn Bryce","team":"UU","inn":13,"runs":159,"hs":32,"avg":13.25,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":12,"mostCommonPos":3},{"name":"Mitchell Owen","team":"UU","inn":2,"runs":9,"hs":9,"avg":4.5,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":2,"mostCommonPos":7},{"name":"Rahkeem Cornwall","team":"UU","inn":3,"runs":7,"hs":5,"avg":2.33,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":3,"mostCommonPos":8},{"name":"Orla Prendergast","team":"UU","inn":11,"runs":69,"hs":16,"avg":7.67,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":9,"mostCommonPos":9},{"name":"Smriti Mandhana","team":"GB","inn":17,"runs":323,"hs":54,"avg":19,"sr":0,"fifties":1,"hundreds":0,"mom":0,"catches":0,"dismissals":17,"mostCommonPos":1},{"name":"Ishan Kishan","team":"GB","inn":17,"runs":500,"hs":109,"avg":31.25,"sr":0,"fifties":3,"hundreds":1,"mom":1,"catches":0,"dismissals":16,"mostCommonPos":2},{"name":"Ellyse Perry","team":"GB","inn":17,"runs":419,"hs":80,"avg":26.19,"sr":0,"fifties":3,"hundreds":0,"mom":1,"catches":0,"dismissals":16,"mostCommonPos":4},{"name":"Abhishek Sharma","team":"GB","inn":15,"runs":312,"hs":58,"avg":22.29,"sr":0,"fifties":1,"hundreds":0,"mom":0,"catches":0,"dismissals":14,"mostCommonPos":1},{"name":"Glenn Maxwell","team":"GB","inn":16,"runs":662,"hs":86,"avg":55.17,"sr":0,"fifties":5,"hundreds":0,"mom":4,"catches":0,"dismissals":12,"mostCommonPos":5},{"name":"Laura Wolvaardt","team":"TT","inn":14,"runs":311,"hs":47,"avg":22.21,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":14,"mostCommonPos":1},{"name":"Jordan Hermann","team":"TT","inn":13,"runs":162,"hs":34,"avg":12.46,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":13,"mostCommonPos":2},{"name":"Dewald Brevis","team":"TT","inn":10,"runs":211,"hs":62,"avg":23.44,"sr":0,"fifties":2,"hundreds":0,"mom":0,"catches":0,"dismissals":9,"mostCommonPos":3},{"name":"Rassie van der Dussen","team":"TT","inn":13,"runs":355,"hs":113,"avg":29.58,"sr":0,"fifties":1,"hundreds":1,"mom":1,"catches":0,"dismissals":12,"mostCommonPos":4},{"name":"Tim Seifert","team":"TT","inn":14,"runs":340,"hs":86,"avg":28.33,"sr":0,"fifties":2,"hundreds":0,"mom":1,"catches":0,"dismissals":12,"mostCommonPos":5},{"name":"Trevor Singh","team":"TT","inn":14,"runs":322,"hs":91,"avg":24.77,"sr":0,"fifties":2,"hundreds":0,"mom":2,"catches":0,"dismissals":13,"mostCommonPos":2},{"name":"Aiden Markram","team":"TT","inn":13,"runs":251,"hs":47,"avg":25.1,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":10,"mostCommonPos":7},{"name":"Sanju Samson","team":"SM","inn":15,"runs":415,"hs":97,"avg":31.92,"sr":0,"fifties":4,"hundreds":0,"mom":2,"catches":0,"dismissals":13,"mostCommonPos":2},{"name":"Yashasvi Jaiswal","team":"SM","inn":15,"runs":310,"hs":62,"avg":20.67,"sr":0,"fifties":2,"hundreds":0,"mom":0,"catches":0,"dismissals":15,"mostCommonPos":1},{"name":"Sunil Narine","team":"SM","inn":14,"runs":145,"hs":42,"avg":10.36,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":14,"mostCommonPos":1},{"name":"Shreyas Iyer","team":"SM","inn":14,"runs":273,"hs":60,"avg":21,"sr":0,"fifties":2,"hundreds":0,"mom":0,"catches":0,"dismissals":13,"mostCommonPos":5},{"name":"Gautam Gambhir","team":"SM","inn":15,"runs":375,"hs":76,"avg":26.79,"sr":0,"fifties":5,"hundreds":0,"mom":2,"catches":0,"dismissals":14,"mostCommonPos":3},{"name":"Andre Russell","team":"SM","inn":14,"runs":309,"hs":65,"avg":28.09,"sr":0,"fifties":3,"hundreds":0,"mom":2,"catches":0,"dismissals":11,"mostCommonPos":6},{"name":"Shane Miller","team":"SM","inn":13,"runs":192,"hs":39,"avg":27.43,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":7,"mostCommonPos":9},{"name":"Shivam Dube","team":"SM","inn":14,"runs":291,"hs":46,"avg":24.25,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":12,"mostCommonPos":7},{"name":"Deandra Dottin","team":"SM","inn":14,"runs":172,"hs":41,"avg":15.64,"sr":0,"fifties":0,"hundreds":0,"mom":1,"catches":0,"dismissals":11,"mostCommonPos":8},{"name":"Mitchell Starc","team":"SM","inn":8,"runs":25,"hs":9,"avg":3.13,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":8,"mostCommonPos":10},{"name":"Liam Dawson","team":"SM","inn":5,"runs":22,"hs":16,"avg":11,"sr":0,"fifties":0,"hundreds":0,"mom":2,"catches":0,"dismissals":2,"mostCommonPos":11},{"name":"Steve Smith","team":"HH","inn":14,"runs":305,"hs":59,"avg":23.46,"sr":0,"fifties":3,"hundreds":0,"mom":1,"catches":0,"dismissals":13,"mostCommonPos":1},{"name":"Shikhar Dhawan","team":"HH","inn":14,"runs":326,"hs":77,"avg":23.29,"sr":0,"fifties":3,"hundreds":0,"mom":2,"catches":0,"dismissals":14,"mostCommonPos":2},{"name":"Martin Guptill","team":"HH","inn":14,"runs":403,"hs":109,"avg":33.58,"sr":0,"fifties":2,"hundreds":1,"mom":1,"catches":0,"dismissals":12,"mostCommonPos":3},{"name":"Krunal Pandya","team":"HH","inn":12,"runs":140,"hs":64,"avg":12.73,"sr":0,"fifties":1,"hundreds":0,"mom":1,"catches":0,"dismissals":11,"mostCommonPos":6},{"name":"Suryakumar Yadav","team":"HH","inn":14,"runs":331,"hs":74,"avg":30.09,"sr":0,"fifties":1,"hundreds":0,"mom":1,"catches":0,"dismissals":11,"mostCommonPos":4},{"name":"Shubman Gill","team":"HH","inn":13,"runs":279,"hs":69,"avg":27.9,"sr":0,"fifties":1,"hundreds":0,"mom":0,"catches":0,"dismissals":10,"mostCommonPos":5},{"name":"Axar Patel","team":"HH","inn":9,"runs":199,"hs":60,"avg":28.43,"sr":0,"fifties":1,"hundreds":0,"mom":1,"catches":0,"dismissals":7,"mostCommonPos":8},{"name":"Heinrich Klaasen","team":"HH","inn":10,"runs":228,"hs":49,"avg":32.57,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":7,"mostCommonPos":8},{"name":"Jess Jonassen","team":"HH","inn":8,"runs":13,"hs":5,"avg":6.5,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":2,"mostCommonPos":10},{"name":"Mitchell Swepson","team":"HH","inn":4,"runs":7,"hs":3,"avg":7,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":0,"mostCommonPos":11},{"name":"Josh Hazlewood","team":"HH","inn":0,"runs":0,"hs":0,"avg":0,"sr":0,"fifties":0,"hundreds":0,"mom":1,"catches":0,"dismissals":0,"mostCommonPos":11},{"name":"Aaron Hardie","team":"UU","inn":11,"runs":169,"hs":36,"avg":16.9,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":10,"mostCommonPos":5},{"name":"Shamar Springer","team":"UU","inn":10,"runs":30,"hs":7,"avg":6,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":5,"mostCommonPos":10},{"name":"Fazalhaq Farooqi","team":"UU","inn":7,"runs":10,"hs":3,"avg":3.33,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":3,"mostCommonPos":11},{"name":"Q de Kock","team":"AA","inn":7,"runs":114,"hs":27,"avg":16.29,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":7,"mostCommonPos":3},{"name":"Hardik Pandya","team":"TT","inn":11,"runs":394,"hs":74,"avg":56.29,"sr":0,"fifties":3,"hundreds":0,"mom":3,"catches":0,"dismissals":7,"mostCommonPos":8},{"name":"Ravi Shastri","team":"TT","inn":10,"runs":139,"hs":57,"avg":17.38,"sr":0,"fifties":1,"hundreds":0,"mom":1,"catches":0,"dismissals":8,"mostCommonPos":8},{"name":"Jason Gillespie","team":"TT","inn":5,"runs":9,"hs":5,"avg":9,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":1,"mostCommonPos":11},{"name":"Alana King","team":"TT","inn":8,"runs":51,"hs":12,"avg":17,"sr":0,"fifties":0,"hundreds":0,"mom":1,"catches":0,"dismissals":3,"mostCommonPos":10},{"name":"Danni Wyatt","team":"AS","inn":2,"runs":48,"hs":30,"avg":24,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":2,"mostCommonPos":1},{"name":"Grant Bauer","team":"GB","inn":16,"runs":329,"hs":83,"avg":27.42,"sr":0,"fifties":1,"hundreds":0,"mom":2,"catches":0,"dismissals":12,"mostCommonPos":5},{"name":"Ravindra Jadeja","team":"GB","inn":12,"runs":288,"hs":64,"avg":32,"sr":0,"fifties":2,"hundreds":0,"mom":0,"catches":0,"dismissals":9,"mostCommonPos":7},{"name":"Marco Jansen","team":"GB","inn":8,"runs":94,"hs":29,"avg":15.67,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":6,"mostCommonPos":9},{"name":"Shashank Singh","team":"GB","inn":13,"runs":167,"hs":33,"avg":23.86,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":7,"mostCommonPos":8},{"name":"Harbhajan Singh","team":"GB","inn":6,"runs":20,"hs":9,"avg":6.67,"sr":0,"fifties":0,"hundreds":0,"mom":1,"catches":0,"dismissals":3,"mostCommonPos":10},{"name":"Bhuvneshwar Kumar","team":"GB","inn":6,"runs":13,"hs":4,"avg":13,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":1,"mostCommonPos":11},{"name":"Jonny Bairstow","team":"TT","inn":3,"runs":53,"hs":41,"avg":26.5,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":2,"mostCommonPos":9},{"name":"Mitchell Johnson","team":"TT","inn":2,"runs":1,"hs":1,"avg":0.5,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":2,"mostCommonPos":11},{"name":"Tom Curran","team":"SM","inn":1,"runs":3,"hs":3,"avg":3,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":0,"mostCommonPos":11},{"name":"Matt Short","team":"UU","inn":9,"runs":185,"hs":41,"avg":20.56,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":9,"mostCommonPos":6},{"name":"Uzair Basu","team":"UU","inn":1,"runs":7,"hs":7,"avg":7,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":1,"mostCommonPos":9},{"name":"Ruturaj Gaikwad","team":"HH","inn":7,"runs":101,"hs":40,"avg":16.83,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":6,"mostCommonPos":9},{"name":"Imran Tahir","team":"VV","inn":2,"runs":0,"hs":0,"avg":0,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":0,"mostCommonPos":11},{"name":"Ruturaj Gaikwad","team":"AS","inn":4,"runs":56,"hs":31,"avg":28,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":2,"mostCommonPos":9},{"name":"Noor Ahmad","team":"GB","inn":0,"runs":0,"hs":0,"avg":0,"sr":0,"fifties":0,"hundreds":0,"mom":1,"catches":0,"dismissals":0,"mostCommonPos":10},{"name":"Harry Kraft","team":"HH","inn":1,"runs":12,"hs":12,"avg":12,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":1,"mostCommonPos":7},{"name":"Issy Wong","team":"UU","inn":3,"runs":2,"hs":2,"avg":1,"sr":0,"fifties":0,"hundreds":0,"mom":1,"catches":0,"dismissals":2,"mostCommonPos":11},{"name":"Yuzvendra Chahal","team":"AS","inn":0,"runs":0,"hs":0,"avg":0,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":0,"mostCommonPos":11},{"name":"Devdutt Padikkal","team":"SM","inn":1,"runs":13,"hs":13,"avg":13,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":1,"mostCommonPos":7},{"name":"Kyle Jamieson","team":"AS","inn":1,"runs":1,"hs":1,"avg":1,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":1,"mostCommonPos":9},{"name":"Mohammed Siraj","team":"AA","inn":0,"runs":0,"hs":0,"avg":0,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":0,"mostCommonPos":11},{"name":"RVD Dussen","team":"TT","inn":1,"runs":13,"hs":13,"avg":13,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":1,"mostCommonPos":4},{"name":"Sahibzada Farhan","team":"AS","inn":2,"runs":28,"hs":28,"avg":28,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":1,"mostCommonPos":7},{"name":"Yashasvi Jaiswal","team":"VV","inn":1,"runs":6,"hs":6,"avg":6,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":1,"mostCommonPos":1},{"name":"Nat Sciver","team":"AA","inn":0,"runs":0,"hs":0,"avg":0,"sr":0,"fifties":0,"hundreds":0,"mom":0,"catches":0,"dismissals":0,"mostCommonPos":9}];
@@ -24885,15 +25214,36 @@ MULTI_DB.season8.table = [{"id":"AA","m":14,"w":9,"l":5,"nr":0,"pts":18,"nrr":2.
   }
 }
 
-let localFilters = { table: 'season9', results: 'season9', schedule: 'season9', squads: 'season9', stats: 'season9', playoffs: 'season9', compare: 'season9', stories: 'season9', awards: 'season9' };
+let localFilters = { table: 'season10', results: 'season10', schedule: 'season10', squads: 'season10', stats: 'season10', playoffs: 'season10', compare: 'season10', stories: 'season10', awards: 'season10' };
 function getLocalDB(panel) {
   let s = localFilters[panel];
   if (s === 'overall') return aggregateDB();
-  return MULTI_DB[s] || MULTI_DB.season9;
+  return MULTI_DB[s] || MULTI_DB.season10 || MULTI_DB.season9;
+}
+function teamsFor(season) {
+  if (season === 'season7') return TEAMS_S7;
+  if (season === 'season8') return TEAMS_S8;
+  if (season === 'season9') return TEAMS_S9;
+  if (season === 'season10') return TEAMS_S10;
+  return ALL_TEAMS;
+}
+function squadsFor(season) {
+  if (season === 'season7') return SQUADS_S7;
+  if (season === 'season8') return SQUADS_S8;
+  if (season === 'season9') return SQUADS_S9;
+  if (season === 'season10') return SQUADS_S10;
+  return { ...SQUADS_S7, ...SQUADS_S8, ...SQUADS_S9 };
+}
+function scheduleFor(season) {
+  if (season === 'season7') return SCHEDULE_S7;
+  if (season === 'season8') return SCHEDULE_S8;
+  if (season === 'season9') return SCHEDULE_S9;
+  if (season === 'season10') return SCHEDULE_S10;
+  return SCHEDULE_S9;
 }
 TEAMS = ALL_TEAMS;
-SQUADS = { ...SQUADS_S7, ...SQUADS_S8 };
-let DB = MULTI_DB.season9; // Fallback for saving
+SQUADS = { ...SQUADS_S7, ...SQUADS_S8, ...SQUADS_S10 };
+let DB = MULTI_DB.season10; // Fallback for saving
 
 function aggregateDB() {
   let agg = { table: [], results: [
@@ -25352,10 +25702,10 @@ function aggregateDB() {
               }
       ]
     };
-  agg.results = [...MULTI_DB.season7.results, ...MULTI_DB.season8.results, ...MULTI_DB.season9.results].sort((a,b)=>a.match-b.match);
+  agg.results = [...MULTI_DB.season7.results, ...MULTI_DB.season8.results, ...MULTI_DB.season9.results, ...(MULTI_DB.season10?.results || [])].sort((a,b)=>a.match-b.match);
 
   let batMap = {};
-  [...MULTI_DB.season7.batting, ...MULTI_DB.season8.batting, ...MULTI_DB.season9.batting].forEach(b => {
+  [...MULTI_DB.season7.batting, ...MULTI_DB.season8.batting, ...MULTI_DB.season9.batting, ...(MULTI_DB.season10?.batting || [])].forEach(b => {
     let k = b.name;
     if (!batMap[k]) batMap[k] = { name:b.name, team:b.team, inn:0, runs:0, hs:0, fifties:0, hundreds:0, mom:0, catches:0, dismissals:0, note: b.note };
     batMap[k].inn += b.inn||0;
@@ -25374,7 +25724,7 @@ function aggregateDB() {
   });
   
   let bowlMap = {};
-  [...MULTI_DB.season7.bowling, ...MULTI_DB.season8.bowling, ...MULTI_DB.season9.bowling].forEach(b => {
+  [...MULTI_DB.season7.bowling, ...MULTI_DB.season8.bowling, ...MULTI_DB.season9.bowling, ...(MULTI_DB.season10?.bowling || [])].forEach(b => {
     let k = b.name;
     if (!bowlMap[k]) bowlMap[k] = { name:b.name, team:b.team, inn:0, wkts:0, bbi:b.bbi, fourW:0, runsConceded:0, oversBowled:0 };
     bowlMap[k].inn += b.inn||0;
@@ -25391,7 +25741,7 @@ function aggregateDB() {
   });
   
   let tabMap = {};
-  [...MULTI_DB.season7.table, ...MULTI_DB.season8.table, ...MULTI_DB.season9.table].forEach(t => {
+  [...MULTI_DB.season7.table, ...MULTI_DB.season8.table, ...MULTI_DB.season9.table, ...(MULTI_DB.season10?.table || [])].forEach(t => {
     let k = t.id;
     if (!tabMap[k]) tabMap[k] = { id:k, m:0, w:0, l:0, nr:0, pts:0, nrr:0 };
     tabMap[k].m += t.m||0;
@@ -25409,17 +25759,27 @@ function updateThemeColor() {
   const activePanel = document.querySelector('.panel.active');
   if (!activePanel) return;
   const panelId = activePanel.id.replace('panel-', '');
-  const season = localFilters[panelId] || 'season8';
-  
-  if (season === 'season7') {
-    document.documentElement.style.setProperty('--acc', 'var(--green)');
-    document.documentElement.style.setProperty('--shadow', '0 10px 30px rgba(52, 211, 153, 0.2)'); // Tinted green shadow
-  } else if (season === 'season9') {
-    document.documentElement.style.setProperty('--acc', '#f97316'); // Orange
-    document.documentElement.style.setProperty('--shadow', '0 10px 30px rgba(249, 115, 22, 0.2)'); // Tinted orange shadow
+  const season = localFilters[panelId] || 'season10';
+  const hdrSub = document.getElementById('hdrSubtext');
+
+  if (season === 'season10') {
+    document.body.classList.add('theme-s10');
+    document.documentElement.style.setProperty('--acc', '#C9A24A');
+    document.documentElement.style.setProperty('--shadow', '0 18px 44px rgba(201, 162, 74, 0.16)');
+    if (hdrSub) hdrSub.textContent = 'Eight teams. One stage. The new era starts now.';
   } else {
-    document.documentElement.style.setProperty('--acc', '#60a5fa');
-    document.documentElement.style.setProperty('--shadow', '0 10px 30px rgba(96, 165, 250, 0.2)'); // Tinted blue shadow
+    document.body.classList.remove('theme-s10');
+    if (hdrSub) hdrSub.textContent = 'All Statistics, Matches, and Data Tracking';
+    if (season === 'season7') {
+      document.documentElement.style.setProperty('--acc', 'var(--green)');
+      document.documentElement.style.setProperty('--shadow', '0 10px 30px rgba(52, 211, 153, 0.2)'); // Tinted green shadow
+    } else if (season === 'season9') {
+      document.documentElement.style.setProperty('--acc', '#f97316'); // Orange
+      document.documentElement.style.setProperty('--shadow', '0 10px 30px rgba(249, 115, 22, 0.2)'); // Tinted orange shadow
+    } else {
+      document.documentElement.style.setProperty('--acc', '#60a5fa');
+      document.documentElement.style.setProperty('--shadow', '0 10px 30px rgba(96, 165, 250, 0.2)'); // Tinted blue shadow
+    }
   }
 }
 function setLocalFilter(panel, season, btn) {
@@ -25702,7 +26062,12 @@ function getPlayoffsHtml(lDB){
 function renderResults(){
   let lDB = getLocalDB("results");
   const c=document.getElementById('resultsContainer');
-  if(!lDB.results.length){c.innerHTML='<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:40px;text-align:center;color:var(--muted);font-style:italic">No results yet</div>';return;}
+  if(!lDB.results.length){
+    c.innerHTML = localFilters.results === 'season10'
+      ? '<div class="s10-empty"><div class="s10-soon-kicker">Results</div><div class="s10-soon-title">No Results Yet</div></div>'
+      : '<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:40px;text-align:center;color:var(--muted);font-style:italic">No results yet</div>';
+    return;
+  }
   c.innerHTML=[...lDB.results].sort((a,b)=>b.match-a.match).map(r=>{
     const t1=byId(r.team1),t2=byId(r.team2),win=byId(r.winner);
     const w1=r.winner===r.team1,w2=r.winner===r.team2;
@@ -25731,7 +26096,14 @@ function renderResults(){
 function renderSchedule(){
   let lDB = getLocalDB("schedule");
   const c=document.getElementById('scheduleContainer');
-  c.innerHTML=(localFilters.schedule === 'season7' ? SCHEDULE_S7 : localFilters.schedule === 'season8' ? SCHEDULE_S8 : SCHEDULE_S9).map((round,ri)=>{
+  const sched = scheduleFor(localFilters.schedule);
+  if (!sched.length) {
+    c.innerHTML = localFilters.schedule === 'season10'
+      ? '<div class="s10-empty"><div class="s10-soon-kicker">Fixtures</div><div class="s10-soon-title">Coming Soon</div></div>'
+      : '';
+    return;
+  }
+  c.innerHTML=sched.map((round,ri)=>{
     const divider=ri===7?'<div class="leg-divider">⸻ LEG 2 — REVERSE FIXTURES ⸻</div>':'';
     const matches=round.m.map(m=>{
       const res=lDB.results.find(r=>r.match===m.n);
@@ -25764,14 +26136,24 @@ function renderSchedule(){
 
 function renderSquads(){
   let lDB = getLocalDB("squads");
-  document.getElementById('squadsContainer').innerHTML=(localFilters.squads === 'season7' ? TEAMS_S7 : localFilters.squads === 'season8' ? TEAMS_S8 : localFilters.squads === 'season9' ? TEAMS_S9 : ALL_TEAMS).map(team=>{
-    const sq = localFilters.squads === 'season7' ? SQUADS_S7 : localFilters.squads === 'season8' ? SQUADS_S8 : localFilters.squads === 'season9' ? SQUADS_S9 : { ...SQUADS_S7, ...SQUADS_S8, ...SQUADS_S9 };
-    const players=(sq[team.id]||[]).map(p=>`<li><span class="p-num">${p.n}</span><span class="p-name player-link" onclick="openPlayerProfile('${p.p}', '${team.id}')">${p.p}</span>${badge(p.r)}</li>`).join('');
-    return `<div class="squad-card">
+  const season = localFilters.squads;
+  const teamList = teamsFor(season);
+  const sq = squadsFor(season);
+  document.getElementById('squadsContainer').innerHTML=teamList.map(team=>{
+    const roster = sq[team.id] || [];
+    const comingSoon = season === 'season10' && roster.length === 0;
+    const players = comingSoon
+      ? `<div class="squad-coming-soon">
+          <div class="s10-soon-kicker">Roster</div>
+          <div class="s10-soon-title">Squad Coming Soon</div>
+          <div class="s10-soon-sub">XI to be announced</div>
+        </div>`
+      : `<ul class="squad-list">${roster.map(p=>`<li><span class="p-num">${p.n}</span><span class="p-name player-link" onclick="openPlayerProfile('${p.p}', '${team.id}')">${p.p}</span>${badge(p.r)}</li>`).join('')}</ul>`;
+    return `<div class="squad-card" style="--team-accent:${team.color}">
       <div class="squad-hdr"><span class="squad-emoji">${teamIcon(team)}</span>
         <div><div class="squad-team">${team.name}</div><div class="squad-code" style="color:${team.color}">${team.id}</div></div>
       </div>
-      <ul class="squad-list">${players}</ul>
+      ${players}
     </div>`;
   }).join('');
 }
@@ -26065,16 +26447,19 @@ function openPlayerProfile(name, teamId) {
   // Determine the active season from the UI
   const activePanel = document.querySelector('.panel.active');
   const panelId = activePanel ? activePanel.id.replace('panel-', '') : 'stats';
-  const season = localFilters[panelId] || 'season9';
+  const season = localFilters[panelId] || 'season10';
   
-  let lDB = MULTI_DB.season9;
-  let lSQUADS = SQUADS_S9;
+  let lDB = MULTI_DB.season10;
+  let lSQUADS = SQUADS_S10;
   if (season === 'season7') {
     lDB = MULTI_DB.season7;
     lSQUADS = SQUADS_S7;
   } else if (season === 'season8') {
     lDB = MULTI_DB.season8;
     lSQUADS = SQUADS_S8;
+  } else if (season === 'season9') {
+    lDB = MULTI_DB.season9;
+    lSQUADS = SQUADS_S9;
   } else if (season === 'overall') {
     lDB = MULTI_DB.overall;
     lSQUADS = { ...SQUADS_S7, ...SQUADS_S8, ...SQUADS_S9 };
@@ -26520,7 +26905,9 @@ function renderStories() {
   const matches = lDB.results.filter(r => r.team1 === teamId || r.team2 === teamId).sort((a,b)=>a.match-b.match);
   
   if(!row || matches.length === 0) {
-    container.innerHTML = `<div style="padding:40px; text-align:center; color:var(--muted); font-style:italic;">No matches played yet.</div>`;
+    container.innerHTML = localFilters.stories === 'season10'
+      ? `<div class="s10-empty"><div class="s10-soon-kicker">Stories</div><div class="s10-soon-title">No Matches Played Yet</div></div>`
+      : `<div style="padding:40px; text-align:center; color:var(--muted); font-style:italic;">No matches played yet.</div>`;
     return;
   }
 
@@ -26673,6 +27060,15 @@ function renderAwards() {
   const teamOfTournamentContainer = document.getElementById('awardsTeamOfTournamentContainer');
   const worstTeamContainer = document.getElementById('awardsWorstTeamContainer');
   if (!accoladesContainer || !top5Container || !teamOfTournamentContainer || !worstTeamContainer) return;
+
+  if (!lDB.batting.length && !lDB.bowling.length) {
+    const empty = `<div class="s10-empty"><div class="s10-soon-kicker">Season ${seasonStr}</div><div class="s10-soon-title">Awards Coming Soon</div></div>`;
+    accoladesContainer.innerHTML = empty;
+    top5Container.innerHTML = '';
+    teamOfTournamentContainer.innerHTML = '';
+    worstTeamContainer.innerHTML = '';
+    return;
+  }
 
   // 1. Compute Accolades
   // MVP Calculation
@@ -27218,7 +27614,7 @@ function appendTypingIndicator() {
   container.scrollTop = container.scrollHeight;
 }
 
-const BB_SEASON_ORDER = ['season9', 'season8', 'season7'];
+const BB_SEASON_ORDER = ['season10', 'season9', 'season8', 'season7'];
 const BB_CURRENT_SEASON = 'season9';
 
 function bbSeasonLabel(s) { return s.replace('season', 'Season '); }
