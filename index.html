@@ -1220,23 +1220,24 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   color: var(--muted);
 }
 body.theme-s10 {
-  --bg: #070708;
-  --card: #101012;
-  --border: rgba(201, 162, 74, 0.28);
-  --acc: #C9A24A;
-  --red: #FF5A5A;
-  --text: #F4F1EA;
-  --text-light: #FFF6DE;
-  --muted: #9A9386;
-  --green: #3DDC97;
-  --loss: #FF5A5A;
-  --purple: #C084FC;
-  --yellow: #E8C872;
-  --shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
+  --bg: #06060F;
+  --card: #0E0F1A;
+  --border: rgba(91, 76, 255, 0.38);
+  --acc: #5EFFC5;
+  --indigo: #5B4CFF;
+  --red: #FF5A7A;
+  --text: #F2F5FF;
+  --text-light: #FFFFFF;
+  --muted: #8B91B3;
+  --green: #3EF0A8;
+  --loss: #FF5A7A;
+  --purple: #5B4CFF;
+  --yellow: #5EFFC5;
+  --shadow: 0 18px 44px rgba(36, 24, 90, 0.55);
   background:
-    radial-gradient(1200px 560px at 8% -8%, rgba(201, 162, 74, 0.14), transparent 55%),
-    radial-gradient(900px 420px at 108% 0%, rgba(201, 162, 74, 0.08), transparent 50%),
-    #070708;
+    radial-gradient(1100px 520px at 6% -12%, rgba(94, 255, 197, 0.16), transparent 55%),
+    radial-gradient(900px 480px at 108% 0%, rgba(91, 76, 255, 0.24), transparent 52%),
+    #06060F;
   color: var(--text);
   font-family: 'Barlow', 'DM Sans', sans-serif;
 }
@@ -1247,7 +1248,7 @@ body.theme-s10::before {
   pointer-events: none;
   z-index: 0;
   background:
-    repeating-linear-gradient(-18deg, transparent 0 42px, rgba(201, 162, 74, 0.03) 42px 43px);
+    repeating-linear-gradient(-18deg, transparent 0 42px, rgba(91, 76, 255, 0.05) 42px 43px);
   mix-blend-mode: screen;
 }
 body.theme-s10 .s10-broadcast-bar {
@@ -1259,8 +1260,8 @@ body.theme-s10 .s10-broadcast-bar {
   padding: 8px 16px;
   width: fit-content;
   max-width: 100%;
-  background: #C9A24A;
-  color: #0A0A0A;
+  background: var(--indigo);
+  color: var(--acc);
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
   font-size: 12px;
@@ -1268,8 +1269,11 @@ body.theme-s10 .s10-broadcast-bar {
   text-transform: uppercase;
   clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
 }
+body.theme-s10 .s10-broadcast-bar span:first-child {
+  color: var(--acc);
+}
 body.theme-s10 .s10-broadcast-bar span + span {
-  border-left: 1px solid rgba(10, 10, 10, 0.28);
+  border-left: 1px solid rgba(94, 255, 197, 0.28);
   padding-left: 18px;
 }
 body.theme-s10 .s10-live-dot {
@@ -1277,7 +1281,7 @@ body.theme-s10 .s10-live-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #0A0A0A;
+  background: var(--acc);
   margin-right: 8px;
   animation: s10Pulse 1.4s ease-in-out infinite;
 }
@@ -1340,12 +1344,12 @@ body.theme-s10 .tab {
   color: var(--muted);
 }
 body.theme-s10 .tab:hover {
-  background: rgba(201, 162, 74, 0.08);
+  background: rgba(91, 76, 255, 0.16);
   color: var(--text-light);
 }
 body.theme-s10 .tab.active {
   background: var(--acc);
-  color: #0A0A0A;
+  color: #06060F;
   box-shadow: none;
 }
 body.theme-s10 .st {
@@ -1353,7 +1357,7 @@ body.theme-s10 .st {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-size: 22px;
-  border-left: 3px solid var(--acc);
+  border-left: 3px solid var(--indigo);
   padding-left: 12px;
 }
 body.theme-s10 .tab-filters {
@@ -1368,8 +1372,8 @@ body.theme-s10 .filter-btn {
   border-radius: 2px;
 }
 body.theme-s10 .filter-btn.active {
-  background: var(--acc);
-  color: #0A0A0A;
+  background: var(--indigo);
+  color: #F2F5FF;
   box-shadow: none;
 }
 body.theme-s10 .tbl-wrap,
@@ -1414,7 +1418,7 @@ body.theme-s10 .squad-coming-soon {
   padding: 36px 20px 32px;
   text-align: center;
   background:
-    linear-gradient(180deg, rgba(201, 162, 74, 0.06), transparent 70%);
+    linear-gradient(180deg, rgba(91, 76, 255, 0.12), rgba(94, 255, 197, 0.05) 70%, transparent);
 }
 body.theme-s10 .squad-coming-soon .s10-soon-kicker {
   font-family: 'Barlow Condensed', sans-serif;
@@ -1463,10 +1467,10 @@ body.theme-s10 .s10-empty .s10-soon-title {
   color: var(--text-light);
 }
 body.theme-s10 footer { color: var(--muted); }
-body.theme-s10 .match-row:hover { background: rgba(201, 162, 74, 0.06); }
+body.theme-s10 .match-row:hover { background: rgba(91, 76, 255, 0.1); }
 body.theme-s10 .m-num.pending {
   color: var(--acc);
-  background: rgba(201, 162, 74, 0.12);
+  background: rgba(94, 255, 197, 0.12);
   border-radius: 2px;
 }
 body.theme-s10 .round-title,
@@ -25764,8 +25768,8 @@ function updateThemeColor() {
 
   if (season === 'season10') {
     document.body.classList.add('theme-s10');
-    document.documentElement.style.setProperty('--acc', '#C9A24A');
-    document.documentElement.style.setProperty('--shadow', '0 18px 44px rgba(201, 162, 74, 0.16)');
+    document.documentElement.style.setProperty('--acc', '#5EFFC5');
+    document.documentElement.style.setProperty('--shadow', '0 18px 44px rgba(91, 76, 255, 0.22)');
     if (hdrSub) hdrSub.textContent = 'Eight teams. One stage. The new era starts now.';
   } else {
     document.body.classList.remove('theme-s10');
