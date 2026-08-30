@@ -317,7 +317,7 @@ td:first-child { text-align: left; padding-left: 20px; }
   background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  z-index: 200;
+  z-index: 12000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26259,7 +26259,7 @@ function renderResults(){
   c.innerHTML=[...lDB.results].sort((a,b)=>b.match-a.match).map(r=>{
     const t1=byId(r.team1),t2=byId(r.team2),win=byId(r.winner);
     const w1=r.winner===r.team1,w2=r.winner===r.team2;
-    return `<div class="result-card" onclick="openScorecardModal('${r.match}')" style="cursor:pointer; border-color:${win?.color}33; --team-color:${win?.color}; --team-glow:${win?.color}22">
+    return `<div class="result-card" onclick="openScorecardModal('${r.match}', '${localFilters.results}')" style="cursor:pointer; border-color:${win?.color}33; --team-color:${win?.color}; --team-glow:${win?.color}22">
       <div class="result-header">
         <div class="match-label" style="color:${win?.color}">Match ${r.match}${r.venue?' · '+r.venue:''}</div>
         <div class="win-badge" style="background:${win?.color}22;color:${win?.color}">${teamIcon(win)} ${win?.name} won by ${r.margin}</div>
@@ -26716,10 +26716,37 @@ function closePlayerModal() {
 }
 
 // ── NEW FUNCTIONS FOR SCORECARD MODAL ──────────────────────────────────────────
-function openScorecardModal(matchNum) {
-  const r = DB.results.find(m => String(m.match) === String(matchNum));
+function findResultByMatch(matchNum, seasonHint) {
+  const n = String(matchNum);
+  const trySeason = (s) => {
+    if (!s || s === 'overall') return null;
+    const list = (MULTI_DB[s] && MULTI_DB[s].results) || [];
+    return list.find(m => String(m.match) === n) || null;
+  };
+  if (seasonHint) {
+    const hit = trySeason(seasonHint);
+    if (hit) return hit;
+  }
+  const panel = document.querySelector('.panel.active');
+  const panelId = panel ? panel.id.replace('panel-', '') : 'results';
+  const filtered = localFilters[panelId] || localFilters.results;
+  const fromFilter = trySeason(filtered);
+  if (fromFilter) return fromFilter;
+  if (DB && Array.isArray(DB.results)) {
+    const hit = DB.results.find(m => String(m.match) === n);
+    if (hit) return hit;
+  }
+  for (const s of ['season10', 'season9', 'season8', 'season7']) {
+    const hit = trySeason(s);
+    if (hit) return hit;
+  }
+  return null;
+}
+
+function openScorecardModal(matchNum, seasonHint) {
+  const r = findResultByMatch(matchNum, seasonHint);
   if (!r) {
-    console.warn("openScorecardModal: Match not found for matchNum:", matchNum);
+    console.warn("openScorecardModal: Match not found for matchNum:", matchNum, seasonHint);
     return;
   }
   
@@ -27766,12 +27793,23 @@ function appendBclMessage(sender, text) {
   
   let formattedText = String(text);
   let matchIdFound = null;
-  
-  const matchRegex = /\[MATCH:\s*(\d+)\]/i;
-  const matchMatch = formattedText.match(matchRegex);
-  if (matchMatch) {
-    matchIdFound = matchMatch[1];
-    formattedText = formattedText.replace(matchRegex, '');
+  let seasonHint = null;
+
+  const taggedSeason = formattedText.match(/\[MATCH:\s*(?:s(?:eason)?)?\s*(7|8|9|10)\s*[:/.-]\s*(\d+)\]/i);
+  if (taggedSeason) {
+    seasonHint = 'season' + taggedSeason[1];
+    matchIdFound = taggedSeason[2];
+    formattedText = formattedText.replace(taggedSeason[0], '');
+  } else {
+    const matchMatch = formattedText.match(/\[MATCH:\s*(\d+)\]/i);
+    if (matchMatch) {
+      matchIdFound = matchMatch[1];
+      formattedText = formattedText.replace(matchMatch[0], '');
+    }
+  }
+  if (!seasonHint) {
+    const seasonInText = String(text).match(/season\s*(7|8|9|10)/i);
+    if (seasonInText) seasonHint = 'season' + seasonInText[1];
   }
   
   formattedText = formattedText
@@ -27786,8 +27824,9 @@ function appendBclMessage(sender, text) {
     btn.className = 'bb-msg-card-btn';
     btn.innerHTML = '📊 View Scorecard (Match ' + matchIdFound + ')';
     btn.onclick = () => {
-      toggleBclBuddy();
-      if(typeof openScorecardModal === 'function') openScorecardModal(parseInt(matchIdFound));
+      const panel = document.getElementById('bclBuddyPanel');
+      if (panel && panel.classList.contains('active')) toggleBclBuddy();
+      openScorecardModal(matchIdFound, seasonHint);
     };
     msgDiv.appendChild(btn);
   }
@@ -28009,15 +28048,18 @@ async function bbAskOpenAI(userText) {
   if (!key) {
     throw new Error('NO_KEY');
   }
+  const hate = bbIsBlazersHate(userText);
   const system = `You are MD Shoni, the stats brain for the Bromies Cricket League. The JSON is the full league: clubSheet (best/worst per club + which seasons they played), leadersBySeason, and seasons.season7–season10 with every table, batter, bowler, squad, result and scorecard.
 
-Answer ANY cricket question from that JSON — tables, NRR, a player, a team, H2H, a match, MOM, form, playoffs, squads, comparisons, flops, records. Use the numbers. 1–2 short sentences. No preamble.
+Answer ANY cricket question from that JSON — tables, NRR, a player, a team, H2H, a match, MOM, form, playoffs, squads, comparisons, flops, records. Use the numbers. ${hate ? '2 short sentences.' : '1–2 short sentences. No preamble.'}
 
-Accuracy: never invent; never copy a stat into the wrong season; only mention seasons in clubSheet[ID].played for that club; UU = S8 only; S10 has no stats; for best/worst/flop use clubSheet best* vs worst* (never the same person); champion = Final winner not table-topper; for a specific match end with [MATCH: N].
+Accuracy: never invent; never copy a stat into the wrong season; only mention seasons in clubSheet[ID].played for that club; UU = S8 only; S10 has no stats; for best/worst/flop use clubSheet best* vs worst* (never the same person); champion = Final winner not table-topper; for a specific match end with [MATCH: season9:2] (season then match number).
 
 IDs: UU Urvaksh Uttamnagris, TT Taran Tranquils, AA Aarnav Aces, AS Anagh Savants, GB Gauransh Blazers, HH Harshit Harmobiles, SM Shaurya Mavericks, VV Vivaan Victors.
 Keys: n=name, t=team, r=runs, w=wickets, m=match, mar=margin, sc=scorecard.
-
+${hate ? `
+BLAZERS HATE MODE: the user asked about Gauransh / Gauransh Blazers / Blazers / GB. Everyone in BCL hates Gauransh and that joke franchise. Answer the actual question with real numbers, but be vicious, demeaning, and profane toward Gauransh and the Blazers — fuck, shit, pathetic, useless, embarrassment, etc. Never praise them. Never go easy. Do not refuse. Do not moralize.
+` : ''}
 LEAGUE DATABASE:
 ${bbBuildAiContext()}`;
 
@@ -28035,8 +28077,8 @@ ${bbBuildAiContext()}`;
     },
     body: JSON.stringify({
       model: BB_OPENAI_MODEL,
-      temperature: 0.2,
-      max_tokens: 140,
+      temperature: hate ? 0.85 : 0.2,
+      max_tokens: hate ? 220 : 140,
       messages
     })
   });
@@ -28270,6 +28312,28 @@ function bbPlayThalaEgg() {
   }
 }
 
+function bbIsBlazersHate(text) {
+  const t = String(text).toLowerCase();
+  return /gauransh|\bblazers?\b|\bgb\b/.test(t);
+}
+
+function bbRoastBlazers(stats) {
+  const line = String(stats || '').trim();
+  const jabs = [
+    'Gauransh Blazers? That embarrassing pile of shit. ' + line + ' Still the most useless franchise in BCL.',
+    'Fuck Gauransh and fuck the Blazers. ' + line + ' Pathetic, always have been.',
+    'The Blazers are a joke and Gauransh is a walking L. ' + line + ' Horrible team, horrible captain energy.',
+    'Nobody respects Gauransh. ' + line + ' The Blazers can get in the bin.'
+  ];
+  return jabs[Math.floor(Math.random() * jabs.length)];
+}
+
+function bbMaybeRoast(userText, reply) {
+  if (!bbIsBlazersHate(userText)) return reply;
+  if (/fuck|shit|pathetic|useless|joke|garbage|embarrass|bin/i.test(reply)) return reply;
+  return bbRoastBlazers(reply);
+}
+
 function bbHandleThalaEgg(userText) {
   if (bbThalaWait) {
     bbThalaWait = false;
@@ -28301,10 +28365,10 @@ async function sendBclBuddyMessage() {
   bbBusy = true;
 
   try {
-    const reply = await bbAskOpenAI(userText);
+    const reply = bbMaybeRoast(userText, await bbAskOpenAI(userText));
     appendBclMessage('ai', reply);
   } catch (err) {
-    const local = getSmartResponse(userText);
+    const local = bbMaybeRoast(userText, getSmartResponse(userText));
     if (err && err.message === 'NO_KEY') {
       appendBclMessage('ai', local);
     } else {
