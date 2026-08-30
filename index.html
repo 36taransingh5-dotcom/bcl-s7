@@ -215,6 +215,15 @@ tbody tr:hover { background: #18181b; }
 td { padding: 16px 14px; text-align: center; vertical-align: middle; font-weight: 500; }
 td:first-child { text-align: left; padding-left: 20px; }
 .rank { color: var(--muted); font-size: 12px; margin-right: 8px; font-weight: 700; }
+.team-logo-img {
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: middle;
+  object-fit: contain;
+  display: inline-block;
+  border-radius: 4px;
+  pointer-events: none;
+}
 .qualify-bar {
   display: inline-block;
   width: 6px;
@@ -1504,6 +1513,59 @@ body.theme-s10 th {
 }
 body.theme-s10 td { color: #fff; }
 body.theme-s10 td strong { color: #fff; text-transform: uppercase; letter-spacing: 0.04em; }
+body.theme-s10 tbody td:first-child {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+body.theme-s10 tbody td:first-child .team-logo-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 0;
+}
+body.theme-s10 .qualify-bar {
+  width: 4px;
+  height: 28px;
+  border-radius: 0;
+  flex-shrink: 0;
+}
+body.theme-s10 .squad-emoji .team-logo-img {
+  width: 52px;
+  height: 52px;
+  border-radius: 0;
+}
+body.theme-s10 .hundo-po-who .team-logo-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 0;
+}
+body.theme-s10 .hundo-po-champ-name .team-logo-img {
+  width: 56px;
+  height: 56px;
+  border-radius: 0;
+  vertical-align: -10px;
+}
+body.theme-s10 .result-card .team-logo-img,
+body.theme-s10 .team-name-sm .team-logo-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 0;
+}
+body.theme-s10 .m-team .team-logo-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 0;
+}
+body.theme-s10 .win-badge .team-logo-img {
+  width: 28px;
+  height: 28px;
+  border-radius: 0;
+}
+body.theme-s10 #p-card-emoji .team-logo-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 0;
+}
 body.theme-s10 .pts-cell { color: #fff; font-weight: 800; }
 body.theme-s10 .squad-hdr {
   background: #111;
@@ -26197,7 +26259,7 @@ function badge(role){
 }
 function teamIcon(t) {
   if (!t) return "❓";
-  if (t.logo) return `<img src="${t.logo}" class="team-logo-img" alt="${t.id}" style="width:1.2em; height:1.2em; vertical-align:middle; object-fit:contain; display:inline-block; border-radius: 4px; pointer-events:none;">`;
+  if (t.logo) return `<img src="${t.logo}" class="team-logo-img" alt="${t.id}">`;
   return t.emoji;
 }
 
