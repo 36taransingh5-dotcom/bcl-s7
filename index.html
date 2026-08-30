@@ -1036,20 +1036,29 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #10b981, #059669);
+  background: #111;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 28px;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
   z-index: 9999;
   transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+  padding: 0;
+  border: 2px solid #10b981;
+}
+.bcl-buddy-fab img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .bcl-buddy-fab:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
 }
 
 .bcl-buddy-panel {
@@ -1220,6 +1229,47 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   font-size: 12px;
   cursor: pointer;
   font-family: inherit;
+}
+
+#thalaEgg {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 45%, rgba(255, 204, 0, 0.42), rgba(0, 0, 0, 0.9) 68%);
+  overflow: hidden;
+}
+#thalaEgg.active { display: flex; }
+#thalaEgg img {
+  width: min(72vw, 78vh);
+  max-height: 86vh;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 36px rgba(255, 204, 0, 0.55));
+  transform-origin: center 85%;
+  animation: thalaBounce 0.32s ease-in-out infinite alternate;
+}
+#thalaEgg .thala-seven {
+  position: absolute;
+  font-family: 'Archivo Black', Impact, sans-serif;
+  font-size: clamp(72px, 16vw, 160px);
+  color: #FFCC00;
+  text-shadow: 0 0 22px #ffcc00, 4px 4px 0 #004c97;
+  animation: thalaSeven 0.55s ease-in-out infinite alternate;
+  line-height: 1;
+  user-select: none;
+}
+#thalaEgg .thala-seven.l { left: 5vw; top: 10vh; }
+#thalaEgg .thala-seven.r { right: 5vw; bottom: 10vh; }
+@keyframes thalaBounce {
+  from { transform: scale(0.9) rotate(-11deg) translateY(10px); }
+  to { transform: scale(1.14) rotate(11deg) translateY(-34px); }
+}
+@keyframes thalaSeven {
+  from { transform: rotate(-18deg) scale(0.88); }
+  to { transform: rotate(18deg) scale(1.18); }
 }
 
 /* ── SEASON 10 — NSL broadcast identity (scoped; other seasons unchanged) ── */
@@ -1556,9 +1606,10 @@ body.theme-s10 .leg-divider {
   color: #fff;
 }
 body.theme-s10 .bcl-buddy-fab {
-  background: var(--acc);
+  background: #111;
   box-shadow: none;
-  border-radius: 0;
+  border-radius: 50%;
+  border: 2px solid var(--acc);
 }
 body.theme-s10 .bcl-buddy-panel {
   background: #0D0D0D;
@@ -27951,7 +28002,7 @@ async function bbAskOpenAI(userText) {
   if (!key) {
     throw new Error('NO_KEY');
   }
-  const system = `You are BCL Buddy, the stats brain for the Bromies Cricket League. The JSON is the full league: clubSheet (best/worst per club + which seasons they played), leadersBySeason, and seasons.season7–season10 with every table, batter, bowler, squad, result and scorecard.
+  const system = `You are MD Shoni, the stats brain for the Bromies Cricket League. The JSON is the full league: clubSheet (best/worst per club + which seasons they played), leadersBySeason, and seasons.season7–season10 with every table, batter, bowler, squad, result and scorecard.
 
 Answer ANY cricket question from that JSON — tables, NRR, a player, a team, H2H, a match, MOM, form, playoffs, squads, comparisons, flops, records. Use the numbers. 1–2 short sentences. No preamble.
 
@@ -28160,6 +28211,77 @@ function getSmartResponse(text) {
   return "I can answer questions about the Season 9 points table, top run scorers, top wicket takers, the highest individual score, the best bowling figures, head-to-head records (e.g. \"Aarnav Aces vs Vivaan Victors\"), or a specific match (e.g. \"match 12\"). What would you like to know?";
 }
 
+let bbThalaWait = false;
+let bbThalaTimer = null;
+
+function bbNormPhrase(s) {
+  return String(s).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function bbStopThalaEgg() {
+  const overlay = document.getElementById('thalaEgg');
+  const audio = document.getElementById('thalaAudio');
+  if (overlay) overlay.classList.remove('active');
+  if (audio) {
+    audio.pause();
+    audio.currentTime = 0;
+    audio.onended = null;
+  }
+  if (bbThalaTimer) {
+    clearTimeout(bbThalaTimer);
+    bbThalaTimer = null;
+  }
+}
+
+function bbPlayThalaEgg() {
+  if (bbThalaTimer) {
+    clearTimeout(bbThalaTimer);
+    bbThalaTimer = null;
+  }
+  const overlay = document.getElementById('thalaEgg');
+  const audio = document.getElementById('thalaAudio');
+  if (overlay) overlay.classList.add('active');
+  const finish = () => bbStopThalaEgg();
+  if (!audio) {
+    bbThalaTimer = setTimeout(finish, 8000);
+    return;
+  }
+  audio.onended = null;
+  audio.pause();
+  try { audio.currentTime = 0; } catch (e) {}
+  audio.onended = finish;
+  const play = audio.play();
+  if (play && play.then) {
+    play.then(() => {
+      const ms = ((audio.duration && isFinite(audio.duration) ? audio.duration : 12) * 1000) + 400;
+      bbThalaTimer = setTimeout(finish, ms);
+    }).catch(() => {
+      bbThalaTimer = setTimeout(finish, 8000);
+    });
+  } else {
+    bbThalaTimer = setTimeout(finish, 15000);
+  }
+}
+
+function bbHandleThalaEgg(userText) {
+  if (bbThalaWait) {
+    bbThalaWait = false;
+    if (/^[#]?0*7[!?.]*$/.test(userText.trim())) {
+      appendBclMessage('ai', 'Oh yeah Oh yeah ~');
+      bbPlayThalaEgg();
+    } else {
+      appendBclMessage('ai', 'Laula Lele');
+    }
+    return true;
+  }
+  if (bbNormPhrase(userText) === 'thala for a reason') {
+    bbThalaWait = true;
+    appendBclMessage('ai', 'whats the secret number');
+    return true;
+  }
+  return false;
+}
+
 async function sendBclBuddyMessage() {
   const inputEl = document.getElementById('bclBuddyInput');
   const userText = inputEl.value.trim();
@@ -28167,6 +28289,7 @@ async function sendBclBuddyMessage() {
 
   inputEl.value = '';
   appendBclMessage('user', userText);
+  if (bbHandleThalaEgg(userText)) return;
   appendTypingIndicator();
   bbBusy = true;
 
@@ -28191,10 +28314,13 @@ async function sendBclBuddyMessage() {
 
   <!-- BCL BUDDY AI -->
   <script src="secrets.js"></script>
-  <div class="bcl-buddy-fab" id="bclBuddyFab" onclick="toggleBclBuddy()">🏏</div>
+  <div class="bcl-buddy-fab" id="bclBuddyFab" onclick="toggleBclBuddy()" title="MD Shoni"><img src="logos/md-shoni.png" alt="MD Shoni"></div>
   <div class="bcl-buddy-panel" id="bclBuddyPanel">
     <div class="bcl-buddy-header">
-      <div>BCL Buddy</div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <img src="logos/md-shoni.png" alt="" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">
+        <span>MD Shoni</span>
+      </div>
       <div style="display:flex;align-items:center;">
         <span class="bcl-buddy-gear" title="OpenAI API key" onclick="bbToggleKeyBox()">⚙</span>
         <div class="bcl-buddy-header-close" onclick="toggleBclBuddy()">✕</div>
@@ -28205,13 +28331,19 @@ async function sendBclBuddyMessage() {
       <button type="button" onclick="bbSaveKey()">Save</button>
     </div>
     <div class="bcl-buddy-messages" id="bclBuddyMessages">
-      <div class="bb-msg ai">Bromies Cricket League — ask about a match, the table, or a player.</div>
+      <div class="bb-msg ai">MD Shoni — Oh yeah Oh yeah ~ ask about a match, the table, or a player.</div>
     </div>
     <div class="bcl-buddy-input-area">
       <input type="text" class="bcl-buddy-input" id="bclBuddyInput" placeholder="Ask about a match..." onkeypress="if(event.key==='Enter') sendBclBuddyMessage()">
       <button class="bcl-buddy-send" onclick="sendBclBuddyMessage()">➔</button>
     </div>
   </div>
+  <div id="thalaEgg" aria-hidden="true">
+    <span class="thala-seven l">7</span>
+    <img src="media/md-shoni-thala.jpg" alt="">
+    <span class="thala-seven r">7</span>
+  </div>
+  <audio id="thalaAudio" src="media/thala.mp3" preload="auto"></audio>
 
 </body>
 </html>
