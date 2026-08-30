@@ -27939,6 +27939,11 @@ function bbTeamLeaders(db) {
   });
   return out;
 }
+function bbRankedTable(db) {
+  return [...(db.table || [])]
+    .sort((a, b) => (b.pts || 0) - (a.pts || 0) || (b.nrr || 0) - (a.nrr || 0))
+    .map((t, i) => ({ pos: i + 1, id: t.id, m: t.m, w: t.w, l: t.l, nr: t.nr, pts: t.pts, nrr: t.nrr }));
+}
 function bbSeasonPayload(season) {
   const db = MULTI_DB[season] || {};
   const squads = squadsFor(season) || {};
@@ -27946,9 +27951,12 @@ function bbSeasonPayload(season) {
   Object.keys(squads).forEach(id => {
     slimSquads[id] = (squads[id] || []).map(p => ({ n: p.n, p: p.p, r: p.r }));
   });
+  const tableRanked = bbRankedTable(db);
   return {
     teams: (teamsFor(season) || []).map(t => ({ id: t.id, name: t.name })),
     table: db.table || [],
+    tableRanked,
+    tableTop: tableRanked[0] || null,
     batting: (db.batting || []).map(bbSlimBat),
     bowling: (db.bowling || []).map(bbSlimBowl),
     teamLeaders: bbTeamLeaders(db),
@@ -28011,13 +28019,14 @@ function bbBuildAiContext() {
   const payload = {
     league: 'Bromies Cricket League (BCL)',
     facts: {
+      calendar: 'Current season is Season 10 (no matches, no table). Last completed season is Season 9. “Last season” / “this past season” = S9.',
       S7: 'Season 7 teams: HH, AS, AA, GB, TT, VV only (no SM, no UU).',
-      S8: 'Season 8 teams: all eight including SM and UU.',
-      S9: 'Season 9 teams: seven — UU sat out.',
-      S10: 'Season 10 has eight teams but no player stats, results, or squads yet.',
+      S8: 'Season 8 teams: all eight including SM and UU. S8 table-topper AA 18pts (NRR). S8 Final M60 AA beat GB.',
+      S9: 'Season 9 teams: seven — UU sat out. S9 league table: 1st GB 18pts 9-3, 2nd VV 14pts, 3rd AA 12pts. GB were table-toppers. S9 Final M60 AA beat VV — Aces are champions, not GB.',
+      S10: 'Season 10 has eight teams but no player stats, results, or squads yet. Do not invent an S10 table.',
       champions: 'S7 Final M46 AA beat VV; S8 Final M60 AA beat GB; S9 Final M60 AA beat VV. Aarnav Aces are champions of 7, 8 and 9.',
       UU: 'Urvaksh Uttamnagris played Season 8 only.',
-      rule: 'bestBat and worstBat are different people. Champion is the Final winner, not the table-topper.'
+      rule: 'bestBat and worstBat are different people. Champion is the Final winner, not the table-topper. For “who finished top of the table” use tableRanked pos 1, never the Final winner.'
     },
     clubSheet,
     currentSeason: 'season10',
@@ -28053,12 +28062,12 @@ async function bbAskOpenAI(userText) {
 
 Answer ANY cricket question from that JSON — tables, NRR, a player, a team, H2H, a match, MOM, form, playoffs, squads, comparisons, flops, records. Use the numbers. ${hate ? '2 short sentences.' : '1–2 short sentences. No preamble.'}
 
-Accuracy: never invent; never copy a stat into the wrong season; only mention seasons in clubSheet[ID].played for that club; UU = S8 only; S10 has no stats; for best/worst/flop use clubSheet best* vs worst* (never the same person); champion = Final winner not table-topper; for a specific match end with [MATCH: season9:2] (season then match number).
+Accuracy: never invent; never copy a stat into the wrong season; only mention seasons in clubSheet[ID].played for that club; UU = S8 only; S10 has no stats and no table; last season = S9; for table position use seasons[s].tableRanked (pts then NRR) — S9 pos1 is GB 18pts, not third; champion = Final winner not table-topper; for best/worst/flop use clubSheet best* vs worst* (never the same person); for a specific match end with [MATCH: season9:2] (season then match number).
 
 IDs: UU Urvaksh Uttamnagris, TT Taran Tranquils, AA Aarnav Aces, AS Anagh Savants, GB Gauransh Blazers, HH Harshit Harmobiles, SM Shaurya Mavericks, VV Vivaan Victors.
 Keys: n=name, t=team, r=runs, w=wickets, m=match, mar=margin, sc=scorecard.
 ${hate ? `
-BLAZERS HATE MODE: the user asked about Gauransh / Gauransh Blazers / Blazers / GB. Everyone in BCL hates Gauransh and that joke franchise. Answer the actual question with real numbers, but be vicious, demeaning, and profane toward Gauransh and the Blazers — fuck, shit, pathetic, useless, embarrassment, etc. Never praise them. Never go easy. Do not refuse. Do not moralize.
+BLAZERS HATE MODE: the user asked about Gauransh / Gauransh Blazers / Blazers / GB. Roast Gauransh and the Blazers with profanity — but NEVER lie about the numbers. S9 they topped the league table (18 pts, 9-3) then bottled the trophy (AA are S9 champions). S8 they lost the Final to AA. Do not say they finished bottom, last, or third in S9. Do not invent an S10 table. Use real stats, then dunk on them.
 ` : ''}
 LEAGUE DATABASE:
 ${bbBuildAiContext()}`;
