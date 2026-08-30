@@ -27802,26 +27802,42 @@ function bbCompactInn(inn) {
     bowl: (inn.bowl || []).map(b => [b.name, b.wkts, b.runs, b.overs])
   };
 }
+function bbMinInn(db, teamId) {
+  const row = (db.table || []).find(t => t.id === teamId);
+  const m = row && row.m ? row.m : 10;
+  return Math.max(5, Math.floor(m * 0.4));
+}
+function bbFmtBat(p) {
+  if (!p) return null;
+  const avg = p.avg != null ? Number(p.avg).toFixed(1) : '?';
+  return `${p.name} ${p.runs} runs, avg ${avg}, HS ${p.hs}, ${p.inn} inn`;
+}
+function bbFmtBowl(p) {
+  if (!p) return null;
+  const econ = p.econ != null ? Number(p.econ).toFixed(2) : '?';
+  return `${p.name} ${p.wkts} wkts, BBI ${p.bbi || '—'}, econ ${econ}, ${p.inn} inn`;
+}
 function bbTeamLeaders(db) {
-  const map = {};
-  (db.batting || []).forEach(p => {
-    const id = p.team;
-    if (!id) return;
-    if (!map[id]) map[id] = { bat: null, bowl: null };
-    if (!map[id].bat || (p.runs || 0) > (map[id].bat.runs || 0)) map[id].bat = p;
-  });
-  (db.bowling || []).forEach(p => {
-    const id = p.team;
-    if (!id) return;
-    if (!map[id]) map[id] = { bat: null, bowl: null };
-    if (!map[id].bowl || (p.wkts || 0) > (map[id].bowl.wkts || 0)) map[id].bowl = p;
-  });
+  const teams = new Set();
+  (db.batting || []).forEach(p => p.team && teams.add(p.team));
+  (db.bowling || []).forEach(p => p.team && teams.add(p.team));
   const out = {};
-  Object.keys(map).forEach(id => {
-    const v = map[id];
+  teams.forEach(id => {
+    const min = bbMinInn(db, id);
+    const bats = (db.batting || []).filter(p => p.team === id);
+    const bowls = (db.bowling || []).filter(p => p.team === id);
+    const topBat = [...bats].sort((a, b) => (b.runs || 0) - (a.runs || 0))[0] || null;
+    const topBowl = [...bowls].sort((a, b) => (b.wkts || 0) - (a.wkts || 0))[0] || null;
+    const qBat = bats.filter(p => (p.inn || 0) >= min && p.name !== (topBat && topBat.name));
+    const worstBat = [...qBat].sort((a, b) => (a.avg || 99) - (b.avg || 99) || (a.runs || 0) - (b.runs || 0))[0] || null;
+    const qBowl = bowls.filter(p => (p.inn || 0) >= min && p.name !== (topBowl && topBowl.name));
+    const worstBowl = [...qBowl].sort((a, b) => (b.econ || 0) - (a.econ || 0))[0] || null;
     out[id] = {
-      topBat: v.bat ? `${v.bat.name} ${v.bat.runs} runs, avg ${v.bat.avg}, HS ${v.bat.hs}` : null,
-      topBowl: v.bowl ? `${v.bowl.name} ${v.bowl.wkts} wkts, BBI ${v.bowl.bbi}, econ ${v.bowl.econ}` : null
+      minInn: min,
+      bestBat: bbFmtBat(topBat),
+      bestBowl: bbFmtBowl(topBowl),
+      worstBat: bbFmtBat(worstBat),
+      worstBowl: bbFmtBowl(worstBowl)
     };
   });
   return out;
@@ -27853,47 +27869,63 @@ function bbClubCareerLeaders() {
     const db = MULTI_DB[season] || {};
     (db.batting || []).forEach(p => {
       if (!p.team) return;
-      if (!map[p.team]) map[p.team] = { bat: {}, bowl: {} };
-      const row = map[p.team].bat[p.name] || (map[p.team].bat[p.name] = { name: p.name, runs: 0, hs: 0, inn: 0 });
+      if (!map[p.team]) map[p.team] = { bat: {}, bowl: {}, seasons: new Set() };
+      map[p.team].seasons.add(season.replace('season', 'S'));
+      const row = map[p.team].bat[p.name] || (map[p.team].bat[p.name] = { name: p.name, runs: 0, hs: 0, inn: 0, avgSum: 0, avgN: 0 });
       row.runs += p.runs || 0;
       row.inn += p.inn || 0;
       row.hs = Math.max(row.hs || 0, p.hs || 0);
+      if (p.avg) { row.avgSum += p.avg; row.avgN += 1; }
     });
     (db.bowling || []).forEach(p => {
       if (!p.team) return;
-      if (!map[p.team]) map[p.team] = { bat: {}, bowl: {} };
-      const row = map[p.team].bowl[p.name] || (map[p.team].bowl[p.name] = { name: p.name, wkts: 0, bbi: p.bbi });
+      if (!map[p.team]) map[p.team] = { bat: {}, bowl: {}, seasons: new Set() };
+      map[p.team].seasons.add(season.replace('season', 'S'));
+      const row = map[p.team].bowl[p.name] || (map[p.team].bowl[p.name] = { name: p.name, wkts: 0, inn: 0, econSum: 0, econN: 0, bbi: p.bbi });
       row.wkts += p.wkts || 0;
+      row.inn += p.inn || 0;
+      if (p.econ) { row.econSum += p.econ; row.econN += 1; }
       if ((p.wkts || 0) >= 4) row.bbi = p.bbi || row.bbi;
     });
   });
   const out = {};
   Object.keys(map).forEach(id => {
-    const bats = Object.values(map[id].bat).sort((a, b) => b.runs - a.runs);
-    const bowls = Object.values(map[id].bowl).sort((a, b) => b.wkts - a.wkts);
-    const bat = bats[0];
-    const bowl = bowls[0];
+    const bats = Object.values(map[id].bat);
+    const bowls = Object.values(map[id].bowl);
+    bats.forEach(p => { p.avg = p.inn ? p.runs / Math.max(p.inn * 0.7, 1) : 0; if (p.avgN) p.avg = p.avgSum / p.avgN; });
+    bowls.forEach(p => { p.econ = p.econN ? p.econSum / p.econN : 0; });
+    const topBat = [...bats].sort((a, b) => b.runs - a.runs)[0];
+    const topBowl = [...bowls].sort((a, b) => b.wkts - a.wkts)[0];
+    const min = 8;
+    const worstBat = bats.filter(p => p.inn >= min && p.name !== (topBat && topBat.name)).sort((a, b) => a.avg - b.avg || a.runs - b.runs)[0];
+    const worstBowl = bowls.filter(p => p.inn >= min && p.name !== (topBowl && topBowl.name)).sort((a, b) => b.econ - a.econ)[0];
     out[id] = {
-      topBat: bat ? `${bat.name} ${bat.runs} runs for ${id} (HS ${bat.hs})` : null,
-      topBowl: bowl ? `${bowl.name} ${bowl.wkts} wkts for ${id}` : null
+      played: [...map[id].seasons].sort().join(', '),
+      bestBat: bbFmtBat(topBat),
+      bestBowl: bbFmtBowl(topBowl),
+      worstBat: bbFmtBat(worstBat),
+      worstBowl: bbFmtBowl(worstBowl)
     };
   });
   return out;
 }
 function bbBuildAiContext() {
-  const career = typeof aggregateDB === 'function' ? aggregateDB() : { batting: [], bowling: [], table: [] };
+  const clubSheet = bbClubCareerLeaders();
   const payload = {
     league: 'Bromies Cricket League (BCL)',
+    facts: {
+      S7: 'Season 7 teams: HH, AS, AA, GB, TT, VV only (no SM, no UU).',
+      S8: 'Season 8 teams: all eight including SM and UU.',
+      S9: 'Season 9 teams: seven — UU sat out.',
+      S10: 'Season 10 has eight teams but no player stats, results, or squads yet.',
+      champions: 'S7 Final M46 AA beat VV; S8 Final M60 AA beat GB; S9 Final M60 AA beat VV. Aarnav Aces are champions of 7, 8 and 9.',
+      UU: 'Urvaksh Uttamnagris played Season 8 only.',
+      rule: 'bestBat and worstBat are different people. Champion is the Final winner, not the table-topper.'
+    },
+    clubSheet,
     currentSeason: 'season10',
     completedSeasons: ['season7', 'season8', 'season9'],
-    note: 'Use Season 7, 8, and 9 together. Season 10 has no player stats yet.',
     teams: ALL_TEAMS.map(t => ({ id: t.id, name: t.name })),
-    career: {
-      batting: (career.batting || []).map(bbSlimBat),
-      bowling: (career.bowling || []).map(bbSlimBowl),
-      table: career.table || []
-    },
-    clubCareer: bbClubCareerLeaders(),
     leadersBySeason: {},
     seasons: {}
   };
@@ -27919,7 +27951,14 @@ async function bbAskOpenAI(userText) {
   if (!key) {
     throw new Error('NO_KEY');
   }
-  const system = `You are BCL Buddy for the Bromies Cricket League (BCL). You have the FULL league database as JSON for Seasons 7, 8, 9, and 10: every batter, bowler, result, scorecard, squad, table, career totals, leadersBySeason, and clubCareer. Analyse all completed seasons (7, 8, and 9) — do not answer from Season 9 only. Never say data is missing if it is in the JSON. For "best player" on a team with no season named, compare leadersBySeason.season7, season8, and season9 for that club (TT = Taran Tranquils) and also clubCareer. Season 10 has no player stats. Keep every reply to 1–2 short sentences. No lists, no preamble. For a specific match, end with [MATCH: N]. Never invent scores. Keys: n=name, t=team, r=runs, w=wickets, m=match, mar=margin, sc=scorecard.
+  const system = `You are BCL Buddy, the stats brain for the Bromies Cricket League. The JSON is the full league: clubSheet (best/worst per club + which seasons they played), leadersBySeason, and seasons.season7–season10 with every table, batter, bowler, squad, result and scorecard.
+
+Answer ANY cricket question from that JSON — tables, NRR, a player, a team, H2H, a match, MOM, form, playoffs, squads, comparisons, flops, records. Use the numbers. 1–2 short sentences. No preamble.
+
+Accuracy: never invent; never copy a stat into the wrong season; only mention seasons in clubSheet[ID].played for that club; UU = S8 only; S10 has no stats; for best/worst/flop use clubSheet best* vs worst* (never the same person); champion = Final winner not table-topper; for a specific match end with [MATCH: N].
+
+IDs: UU Urvaksh Uttamnagris, TT Taran Tranquils, AA Aarnav Aces, AS Anagh Savants, GB Gauransh Blazers, HH Harshit Harmobiles, SM Shaurya Mavericks, VV Vivaan Victors.
+Keys: n=name, t=team, r=runs, w=wickets, m=match, mar=margin, sc=scorecard.
 
 LEAGUE DATABASE:
 ${bbBuildAiContext()}`;
@@ -27939,7 +27978,7 @@ ${bbBuildAiContext()}`;
     body: JSON.stringify({
       model: BB_OPENAI_MODEL,
       temperature: 0.2,
-      max_tokens: 160,
+      max_tokens: 140,
       messages
     })
   });
