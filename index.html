@@ -224,6 +224,16 @@ td:first-child { text-align: left; padding-left: 20px; }
   border-radius: 4px;
   pointer-events: none;
 }
+.team-logo-slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+.team-cell { display: inline; }
 .qualify-bar {
   display: inline-block;
   width: 6px;
@@ -233,6 +243,7 @@ td:first-child { text-align: left; padding-left: 20px; }
   margin-right: 8px;
   vertical-align: middle;
 }
+.qualify-bar.off { display: none; }
 .pts-cell { color: var(--text); font-weight: 800; font-size: 16px; }
 .nrr-pos { color: var(--green); font-size: 12px; font-weight: 700; }
 .nrr-neg { color: var(--loss); font-size: 12px; font-weight: 700; }
@@ -1513,58 +1524,144 @@ body.theme-s10 th {
 }
 body.theme-s10 td { color: #fff; }
 body.theme-s10 td strong { color: #fff; text-transform: uppercase; letter-spacing: 0.04em; }
-body.theme-s10 tbody td:first-child {
+body.theme-s10 #tableBody td:first-child { padding: 12px 14px 12px 20px; }
+body.theme-s10 .team-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+}
+body.theme-s10 .team-cell strong {
+  white-space: nowrap;
+  line-height: 1.15;
+}
+body.theme-s10 .team-cell .team-logo-slot {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  font-size: 32px;
+}
+body.theme-s10 .team-logo-slot:not(:has(img)) {
+  background: #111;
+}
+body.theme-s10 .rank {
+  width: 16px;
+  margin-right: 0;
+  flex-shrink: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+body.theme-s10 .qualify-bar {
+  display: block;
+  width: 4px;
+  height: 36px;
+  border-radius: 0;
+  margin-right: 0;
+  flex-shrink: 0;
+}
+body.theme-s10 .qualify-bar.off {
+  display: block;
+  visibility: hidden;
+  background: transparent;
+}
+body.theme-s10 .team-logo-slot {
+  width: 44px;
+  height: 44px;
+  margin-right: 0;
+  font-size: 28px;
+  overflow: hidden;
+  background: #111;
+  border: 1px solid #2a2a2a;
+  box-sizing: border-box;
+  padding: 3px;
+}
+body.theme-s10 .team-logo-slot .team-logo-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 0;
+}
+body.theme-s10 .squad-emoji {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 0;
+  font-size: 36px;
+}
+body.theme-s10 .squad-emoji .team-logo-slot {
+  width: 52px;
+  height: 52px;
+}
+body.theme-s10 .hundo-po-who .team-logo-slot {
+  width: 44px;
+  height: 44px;
+}
+body.theme-s10 .hundo-po-champ-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+body.theme-s10 .hundo-po-champ-name .team-logo-slot {
+  width: 56px;
+  height: 56px;
+}
+body.theme-s10 .team-name-sm,
+body.theme-s10 .win-badge {
   display: flex;
   align-items: center;
   gap: 10px;
+  line-height: 1.2;
 }
-body.theme-s10 tbody td:first-child .team-logo-img {
-  width: 36px;
-  height: 36px;
-  border-radius: 0;
-}
-body.theme-s10 .qualify-bar {
-  width: 4px;
-  height: 28px;
-  border-radius: 0;
-  flex-shrink: 0;
-}
-body.theme-s10 .squad-emoji .team-logo-img {
-  width: 52px;
-  height: 52px;
-  border-radius: 0;
-}
-body.theme-s10 .hundo-po-who .team-logo-img {
-  width: 44px;
-  height: 44px;
-  border-radius: 0;
-}
-body.theme-s10 .hundo-po-champ-name .team-logo-img {
-  width: 56px;
-  height: 56px;
-  border-radius: 0;
-  vertical-align: -10px;
-}
-body.theme-s10 .result-card .team-logo-img,
-body.theme-s10 .team-name-sm .team-logo-img {
+body.theme-s10 .score-side.right .team-name-sm { justify-content: flex-end; }
+body.theme-s10 .result-card .team-logo-slot,
+body.theme-s10 .team-name-sm .team-logo-slot {
   width: 40px;
   height: 40px;
-  border-radius: 0;
 }
-body.theme-s10 .m-team .team-logo-img {
-  width: 32px;
-  height: 32px;
-  border-radius: 0;
+body.theme-s10 .m-team {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
 }
-body.theme-s10 .win-badge .team-logo-img {
+body.theme-s10 .m-team.r { justify-content: flex-end; }
+body.theme-s10 .m-team .team-logo-slot {
+  width: 36px;
+  height: 36px;
+}
+body.theme-s10 .win-badge .team-logo-slot {
   width: 28px;
   height: 28px;
-  border-radius: 0;
 }
-body.theme-s10 #p-card-emoji .team-logo-img {
+body.theme-s10 .round-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+body.theme-s10 .round-meta .team-logo-slot {
+  width: 22px;
+  height: 22px;
+  font-size: 14px;
+}
+body.theme-s10 .hundo-po-slot {
+  width: 44px;
+  height: 44px;
+}
+body.theme-s10 #p-card-emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+body.theme-s10 #p-card-emoji .team-logo-slot {
   width: 48px;
   height: 48px;
-  border-radius: 0;
 }
 body.theme-s10 .pts-cell { color: #fff; font-weight: 800; }
 body.theme-s10 .squad-hdr {
@@ -26262,6 +26359,9 @@ function teamIcon(t) {
   if (t.logo) return `<img src="${t.logo}" class="team-logo-img" alt="${t.id}">`;
   return t.emoji;
 }
+function teamIconSlot(t) {
+  return `<span class="team-logo-slot">${teamIcon(t)}</span>`;
+}
 
 function teamPill(id){
   const t=byId(id); if(!t) return id;
@@ -26334,7 +26434,7 @@ function renderTable(){
     const t=byId(row.id);
     const formHtml = getTeamForm(row.id, lDB);
     return `<tr>
-      <td><span class="rank">${i+1}</span>${i<4?'<span class="qualify-bar"></span>':''}${teamIcon(t)} <strong>${t?.name}</strong></td>
+      <td><span class="team-cell"><span class="rank">${i+1}</span><span class="qualify-bar${i<4?'':' off'}"></span>${teamIconSlot(t)}<strong>${t?.name}</strong></span></td>
       <td style="color:var(--muted)">${row.m}</td>
       <td style="color:var(--green);font-weight:600">${row.w}</td>
       <td style="color:var(--loss)">${row.l}</td>
@@ -26419,7 +26519,7 @@ function hundoPoTeamRow(id, seed, res, isTeam1) {
   const t = byId(id);
   const isSlot = !t;
   const name = hundoPoTeamName(id);
-  const icon = t ? teamIcon(t) : `<span class="hundo-po-slot">${seed ? '#' + seed : '–'}</span>`;
+  const icon = t ? teamIconSlot(t) : `<span class="hundo-po-slot">${seed ? '#' + seed : '–'}</span>`;
   const finished = !!res;
   const isWin = finished && res.winner === id;
   const isLose = finished && res.winner && res.winner !== id;
@@ -26457,7 +26557,7 @@ function renderHundoPlayoffs(p) {
   const champHtml = champ
     ? `<div class="hundo-po-champ">
         <div class="hundo-po-champ-kicker">Season ${p.seasonStr} champion</div>
-        <div class="hundo-po-champ-name">${teamIcon(champ)} ${champ.name}</div>
+        <div class="hundo-po-champ-name">${teamIconSlot(champ)} ${champ.name}</div>
         <div class="hundo-po-champ-sub">Won by ${p.mFinal.margin}</div>
       </div>`
     : `<div class="hundo-po-champ is-tbd">
@@ -26618,16 +26718,16 @@ function renderResults(){
     return `<div class="result-card" onclick="openScorecardModal('${r.match}', '${localFilters.results}')" style="cursor:pointer; border-color:${win?.color}33; --team-color:${win?.color}; --team-glow:${win?.color}22">
       <div class="result-header">
         <div class="match-label" style="color:${win?.color}">Match ${r.match}${r.venue?' · '+r.venue:''}</div>
-        <div class="win-badge" style="background:${win?.color}22;color:${win?.color}">${teamIcon(win)} ${win?.name} won by ${r.margin}</div>
+        <div class="win-badge" style="background:${win?.color}22;color:${win?.color}">${teamIconSlot(win)} ${win?.name} won by ${r.margin}</div>
       </div>
       <div class="scores-grid">
         <div class="score-side right">
-          <div class="team-name-sm">${teamIcon(t1)} ${t1?.name}</div>
+          <div class="team-name-sm">${teamIconSlot(t1)} ${t1?.name}</div>
           <div class="score-big" style="color:${w1?'var(--acc)':'var(--muted)'}">${r.score1} <span class="score-ov">(${r.overs1})</span></div>
         </div>
         <div class="vs-badge">VS</div>
         <div class="score-side">
-          <div class="team-name-sm">${teamIcon(t2)} ${t2?.name}</div>
+          <div class="team-name-sm">${teamIconSlot(t2)} ${t2?.name}</div>
           <div class="score-big" style="color:${w2?'var(--acc)':'var(--muted)'}">${r.score2} <span class="score-ov">(${r.overs2})</span></div>
         </div>
       </div>
@@ -26658,15 +26758,15 @@ function renderSchedule(){
       const s1=res?`<span class="score-sm" style="color:${res.winner===m.t1?'var(--green)':'var(--loss)'}">${score1}</span>`:'';
       const s2=res?`<span class="score-sm" style="color:${res.winner===m.t2?'var(--green)':'var(--loss)'}">${score2}</span>`:'';
       return `<div class="match-row${res?' done':''}">
-        <span class="m-team r">${teamIcon(mt1)} ${mt1?.name}${s1}</span>
+        <span class="m-team r">${teamIconSlot(mt1)} ${mt1?.name}${s1}</span>
         <span class="m-num ${res?'done':'pending'}">${res?'✓':''} M${m.n}</span>
-        <span class="m-team">${teamIcon(mt2)} ${mt2?.name}${s2}</span>
+        <span class="m-team">${teamIconSlot(mt2)} ${mt2?.name}${s2}</span>
       </div>`;
     }).join('');
     const byes = Array.isArray(round.b) ? round.b : (round.b ? [round.b] : []);
     const byeStr = byes.map(bid => {
       const t = byId(bid);
-      return t ? `${teamIcon(t)} ${bid}` : '';
+      return t ? `${teamIconSlot(t)} ${bid}` : '';
     }).filter(Boolean).join(', ');
     return `${divider}<div class="round-card">
       <div class="round-hdr">
@@ -26694,7 +26794,7 @@ function renderSquads(){
         </div>`
       : `<ul class="squad-list">${roster.map(p=>`<li><span class="p-num">${p.n}</span><span class="p-name player-link" onclick="openPlayerProfile('${p.p}', '${team.id}')">${p.p}</span>${badge(p.r)}</li>`).join('')}</ul>`;
     return `<div class="squad-card" style="--team-accent:${team.color}">
-      <div class="squad-hdr"><span class="squad-emoji">${teamIcon(team)}</span>
+      <div class="squad-hdr"><span class="squad-emoji">${teamIconSlot(team)}</span>
         <div><div class="squad-team">${team.name}</div><div class="squad-code" style="color:${team.color}">${team.id}</div></div>
       </div>
       ${players}
@@ -27014,7 +27114,7 @@ function openPlayerProfile(name, teamId) {
   const role = playerInSquad ? playerInSquad.r : "BAT";
   
   document.getElementById('p-card-name').innerText = name;
-  document.getElementById('p-card-emoji').innerHTML = team ? teamIcon(team) : "🏏";
+  document.getElementById('p-card-emoji').innerHTML = team ? teamIconSlot(team) : "🏏";
   document.getElementById('p-card-team').innerHTML = teamPill(teamId);
   document.getElementById('p-card-badge').innerHTML = badge(role);
   
