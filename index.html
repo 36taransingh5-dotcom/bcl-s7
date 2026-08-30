@@ -1663,6 +1663,200 @@ body.theme-s10 .bcl-buddy-keybox input {
   border-radius: 0;
 }
 
+body.theme-s10 #panel-playoffs > section > .st {
+  display: none;
+}
+.hundo-po { display: flex; flex-direction: column; gap: 14px; }
+.hundo-po-head { padding: 0 0 18px; border-bottom: 1px solid var(--border); }
+.hundo-po-kicker {
+  font-family: 'Archivo', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--acc);
+  margin-bottom: 8px;
+}
+.hundo-po-title {
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 400;
+  font-size: clamp(36px, 9vw, 64px);
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  line-height: 0.88;
+  color: #fff;
+}
+.hundo-po-sub {
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.hundo-po-path {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.hundo-po-path span {
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.hundo-po-openers {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+@media (min-width: 720px) {
+  .hundo-po-openers { grid-template-columns: 1fr 1fr; }
+}
+.hundo-po-card {
+  background: #0D0D0D;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.hundo-po-card::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--acc);
+}
+.hundo-po-card.is-final { border-color: var(--acc); }
+.hundo-po-card.is-final::before { width: 6px; }
+.hundo-po-card.is-click { cursor: pointer; }
+.hundo-po-card.is-click:hover { background: #161616; }
+.hundo-po-card-hdr {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 12px 16px 10px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.hundo-po-label {
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.hundo-po-meta {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.hundo-po-team {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px 14px 20px;
+}
+.hundo-po-team + .hundo-po-team { border-top: 1px solid var(--border); }
+.hundo-po-who {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.hundo-po-score {
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 400;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+.hundo-po-score span {
+  font-family: 'Archivo', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-left: 6px;
+}
+.hundo-po-score.mute { color: #3a3a3a; }
+.hundo-po-team.is-lose { opacity: 0.42; }
+.hundo-po-team.is-win .hundo-po-score { color: #00E38C; }
+.hundo-po-foot {
+  padding: 8px 16px 10px 20px;
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #00E38C;
+}
+.hundo-po-arrow {
+  text-align: center;
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 4px 0;
+}
+.hundo-po-champ {
+  background: var(--acc);
+  color: #111;
+  padding: 28px 20px;
+  text-align: center;
+}
+.hundo-po-champ.is-tbd {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: #fff;
+}
+.hundo-po-champ-kicker {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.hundo-po-champ-name {
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 400;
+  font-size: clamp(28px, 7vw, 52px);
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  line-height: 0.9;
+  margin-top: 8px;
+}
+.hundo-po-champ-sub {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.hundo-po-slot {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
 </style>
 </head>
 <body class="theme-s10">
@@ -26143,6 +26337,95 @@ function renderPlayoffsMatch(matchNum, team1Id, team2Id, seed1Val, seed2Val, res
   `;
 }
 
+function hundoPoTeamName(id) {
+  const slots = {
+    'Rank 1': '1st place',
+    'Rank 2': '2nd place',
+    'Rank 3': '3rd place',
+    'Rank 4': '4th place',
+    'Loser Q1': 'Loser · Qualifier 1',
+    'Winner Elim': 'Winner · Eliminator',
+    'Winner Q1': 'Winner · Qualifier 1',
+    'Winner Q2': 'Winner · Qualifier 2'
+  };
+  if (slots[id]) return slots[id];
+  const t = byId(id);
+  return t ? t.name : id;
+}
+
+function hundoPoTeamRow(id, seed, res, isTeam1) {
+  const t = byId(id);
+  const isSlot = !t;
+  const name = hundoPoTeamName(id);
+  const icon = t ? teamIcon(t) : `<span class="hundo-po-slot">${seed ? '#' + seed : '–'}</span>`;
+  const finished = !!res;
+  const isWin = finished && res.winner === id;
+  const isLose = finished && res.winner && res.winner !== id;
+  const score = isTeam1 ? res && res.score1 : res && res.score2;
+  const overs = isTeam1 ? res && res.overs1 : res && res.overs2;
+  const scoreHtml = score
+    ? `<div class="hundo-po-score">${score}<span>${overs ? '(' + overs + ')' : ''}</span></div>`
+    : `<div class="hundo-po-score mute">—</div>`;
+  return `<div class="hundo-po-team${isWin ? ' is-win' : ''}${isLose ? ' is-lose' : ''}${isSlot ? ' is-slot' : ''}">
+    <div class="hundo-po-who">${icon}<span>${name}</span></div>
+    ${scoreHtml}
+  </div>`;
+}
+
+function renderHundoMatch(matchNum, team1Id, team2Id, seed1, seed2, res, label, note, isFinal) {
+  const season = localFilters.playoffs;
+  const click = res ? ` class="hundo-po-card${isFinal ? ' is-final' : ''} is-click" onclick="openScorecardModal('${matchNum}', '${season}')"` : ` class="hundo-po-card${isFinal ? ' is-final' : ''}"`;
+  const meta = res ? `M${matchNum}${res.venue ? ' · ' + res.venue : ''}` : 'TBD';
+  const foot = res && res.margin
+    ? `Won by ${res.margin}`
+    : (note || '');
+  return `<div${click}>
+    <div class="hundo-po-card-hdr">
+      <div class="hundo-po-label">${label}</div>
+      <div class="hundo-po-meta">${meta}</div>
+    </div>
+    ${hundoPoTeamRow(team1Id, seed1, res, true)}
+    ${hundoPoTeamRow(team2Id, seed2, res, false)}
+    ${foot ? `<div class="hundo-po-foot">${foot}</div>` : ''}
+  </div>`;
+}
+
+function renderHundoPlayoffs(p) {
+  const champ = p.mFinal && p.mFinal.winner ? byId(p.mFinal.winner) : null;
+  const champHtml = champ
+    ? `<div class="hundo-po-champ">
+        <div class="hundo-po-champ-kicker">Season ${p.seasonStr} champion</div>
+        <div class="hundo-po-champ-name">${teamIcon(champ)} ${champ.name}</div>
+        <div class="hundo-po-champ-sub">Won by ${p.mFinal.margin}</div>
+      </div>`
+    : `<div class="hundo-po-champ is-tbd">
+        <div class="hundo-po-champ-kicker">Season ${p.seasonStr} champion</div>
+        <div class="hundo-po-champ-name">To be decided</div>
+        <div class="hundo-po-champ-sub">Four teams. One trophy.</div>
+      </div>`;
+  return `<div class="hundo-po">
+    <div class="hundo-po-head">
+      <div class="hundo-po-kicker">Season ${p.seasonStr} · The Hundred way</div>
+      <div class="hundo-po-title">The Finals</div>
+      <div class="hundo-po-sub">1st vs 2nd. 3rd vs 4th. Then the Final.</div>
+    </div>
+    <div class="hundo-po-path">
+      <span>Q1 winner → Final</span>
+      <span>Elim winner → Q2</span>
+      <span>Q2 winner → Final</span>
+    </div>
+    <div class="hundo-po-openers">
+      ${renderHundoMatch(p.mStart, p.q1Team1, p.q1Team2, 1, 2, p.mQ1, 'Qualifier 1', 'Winner to the Final', false)}
+      ${renderHundoMatch(p.mStart + 1, p.elimTeam1, p.elimTeam2, 3, 4, p.mElim, 'Eliminator', 'Winner to Qualifier 2', false)}
+    </div>
+    <div class="hundo-po-arrow">↓ Qualifier 2</div>
+    ${renderHundoMatch(p.mStart + 2, p.q2Team1, p.q2Team2, null, null, p.mQ2, 'Qualifier 2', 'Winner to the Final', false)}
+    <div class="hundo-po-arrow">↓ The Final</div>
+    ${renderHundoMatch(p.mStart + 3, p.finalTeam1, p.finalTeam2, null, null, p.mFinal, 'The Final', 'Winner takes the trophy', true)}
+    ${champHtml}
+  </div>`;
+}
+
 function renderPlayoffs(){
   let lDB = getLocalDB("playoffs");
   const html = getPlayoffsHtml(lDB);
@@ -26158,10 +26441,11 @@ function getPlayoffsHtml(lDB){
   const seasonStr = seasonFilter.replace("season", "");
 
   const sortedStandings = [...lDB.table].sort((a,b)=>b.pts-a.pts||b.nrr-a.nrr);
-  const rank1 = sortedStandings[0]?.id || "Rank 1";
-  const rank2 = sortedStandings[1]?.id || "Rank 2";
-  const rank3 = sortedStandings[2]?.id || "Rank 3";
-  const rank4 = sortedStandings[3]?.id || "Rank 4";
+  const tableLive = (lDB.table || []).some(t => (t.m || 0) > 0 || (t.pts || 0) > 0);
+  const rank1 = tableLive ? (sortedStandings[0]?.id || "Rank 1") : "Rank 1";
+  const rank2 = tableLive ? (sortedStandings[1]?.id || "Rank 2") : "Rank 2";
+  const rank3 = tableLive ? (sortedStandings[2]?.id || "Rank 3") : "Rank 3";
+  const rank4 = tableLive ? (sortedStandings[3]?.id || "Rank 4") : "Rank 4";
   
   const mQ1 = lDB.results.find(r => r.match === mStart); // Qualifier 1
   const mElim = lDB.results.find(r => r.match === mStart + 1); // Eliminator
@@ -26223,6 +26507,16 @@ function getPlayoffsHtml(lDB){
     `;
   }
   
+  if (seasonFilter === 'season10') {
+    return renderHundoPlayoffs({
+      seasonStr, mStart,
+      q1Team1, q1Team2, mQ1,
+      elimTeam1, elimTeam2, mElim,
+      q2Team1, q2Team2, mQ2,
+      finalTeam1, finalTeam2, mFinal
+    });
+  }
+
   return `
     <div class="bracket-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
       <div class="bracket-col">
