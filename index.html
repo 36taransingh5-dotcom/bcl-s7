@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BCL Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Oswald:wght@400;500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,600;0,700;1,400&family=Archivo+Black&family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Oswald:wght@400;500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #121212;
@@ -1183,6 +1183,44 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   justify-content: center;
   cursor: pointer;
 }
+.bcl-buddy-gear {
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.8;
+  font-size: 14px;
+  margin-right: 10px;
+}
+.bcl-buddy-gear:hover { opacity: 1; }
+.bcl-buddy-keybox {
+  display: none;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  gap: 8px;
+  align-items: center;
+  background: rgba(0,0,0,0.15);
+}
+.bcl-buddy-keybox.open { display: flex; }
+.bcl-buddy-keybox input {
+  flex: 1;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  color: var(--text);
+  font-size: 12px;
+  font-family: inherit;
+}
+.bcl-buddy-keybox button {
+  background: #10b981;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
 
 /* ── SEASON 10 — NSL broadcast identity (scoped; other seasons unchanged) ── */
 .s10-only { display: none; }
@@ -1220,59 +1258,64 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   color: var(--muted);
 }
 body.theme-s10 {
-  --bg: #F1EEE6;
-  --card: #FAF9F4;
-  --border: rgba(23, 33, 31, 0.12);
-  --acc: #0F766E;
-  --acc-ink: #0B5E58;
-  --indigo: #3B4274;
-  --red: #B4233A;
-  --text: #17211F;
-  --text-light: #17211F;
-  --muted: #5C6866;
-  --green: #0F766E;
-  --loss: #B4233A;
-  --purple: #3B4274;
-  --yellow: #B8964A;
-  --shadow: 0 1px 2px rgba(23, 33, 31, 0.05), 0 14px 32px rgba(23, 33, 31, 0.07);
-  background:
-    radial-gradient(900px 460px at 10% -12%, rgba(15, 118, 110, 0.11), transparent 58%),
-    #F1EEE6;
+  --bg: #000000;
+  --card: #0D0D0D;
+  --border: rgba(255, 255, 255, 0.14);
+  --acc: #FF2D87;
+  --acc-ink: #FF2D87;
+  --indigo: #FF2D87;
+  --red: #FF4D6A;
+  --text: #FFFFFF;
+  --text-light: #FFFFFF;
+  --muted: #A3A3A3;
+  --green: #00E38C;
+  --loss: #FF4D6A;
+  --purple: #FF2D87;
+  --yellow: #00E38C;
+  --shadow: none;
+  background: #000000;
   color: var(--text);
-  font-family: 'Barlow', 'DM Sans', sans-serif;
+  font-family: 'Archivo', 'DM Sans', sans-serif;
 }
 body.theme-s10::before { display: none; }
+body.theme-s10 .wrap { max-width: 1080px; }
 body.theme-s10 .s10-broadcast-bar {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  margin: 0 auto 18px;
-  padding: 7px 16px;
-  width: fit-content;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 auto 22px;
+  padding: 0;
+  width: 100%;
   max-width: 100%;
-  background: var(--acc);
-  color: #F7F5EF;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 600;
+  background: transparent;
+  color: #fff;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
   font-size: 11px;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  border-radius: 2px;
+  border-radius: 0;
 }
 body.theme-s10 .s10-broadcast-bar span:first-child {
-  color: #F7F5EF;
+  background: var(--acc);
+  color: #fff;
+  padding: 8px 14px;
+  letter-spacing: 0.12em;
 }
 body.theme-s10 .s10-broadcast-bar span + span {
-  border-left: 1px solid rgba(247, 245, 239, 0.22);
-  padding-left: 16px;
+  border-left: 0;
+  padding: 8px 12px;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.35);
 }
 body.theme-s10 .s10-live-dot {
   display: inline-block;
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background: #C9CCE4;
+  background: #00E38C;
   margin-right: 8px;
   animation: s10Pulse 1.4s ease-in-out infinite;
 }
@@ -1282,45 +1325,48 @@ body.theme-s10 .s10-live-dot {
 }
 body.theme-s10 header {
   border-bottom: 1px solid var(--border);
-  padding: 36px 0 28px;
+  padding: 28px 0 24px;
 }
 body.theme-s10 h1 {
-  font-family: 'Oswald', 'Barlow Condensed', sans-serif;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-family: 'Archivo Black', 'Oswald', sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.03em;
   text-transform: uppercase;
-  font-size: clamp(44px, 9vw, 76px);
-  color: var(--text);
+  font-size: clamp(48px, 11vw, 88px);
+  color: #fff;
+  line-height: 0.9;
 }
-body.theme-s10 h1 span {
-  color: var(--acc);
-}
+body.theme-s10 h1 span { color: #fff; }
 body.theme-s10 .sub {
-  font-family: 'Barlow', sans-serif;
-  letter-spacing: 0.08em;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  font-size: 12px;
-  font-weight: 500;
-  opacity: 0.72;
+  font-size: 11px;
+  font-weight: 700;
+  opacity: 1;
+  color: var(--muted);
 }
 body.theme-s10 .pill {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  color: var(--muted);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 0;
+  color: #fff;
   box-shadow: none;
-  font-family: 'Barlow', sans-serif;
-  letter-spacing: 0.04em;
-  text-transform: none;
-  font-weight: 500;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 10px;
 }
 body.theme-s10 .pill strong { color: var(--acc); font-weight: 700; }
 body.theme-s10 .admin-btn {
-  border-radius: 2px;
-  border: 1px solid var(--border);
-  background: var(--card);
-  font-family: 'Barlow', sans-serif;
-  letter-spacing: 0.06em;
+  border-radius: 0;
+  border: 1px solid rgba(255,255,255,0.35);
+  background: transparent;
+  color: #fff;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 body.theme-s10 .tabs {
   background: transparent;
@@ -1331,76 +1377,85 @@ body.theme-s10 .tabs {
 }
 body.theme-s10 .tab {
   border-radius: 0;
-  font-family: 'Barlow', sans-serif;
-  letter-spacing: 0.06em;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  font-weight: 600;
-  font-size: 12px;
-  padding: 14px 16px;
-  color: var(--muted);
+  font-weight: 700;
+  font-size: 11px;
+  padding: 16px 14px;
+  color: #A3A3A3;
   background: transparent;
   box-shadow: none;
 }
-body.theme-s10 .tab:hover {
-  background: transparent;
-  color: var(--text);
-}
+body.theme-s10 .tab:hover { background: transparent; color: #fff; }
 body.theme-s10 .tab.active {
   background: transparent;
-  color: var(--acc);
-  box-shadow: inset 0 -2px 0 var(--acc);
+  color: #fff;
+  box-shadow: inset 0 -3px 0 var(--acc);
 }
 body.theme-s10 .st {
-  font-family: 'Oswald', sans-serif;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
-  font-size: 20px;
-  border-left: 3px solid var(--acc);
-  padding-left: 12px;
-  color: var(--text);
+  font-size: 28px;
+  border-left: 0;
+  padding-left: 0;
+  color: #fff;
 }
 body.theme-s10 .tab-filters {
   background: transparent;
   border: 0;
   border-radius: 0;
-  padding: 0 0 8px;
+  padding: 0 0 16px;
 }
 body.theme-s10 .filter-btn {
-  font-family: 'Barlow', sans-serif;
-  letter-spacing: 0.04em;
-  border-radius: 999px;
-  font-weight: 600;
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.08em;
+  border-radius: 0;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 11px;
+  color: #A3A3A3;
 }
 body.theme-s10 .filter-btn.active {
   background: var(--acc);
-  color: #F7F5EF;
+  color: #fff;
   box-shadow: none;
 }
-body.theme-s10 .tbl-wrap,
+body.theme-s10 .tbl-wrap {
+  border-radius: 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  box-shadow: none;
+}
 body.theme-s10 .result-card,
 body.theme-s10 .ko-card,
 body.theme-s10 .round-card,
 body.theme-s10 .squad-card,
 body.theme-s10 .ms-card,
 body.theme-s10 .award-card {
-  border-radius: 8px;
+  border-radius: 0;
   border: 1px solid var(--border);
-  background: var(--card);
-  box-shadow: var(--shadow);
+  background: #0D0D0D;
+  box-shadow: none;
 }
 body.theme-s10 thead {
-  background: #EBE7DC;
+  background: transparent;
+  border-bottom: 1px solid var(--border);
 }
 body.theme-s10 th {
-  font-family: 'Barlow', sans-serif;
-  letter-spacing: 0.06em;
-  font-weight: 600;
-  color: var(--acc-ink);
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  color: var(--muted);
 }
-body.theme-s10 .pts-cell { color: var(--indigo); font-weight: 700; }
+body.theme-s10 td { color: #fff; }
+body.theme-s10 td strong { color: #fff; text-transform: uppercase; letter-spacing: 0.04em; }
+body.theme-s10 .pts-cell { color: #fff; font-weight: 800; }
 body.theme-s10 .squad-hdr {
-  background: #F4F1E9;
+  background: #111;
   border-bottom: 1px solid var(--border);
   position: relative;
 }
@@ -1408,123 +1463,151 @@ body.theme-s10 .squad-hdr::before {
   content: "";
   position: absolute;
   left: 0; top: 0; bottom: 0;
-  width: 3px;
+  width: 4px;
   background: var(--team-accent, var(--acc));
 }
 body.theme-s10 .squad-team {
-  font-family: 'Oswald', sans-serif;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
-  color: var(--text);
+  color: #fff;
 }
 body.theme-s10 .squad-coming-soon {
   padding: 36px 20px 32px;
   text-align: center;
   background: transparent;
 }
-body.theme-s10 .squad-coming-soon .s10-soon-kicker {
-  font-family: 'Barlow', sans-serif;
-  letter-spacing: 0.16em;
+body.theme-s10 .squad-coming-soon .s10-soon-kicker,
+body.theme-s10 .s10-empty .s10-soon-kicker {
+  font-family: 'Archivo', sans-serif;
+  letter-spacing: 0.18em;
   font-size: 11px;
-  font-weight: 600;
-  color: var(--indigo);
+  font-weight: 700;
+  color: var(--acc);
   text-transform: uppercase;
   margin-bottom: 8px;
 }
-body.theme-s10 .squad-coming-soon .s10-soon-title {
-  font-family: 'Oswald', sans-serif;
-  font-weight: 600;
-  font-size: 26px;
-  letter-spacing: 0.04em;
+body.theme-s10 .squad-coming-soon .s10-soon-title,
+body.theme-s10 .s10-empty .s10-soon-title {
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
-  color: var(--text);
+  color: #fff;
   line-height: 1;
 }
+body.theme-s10 .squad-coming-soon .s10-soon-title { font-size: 26px; }
+body.theme-s10 .s10-empty .s10-soon-title { font-size: 28px; }
 body.theme-s10 .squad-coming-soon .s10-soon-sub {
   margin-top: 8px;
   font-size: 12px;
   color: var(--muted);
-  letter-spacing: 0.04em;
-  text-transform: none;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 body.theme-s10 .s10-empty {
-  background: var(--card);
+  background: #0D0D0D;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 48px 24px;
   text-align: center;
-  box-shadow: var(--shadow);
-}
-body.theme-s10 .s10-empty .s10-soon-kicker {
-  font-family: 'Barlow', sans-serif;
-  letter-spacing: 0.16em;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--indigo);
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-body.theme-s10 .s10-empty .s10-soon-title {
-  font-family: 'Oswald', sans-serif;
-  font-weight: 600;
-  font-size: 28px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--text);
+  box-shadow: none;
 }
 body.theme-s10 footer { color: var(--muted); }
+body.theme-s10 tbody tr { border-bottom: 1px solid var(--border); }
 body.theme-s10 tbody tr:hover,
-body.theme-s10 tbody tr:hover td {
-  background: var(--acc);
-}
+body.theme-s10 tbody tr:hover td { background: #161616; }
 body.theme-s10 tbody tr:hover td,
 body.theme-s10 tbody tr:hover td strong,
 body.theme-s10 tbody tr:hover .rank,
 body.theme-s10 tbody tr:hover .pts-cell,
 body.theme-s10 tbody tr:hover .nrr-pos,
 body.theme-s10 tbody tr:hover .nrr-neg,
-body.theme-s10 tbody tr:hover .nrr-zero {
-  color: #F7F5EF !important;
-}
+body.theme-s10 tbody tr:hover .nrr-zero,
 body.theme-s10 tbody tr:hover .form-dots,
-body.theme-s10 tbody tr:hover .form-dots span {
-  color: #F7F5EF !important;
-}
-body.theme-s10 .match-row:hover {
-  background: var(--acc);
-}
+body.theme-s10 tbody tr:hover .form-dots span { color: #fff !important; }
+body.theme-s10 .match-row:hover { background: #161616; }
 body.theme-s10 .match-row:hover .m-team,
-body.theme-s10 .match-row:hover .score-sm {
-  color: #F7F5EF;
-}
+body.theme-s10 .match-row:hover .score-sm { color: #fff; }
 body.theme-s10 .match-row:hover .m-num {
-  color: #F7F5EF;
-  background: rgba(247, 245, 239, 0.2);
+  color: #fff;
+  background: rgba(255, 45, 135, 0.25);
 }
-body.theme-s10 .squad-list li:hover {
-  background: rgba(15, 118, 110, 0.10);
-}
+body.theme-s10 .squad-list li:hover { background: #161616; }
 body.theme-s10 .round-hdr,
 body.theme-s10 .modal-hdr {
-  background: var(--acc);
-  color: #F7F5EF;
+  background: #111;
+  color: #fff;
+  border-bottom: 1px solid var(--border);
 }
 body.theme-s10 .round-hdr .round-title,
-body.theme-s10 .round-hdr .round-meta {
-  color: #F7F5EF;
-}
+body.theme-s10 .round-hdr .round-meta { color: #fff; }
 body.theme-s10 .m-num.pending {
-  color: var(--acc-ink);
-  background: rgba(15, 118, 110, 0.12);
-  border-radius: 2px;
+  color: #00E38C;
+  background: rgba(0, 227, 140, 0.12);
+  border-radius: 0;
 }
 body.theme-s10 .round-title,
 body.theme-s10 .leg-divider {
-  font-family: 'Oswald', sans-serif;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--text);
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+body.theme-s10 .bcl-buddy-fab {
+  background: var(--acc);
+  box-shadow: none;
+  border-radius: 0;
+}
+body.theme-s10 .bcl-buddy-panel {
+  background: #0D0D0D;
+  box-shadow: none;
+  border: 1px solid var(--border);
+  border-radius: 0;
+}
+body.theme-s10 .bcl-buddy-header {
+  background: var(--acc);
+  color: #fff;
+  border-bottom: none;
+  font-family: 'Archivo Black', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+body.theme-s10 .bcl-buddy-header-close { color: #fff; }
+body.theme-s10 .bb-msg.user {
+  background: var(--acc);
+  color: #fff;
+  border: none;
+  border-radius: 0;
+}
+body.theme-s10 .bb-msg.ai {
+  background: #161616;
+  border: 1px solid var(--border);
+  color: #fff;
+  border-radius: 0;
+}
+body.theme-s10 .bb-msg-card-btn {
+  background: var(--acc);
+  color: #fff;
+  border: none;
+}
+body.theme-s10 .bcl-buddy-input {
+  background: #111;
+  color: #fff;
+  border-radius: 0;
+}
+body.theme-s10 .bcl-buddy-input:focus { border-color: var(--acc); }
+body.theme-s10 .bcl-buddy-send,
+body.theme-s10 .bcl-buddy-keybox button {
+  background: var(--acc);
+  border-radius: 0;
+}
+body.theme-s10 .bcl-buddy-keybox { background: #111; }
+body.theme-s10 .bcl-buddy-keybox input {
+  background: #000;
+  color: #fff;
+  border-radius: 0;
 }
 
 </style>
@@ -1533,9 +1616,9 @@ body.theme-s10 .leg-divider {
 <div class="wrap">
 
 <header>
-  <div class="s10-only s10-broadcast-bar"><span><i class="s10-live-dot"></i>Season 10</span><span>BCL Broadcast</span><span>8 Teams</span></div>
+  <div class="s10-only s10-broadcast-bar"><span><i class="s10-live-dot"></i>Season 10</span><span>Bromies Cricket League</span><span>8 Teams</span></div>
   <h1>BCL <span>Dashboard</span></h1>
-  <p class="sub" id="hdrSubtext">Eight teams. One stage. The new era starts now.</p>
+  <p class="sub" id="hdrSubtext">Eight teams. Fast cricket. Season 10.</p>
   <div class="pills">
     <div class="pill"><strong>Multi-Season</strong> Database</div>
     <div class="pill"><strong id="hdrTeamCount">8</strong> Teams Total</div>
@@ -25816,9 +25899,9 @@ function updateThemeColor() {
 
   if (season === 'season10') {
     document.body.classList.add('theme-s10');
-    document.documentElement.style.setProperty('--acc', '#0F766E');
-    document.documentElement.style.setProperty('--shadow', '0 1px 2px rgba(23, 33, 31, 0.05), 0 14px 32px rgba(23, 33, 31, 0.07)');
-    if (hdrSub) hdrSub.textContent = 'Eight teams. One stage. The new era starts now.';
+    document.documentElement.style.setProperty('--acc', '#FF2D87');
+    document.documentElement.style.setProperty('--shadow', 'none');
+    if (hdrSub) hdrSub.textContent = 'Eight teams. Fast cricket. Season 10.';
   } else {
     document.body.classList.remove('theme-s10');
     if (hdrSub) hdrSub.textContent = 'All Statistics, Matches, and Data Tracking';
@@ -27628,17 +27711,21 @@ function appendBclMessage(sender, text) {
   const msgDiv = document.createElement('div');
   msgDiv.className = 'bb-msg ' + sender;
   
-  let formattedText = text;
+  let formattedText = String(text);
   let matchIdFound = null;
   
   const matchRegex = /\[MATCH:\s*(\d+)\]/i;
-  const matchMatch = text.match(matchRegex);
+  const matchMatch = formattedText.match(matchRegex);
   if (matchMatch) {
     matchIdFound = matchMatch[1];
-    formattedText = text.replace(matchRegex, '');
+    formattedText = formattedText.replace(matchRegex, '');
   }
   
-  formattedText = formattedText.replace(/\n/g, '<br>');
+  formattedText = formattedText
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\n/g, '<br>');
   msgDiv.innerHTML = formattedText;
   
   if (matchIdFound) {
@@ -27667,7 +27754,211 @@ function appendTypingIndicator() {
 }
 
 const BB_SEASON_ORDER = ['season10', 'season9', 'season8', 'season7'];
-const BB_CURRENT_SEASON = 'season9';
+const BB_CURRENT_SEASON = 'season10';
+const BB_OPENAI_MODEL = 'gpt-4o-mini';
+let bbBusy = false;
+let bbChatHistory = [];
+
+function bbGetApiKey() {
+  const fromWindow = (typeof window.BCL_OPENAI_KEY === 'string') ? window.BCL_OPENAI_KEY.trim() : '';
+  if (fromWindow) return fromWindow;
+  try { return (localStorage.getItem('bcl_openai_key') || '').trim(); } catch (e) { return ''; }
+}
+
+function bbToggleKeyBox() {
+  const box = document.getElementById('bbKeyBox');
+  if (!box) return;
+  box.classList.toggle('open');
+  if (box.classList.contains('open')) {
+    const input = document.getElementById('bbKeyInput');
+    if (input) {
+      input.value = bbGetApiKey();
+      input.focus();
+    }
+  }
+}
+
+function bbSaveKey() {
+  const input = document.getElementById('bbKeyInput');
+  const key = (input && input.value || '').trim();
+  if (!key) return;
+  try { localStorage.setItem('bcl_openai_key', key); } catch (e) {}
+  window.BCL_OPENAI_KEY = key;
+  const box = document.getElementById('bbKeyBox');
+  if (box) box.classList.remove('open');
+  appendBclMessage('ai', 'API key saved in this browser. Ask me anything about BCL.');
+}
+
+function bbSlimBat(p) {
+  return { n: p.name, t: p.team, inn: p.inn, r: p.runs, hs: p.hs, avg: p.avg, sr: p.sr, fif: p.fifties, hun: p.hundreds, mom: p.mom, ct: p.catches };
+}
+function bbSlimBowl(p) {
+  return { n: p.name, t: p.team, inn: p.inn, w: p.wkts, bbi: p.bbi, avg: p.avg, econ: p.econ, four: p.fourW };
+}
+function bbCompactInn(inn) {
+  if (!inn) return null;
+  return {
+    bat: (inn.bat || []).map(b => [b.name, b.runs, b.balls, b.dismissal]),
+    bowl: (inn.bowl || []).map(b => [b.name, b.wkts, b.runs, b.overs])
+  };
+}
+function bbTeamLeaders(db) {
+  const map = {};
+  (db.batting || []).forEach(p => {
+    const id = p.team;
+    if (!id) return;
+    if (!map[id]) map[id] = { bat: null, bowl: null };
+    if (!map[id].bat || (p.runs || 0) > (map[id].bat.runs || 0)) map[id].bat = p;
+  });
+  (db.bowling || []).forEach(p => {
+    const id = p.team;
+    if (!id) return;
+    if (!map[id]) map[id] = { bat: null, bowl: null };
+    if (!map[id].bowl || (p.wkts || 0) > (map[id].bowl.wkts || 0)) map[id].bowl = p;
+  });
+  const out = {};
+  Object.keys(map).forEach(id => {
+    const v = map[id];
+    out[id] = {
+      topBat: v.bat ? `${v.bat.name} ${v.bat.runs} runs, avg ${v.bat.avg}, HS ${v.bat.hs}` : null,
+      topBowl: v.bowl ? `${v.bowl.name} ${v.bowl.wkts} wkts, BBI ${v.bowl.bbi}, econ ${v.bowl.econ}` : null
+    };
+  });
+  return out;
+}
+function bbSeasonPayload(season) {
+  const db = MULTI_DB[season] || {};
+  const squads = squadsFor(season) || {};
+  const slimSquads = {};
+  Object.keys(squads).forEach(id => {
+    slimSquads[id] = (squads[id] || []).map(p => ({ n: p.n, p: p.p, r: p.r }));
+  });
+  return {
+    teams: (teamsFor(season) || []).map(t => ({ id: t.id, name: t.name })),
+    table: db.table || [],
+    batting: (db.batting || []).map(bbSlimBat),
+    bowling: (db.bowling || []).map(bbSlimBowl),
+    teamLeaders: bbTeamLeaders(db),
+    squads: slimSquads,
+    results: (db.results || []).map(r => ({
+      m: r.match, t1: r.team1, t2: r.team2, s1: r.score1, o1: r.overs1, s2: r.score2, o2: r.overs2,
+      w: r.winner, mar: r.margin, mom: r.mom,
+      sc: r.scorecard ? { t1: bbCompactInn(r.scorecard.t1Inn), t2: bbCompactInn(r.scorecard.t2Inn) } : null
+    }))
+  };
+}
+function bbClubCareerLeaders() {
+  const map = {};
+  BB_SEASON_ORDER.forEach(season => {
+    const db = MULTI_DB[season] || {};
+    (db.batting || []).forEach(p => {
+      if (!p.team) return;
+      if (!map[p.team]) map[p.team] = { bat: {}, bowl: {} };
+      const row = map[p.team].bat[p.name] || (map[p.team].bat[p.name] = { name: p.name, runs: 0, hs: 0, inn: 0 });
+      row.runs += p.runs || 0;
+      row.inn += p.inn || 0;
+      row.hs = Math.max(row.hs || 0, p.hs || 0);
+    });
+    (db.bowling || []).forEach(p => {
+      if (!p.team) return;
+      if (!map[p.team]) map[p.team] = { bat: {}, bowl: {} };
+      const row = map[p.team].bowl[p.name] || (map[p.team].bowl[p.name] = { name: p.name, wkts: 0, bbi: p.bbi });
+      row.wkts += p.wkts || 0;
+      if ((p.wkts || 0) >= 4) row.bbi = p.bbi || row.bbi;
+    });
+  });
+  const out = {};
+  Object.keys(map).forEach(id => {
+    const bats = Object.values(map[id].bat).sort((a, b) => b.runs - a.runs);
+    const bowls = Object.values(map[id].bowl).sort((a, b) => b.wkts - a.wkts);
+    const bat = bats[0];
+    const bowl = bowls[0];
+    out[id] = {
+      topBat: bat ? `${bat.name} ${bat.runs} runs for ${id} (HS ${bat.hs})` : null,
+      topBowl: bowl ? `${bowl.name} ${bowl.wkts} wkts for ${id}` : null
+    };
+  });
+  return out;
+}
+function bbBuildAiContext() {
+  const career = typeof aggregateDB === 'function' ? aggregateDB() : { batting: [], bowling: [], table: [] };
+  const payload = {
+    league: 'Bromies Cricket League (BCL)',
+    currentSeason: 'season10',
+    completedSeasons: ['season7', 'season8', 'season9'],
+    note: 'Use Season 7, 8, and 9 together. Season 10 has no player stats yet.',
+    teams: ALL_TEAMS.map(t => ({ id: t.id, name: t.name })),
+    career: {
+      batting: (career.batting || []).map(bbSlimBat),
+      bowling: (career.bowling || []).map(bbSlimBowl),
+      table: career.table || []
+    },
+    clubCareer: bbClubCareerLeaders(),
+    leadersBySeason: {},
+    seasons: {}
+  };
+  BB_SEASON_ORDER.forEach(s => { payload.seasons[s] = bbSeasonPayload(s); });
+  ['season7', 'season8', 'season9'].forEach(s => {
+    payload.leadersBySeason[s] = (payload.seasons[s] && payload.seasons[s].teamLeaders) || {};
+  });
+  let json = JSON.stringify(payload);
+  if (json.length > 350000) {
+    BB_SEASON_ORDER.forEach(s => {
+      payload.seasons[s].results = (payload.seasons[s].results || []).map(r => {
+        const { sc, ...rest } = r;
+        return rest;
+      });
+    });
+    json = JSON.stringify(payload);
+  }
+  return json;
+}
+
+async function bbAskOpenAI(userText) {
+  const key = bbGetApiKey();
+  if (!key) {
+    throw new Error('NO_KEY');
+  }
+  const system = `You are BCL Buddy for the Bromies Cricket League (BCL). You have the FULL league database as JSON for Seasons 7, 8, 9, and 10: every batter, bowler, result, scorecard, squad, table, career totals, leadersBySeason, and clubCareer. Analyse all completed seasons (7, 8, and 9) — do not answer from Season 9 only. Never say data is missing if it is in the JSON. For "best player" on a team with no season named, compare leadersBySeason.season7, season8, and season9 for that club (TT = Taran Tranquils) and also clubCareer. Season 10 has no player stats. Keep every reply to 1–2 short sentences. No lists, no preamble. For a specific match, end with [MATCH: N]. Never invent scores. Keys: n=name, t=team, r=runs, w=wickets, m=match, mar=margin, sc=scorecard.
+
+LEAGUE DATABASE:
+${bbBuildAiContext()}`;
+
+  const messages = [
+    { role: 'system', content: system },
+    ...bbChatHistory.slice(-12),
+    { role: 'user', content: userText }
+  ];
+
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + key
+    },
+    body: JSON.stringify({
+      model: BB_OPENAI_MODEL,
+      temperature: 0.2,
+      max_tokens: 160,
+      messages
+    })
+  });
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    if (res.status === 401) throw new Error('OpenAI rejected the API key.');
+    if (res.status === 429) throw new Error('OpenAI rate limit — try again in a moment.');
+    throw new Error('OpenAI error ' + res.status + (body ? ': ' + body.slice(0, 180) : ''));
+  }
+
+  const data = await res.json();
+  const reply = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content || '').trim();
+  if (!reply) throw new Error('Empty reply from OpenAI.');
+  bbChatHistory.push({ role: 'user', content: userText });
+  bbChatHistory.push({ role: 'assistant', content: reply });
+  if (bbChatHistory.length > 24) bbChatHistory = bbChatHistory.slice(-24);
+  return reply;
+}
 
 function bbSeasonLabel(s) { return s.replace('season', 'Season '); }
 
@@ -27830,31 +28121,52 @@ function getSmartResponse(text) {
   return "I can answer questions about the Season 9 points table, top run scorers, top wicket takers, the highest individual score, the best bowling figures, head-to-head records (e.g. \"Aarnav Aces vs Vivaan Victors\"), or a specific match (e.g. \"match 12\"). What would you like to know?";
 }
 
-function sendBclBuddyMessage() {
+async function sendBclBuddyMessage() {
   const inputEl = document.getElementById('bclBuddyInput');
   const userText = inputEl.value.trim();
-  if(!userText) return;
+  if (!userText || bbBusy) return;
 
   inputEl.value = '';
   appendBclMessage('user', userText);
   appendTypingIndicator();
+  bbBusy = true;
 
-  setTimeout(() => {
-    appendBclMessage('ai', getSmartResponse(userText));
-  }, 400);
+  try {
+    const reply = await bbAskOpenAI(userText);
+    appendBclMessage('ai', reply);
+  } catch (err) {
+    const local = getSmartResponse(userText);
+    if (err && err.message === 'NO_KEY') {
+      appendBclMessage('ai', 'Add an OpenAI key with the gear icon to chat. Meanwhile, from local stats:\n\n' + local);
+      const box = document.getElementById('bbKeyBox');
+      if (box) box.classList.add('open');
+    } else {
+      appendBclMessage('ai', (err && err.message ? err.message : 'Could not reach OpenAI.') + '\n\nFrom local stats:\n' + local);
+    }
+  } finally {
+    bbBusy = false;
+  }
 }
 
 </script>
 
   <!-- BCL BUDDY AI -->
+  <script src="secrets.js"></script>
   <div class="bcl-buddy-fab" id="bclBuddyFab" onclick="toggleBclBuddy()">🏏</div>
   <div class="bcl-buddy-panel" id="bclBuddyPanel">
     <div class="bcl-buddy-header">
-      <div>BCL Buddy AI</div>
-      <div class="bcl-buddy-header-close" onclick="toggleBclBuddy()">✕</div>
+      <div>BCL Buddy</div>
+      <div style="display:flex;align-items:center;">
+        <span class="bcl-buddy-gear" title="OpenAI API key" onclick="bbToggleKeyBox()">⚙</span>
+        <div class="bcl-buddy-header-close" onclick="toggleBclBuddy()">✕</div>
+      </div>
+    </div>
+    <div class="bcl-buddy-keybox" id="bbKeyBox">
+      <input type="password" id="bbKeyInput" placeholder="OpenAI API key (sk-…)" autocomplete="off">
+      <button type="button" onclick="bbSaveKey()">Save</button>
     </div>
     <div class="bcl-buddy-messages" id="bclBuddyMessages">
-      <div class="bb-msg ai">Hi! I'm BCL Buddy 🤖. Ask me anything about the Backyard Cricket League matches, stats, or crazy moments!</div>
+      <div class="bb-msg ai">Bromies Cricket League — ask about a match, the table, or a player.</div>
     </div>
     <div class="bcl-buddy-input-area">
       <input type="text" class="bcl-buddy-input" id="bclBuddyInput" placeholder="Ask about a match..." onkeypress="if(event.key==='Enter') sendBclBuddyMessage()">
