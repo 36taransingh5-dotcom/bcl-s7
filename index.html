@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BCL Dashboard</title>
+<script src="secrets.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,600;0,700;1,400&family=Archivo+Black&family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Oswald:wght@400;500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -1311,16 +1312,16 @@ body.theme-s10 {
   --bg: #000000;
   --card: #0D0D0D;
   --border: rgba(255, 255, 255, 0.14);
-  --acc: #FF2D87;
-  --acc-ink: #FF2D87;
-  --indigo: #FF2D87;
+  --acc: #FFD400;
+  --acc-ink: #FFD400;
+  --indigo: #FFD400;
   --red: #FF4D6A;
   --text: #FFFFFF;
   --text-light: #FFFFFF;
   --muted: #A3A3A3;
   --green: #00E38C;
   --loss: #FF4D6A;
-  --purple: #FF2D87;
+  --purple: #FFD400;
   --yellow: #00E38C;
   --shadow: none;
   background: #000000;
@@ -1350,7 +1351,7 @@ body.theme-s10 .s10-broadcast-bar {
 }
 body.theme-s10 .s10-broadcast-bar span:first-child {
   background: var(--acc);
-  color: #fff;
+  color: #111;
   padding: 8px 14px;
   letter-spacing: 0.12em;
 }
@@ -1470,7 +1471,7 @@ body.theme-s10 .filter-btn {
 }
 body.theme-s10 .filter-btn.active {
   background: var(--acc);
-  color: #fff;
+  color: #111;
   box-shadow: none;
 }
 body.theme-s10 .tbl-wrap {
@@ -1582,7 +1583,7 @@ body.theme-s10 .match-row:hover .m-team,
 body.theme-s10 .match-row:hover .score-sm { color: #fff; }
 body.theme-s10 .match-row:hover .m-num {
   color: #fff;
-  background: rgba(255, 45, 135, 0.25);
+  background: rgba(255, 212, 0, 0.25);
 }
 body.theme-s10 .squad-list li:hover { background: #161616; }
 body.theme-s10 .round-hdr,
@@ -1619,16 +1620,16 @@ body.theme-s10 .bcl-buddy-panel {
 }
 body.theme-s10 .bcl-buddy-header {
   background: var(--acc);
-  color: #fff;
+  color: #111;
   border-bottom: none;
   font-family: 'Archivo Black', sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
-body.theme-s10 .bcl-buddy-header-close { color: #fff; }
+body.theme-s10 .bcl-buddy-header-close { color: #111; }
 body.theme-s10 .bb-msg.user {
   background: var(--acc);
-  color: #fff;
+  color: #111;
   border: none;
   border-radius: 0;
 }
@@ -1640,7 +1641,7 @@ body.theme-s10 .bb-msg.ai {
 }
 body.theme-s10 .bb-msg-card-btn {
   background: var(--acc);
-  color: #fff;
+  color: #111;
   border: none;
 }
 body.theme-s10 .bcl-buddy-input {
@@ -1652,6 +1653,7 @@ body.theme-s10 .bcl-buddy-input:focus { border-color: var(--acc); }
 body.theme-s10 .bcl-buddy-send,
 body.theme-s10 .bcl-buddy-keybox button {
   background: var(--acc);
+  color: #111;
   border-radius: 0;
 }
 body.theme-s10 .bcl-buddy-keybox { background: #111; }
@@ -25950,7 +25952,7 @@ function updateThemeColor() {
 
   if (season === 'season10') {
     document.body.classList.add('theme-s10');
-    document.documentElement.style.setProperty('--acc', '#FF2D87');
+    document.documentElement.style.setProperty('--acc', '#FFD400');
     document.documentElement.style.setProperty('--shadow', 'none');
     if (hdrSub) hdrSub.textContent = 'Eight teams. Fast cricket. Season 10.';
   } else {
@@ -27810,10 +27812,15 @@ const BB_OPENAI_MODEL = 'gpt-4o-mini';
 let bbBusy = false;
 let bbChatHistory = [];
 
+function bbCleanKey(k) {
+  k = (typeof k === 'string' ? k : '').trim();
+  if (!k || /replace[_-]?me/i.test(k)) return '';
+  return k;
+}
 function bbGetApiKey() {
-  const fromWindow = (typeof window.BCL_OPENAI_KEY === 'string') ? window.BCL_OPENAI_KEY.trim() : '';
+  const fromWindow = bbCleanKey(window.BCL_OPENAI_KEY);
   if (fromWindow) return fromWindow;
-  try { return (localStorage.getItem('bcl_openai_key') || '').trim(); } catch (e) { return ''; }
+  try { return bbCleanKey(localStorage.getItem('bcl_openai_key')); } catch (e) { return ''; }
 }
 
 function bbToggleKeyBox() {
@@ -28299,9 +28306,7 @@ async function sendBclBuddyMessage() {
   } catch (err) {
     const local = getSmartResponse(userText);
     if (err && err.message === 'NO_KEY') {
-      appendBclMessage('ai', 'Add an OpenAI key with the gear icon to chat. Meanwhile, from local stats:\n\n' + local);
-      const box = document.getElementById('bbKeyBox');
-      if (box) box.classList.add('open');
+      appendBclMessage('ai', local);
     } else {
       appendBclMessage('ai', (err && err.message ? err.message : 'Could not reach OpenAI.') + '\n\nFrom local stats:\n' + local);
     }
@@ -28312,8 +28317,6 @@ async function sendBclBuddyMessage() {
 
 </script>
 
-  <!-- BCL BUDDY AI -->
-  <script src="secrets.js"></script>
   <div class="bcl-buddy-fab" id="bclBuddyFab" onclick="toggleBclBuddy()" title="MD Shoni"><img src="logos/md-shoni.png" alt="MD Shoni"></div>
   <div class="bcl-buddy-panel" id="bclBuddyPanel">
     <div class="bcl-buddy-header">

@@ -1,7 +1,8 @@
 name: Deploy static content to Pages
 
-# DISABLED - using branch-based deployment instead (Settings > Pages > Deploy from branch)
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -27,11 +28,15 @@ jobs:
         with:
           enablement: true
       - name: Build site
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           mkdir dist
           cp index.html dist/
           cp -r logos dist/
+          cp -r media dist/ || true
           cp .nojekyll dist/ || true
+          python3 -c 'import json,os; k=os.environ.get("OPENAI_API_KEY","").strip(); open("dist/secrets.js","w").write("window.BCL_OPENAI_KEY = %s;\n" % json.dumps(k))'
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
