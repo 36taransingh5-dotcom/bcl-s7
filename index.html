@@ -328,6 +328,8 @@ td:first-child { text-align: left; padding-left: 20px; }
 .ms-sub { font-size: 12px; color: var(--muted); margin-top: 6px; font-weight: 600; }
 .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 16px; }
 .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); font-weight: 600; }
+.legend-item[hidden],
+#s10PointsRules[hidden] { display: none !important; }
 .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
 
 /* MODALS */
@@ -1724,6 +1726,106 @@ body.theme-s10 .s10-empty {
   text-align: center;
   box-shadow: none;
 }
+body.theme-s10 .s10-points {
+  margin-top: 22px;
+  background: #0D0D0D;
+  border: 1px solid var(--border);
+  padding: 22px 22px 18px;
+}
+body.theme-s10 .s10-points-kicker {
+  font-family: 'Archivo', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--acc);
+  margin-bottom: 8px;
+}
+body.theme-s10 .s10-points-title {
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 400;
+  font-size: 28px;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 0.95;
+  margin-bottom: 16px;
+}
+body.theme-s10 .s10-points-base {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+body.theme-s10 .s10-points-base span {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+body.theme-s10 .s10-points-base strong { color: var(--acc); font-weight: 800; }
+body.theme-s10 .s10-points-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 28px;
+}
+@media (max-width: 640px) {
+  body.theme-s10 .s10-points-grid { grid-template-columns: 1fr; }
+}
+body.theme-s10 .s10-points-head {
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+body.theme-s10 .s10-points ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+body.theme-s10 .s10-points li {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ddd;
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+body.theme-s10 .s10-points li em {
+  font-style: normal;
+  font-weight: 800;
+  color: var(--acc);
+  width: 28px;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+body.theme-s10 .s10-points li.is-neg em { color: #fb7185; }
+body.theme-s10 .bp-cell { color: var(--acc); font-weight: 800; font-variant-numeric: tabular-nums; }
+body.theme-s10 .s10-pts-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+body.theme-s10 .s10-pts-chip {
+  border: 1px solid var(--border);
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+}
+body.theme-s10 tbody tr:hover .bp-cell { color: var(--acc) !important; }
 body.theme-s10 footer { color: var(--muted); }
 body.theme-s10 tbody tr { border-bottom: 1px solid var(--border); }
 body.theme-s10 tbody tr:hover,
@@ -2056,10 +2158,45 @@ body.theme-s10 #panel-playoffs > section > .st {
     </div>
     <div class="st">Points Table</div>
     <div class="tbl-wrap"><table>
-      <thead><tr><th># Team</th><th>M</th><th>W</th><th>L</th><th>NR</th><th>Pts</th><th>NRR</th><th style="text-align:center;">Recent Form</th></tr></thead>
+      <thead><tr id="tableHeadRow"><th># Team</th><th>M</th><th>W</th><th>L</th><th>NR</th><th>BP</th><th>Pts</th><th>NRR</th><th style="text-align:center;">Recent Form</th></tr></thead>
       <tbody id="tableBody"></tbody>
     </table></div>
-    <div class="legend"><div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Qualify (Top 4)</div></div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Qualify (Top 4)</div>
+      <div class="legend-item s10-only-legend" id="s10BpLegend" hidden><div class="legend-dot" style="background:var(--acc)"></div>BP = bonus points</div>
+    </div>
+    <div id="s10PointsRules" class="s10-points" hidden>
+      <div class="s10-points-kicker">Season 10 · CGPL turns 10</div>
+      <div class="s10-points-title">New points system</div>
+      <div class="s10-points-base">
+        <span>Win <strong>+3</strong></span>
+        <span>NR <strong>+1</strong></span>
+        <span>Loss <strong>0</strong></span>
+      </div>
+      <div class="s10-points-grid">
+        <div>
+          <div class="s10-points-head">Batting</div>
+          <ul>
+            <li><em>+2</em> win by 10 wickets</li>
+            <li><em>+1</em> win by 8 or 9 wickets</li>
+            <li><em>+1</em> 250+ team score</li>
+            <li><em>+1</em> chase inside 15 overs</li>
+            <li><em>+1</em> a player scores 120+</li>
+            <li class="is-neg"><em>−1</em> lose by 10 wickets</li>
+          </ul>
+        </div>
+        <div>
+          <div class="s10-points-head">Bowling</div>
+          <ul>
+            <li><em>+2</em> keep them under 120</li>
+            <li><em>+1</em> keep them under 160</li>
+            <li><em>+1</em> bowl the opposition out</li>
+            <li><em>+1</em> a player takes a five-for</li>
+            <li class="is-neg"><em>−1</em> lose by 100+ runs</li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </section>
 </div>
 
@@ -26387,6 +26524,155 @@ function nrrStr(v){ return (v>0?'+':'')+Number(v||0).toFixed(3); }
 function n2(v){ return Number(v||0).toFixed(2); }
 function n1(v){ return Number(v||0).toFixed(1); }
 
+const S10_MAX_OVERS = 20;
+const S10_LEAGUE_MATCH_MAX = 56;
+const TABLE_HEAD_CLASSIC = '<th># Team</th><th>M</th><th>W</th><th>L</th><th>NR</th><th>Pts</th><th>NRR</th><th style="text-align:center;">Recent Form</th>';
+const TABLE_HEAD_S10 = '<th># Team</th><th>M</th><th>W</th><th>L</th><th>NR</th><th>BP</th><th>Pts</th><th>NRR</th><th style="text-align:center;">Recent Form</th>';
+
+function parseScoreParts(score) {
+  if (!score) return { runs: 0, wkts: 0 };
+  const m = String(score).trim().match(/^(\d+)\s*\/\s*(\d+)/);
+  if (m) return { runs: +m[1], wkts: +m[2] };
+  const n = parseInt(score, 10);
+  return { runs: Number.isFinite(n) ? n : 0, wkts: 0 };
+}
+function parseOversBalls(overs) {
+  if (!overs) return 0;
+  const parts = String(overs).trim().split('.');
+  const o = parseInt(parts[0], 10) || 0;
+  const b = parseInt(parts[1] || '0', 10) || 0;
+  return o + b / 6;
+}
+function parseMarginParts(margin) {
+  const s = String(margin || '').toLowerCase();
+  const wm = s.match(/(\d+)\s*wickets?/);
+  if (wm) return { kind: 'wickets', n: +wm[1] };
+  const rm = s.match(/(\d+)\s*runs?/);
+  if (rm) return { kind: 'runs', n: +rm[1] };
+  return { kind: '', n: 0 };
+}
+function s10IsNR(r) {
+  const w = String(r.winner || '').toLowerCase();
+  return !w || w === 'nr' || w === 'n/r' || w === 'tie' || w === 'tied' || w === 'none' || w === 'draw';
+}
+function s10InnsBest(inn, key) {
+  const arr = inn && inn[key];
+  if (!Array.isArray(arr) || !arr.length) return 0;
+  return Math.max(0, ...arr.map(p => +p[key === 'bat' ? 'runs' : 'wkts'] || 0));
+}
+function s10MatchPoints(r) {
+  const t1 = r.team1, t2 = r.team2;
+  const out = {};
+  out[t1] = { base: 0, bonus: 0, items: [] };
+  out[t2] = { base: 0, bonus: 0, items: [] };
+  const add = (id, n, label, isBonus) => {
+    if (!id || !out[id] || !n) return;
+    if (isBonus) out[id].bonus += n;
+    else out[id].base += n;
+    out[id].items.push({ n, label });
+  };
+  if (s10IsNR(r)) {
+    add(t1, 1, 'No result', false);
+    add(t2, 1, 'No result', false);
+    return out;
+  }
+  const win = r.winner;
+  const lose = win === t1 ? t2 : (win === t2 ? t1 : '');
+  if (win === t1 || win === t2) add(win, 3, 'Win', false);
+  const s1 = parseScoreParts(r.score1);
+  const s2 = parseScoreParts(r.score2);
+  const o1 = parseOversBalls(r.overs1);
+  const o2 = parseOversBalls(r.overs2);
+  const mar = parseMarginParts(r.margin);
+  const winOvers = win === t1 ? o1 : (win === t2 ? o2 : 0);
+  if (s1.runs >= 250) add(t1, 1, '250+ score', true);
+  if (s2.runs >= 250) add(t2, 1, '250+ score', true);
+  const sc = r.scorecard || {};
+  if (s10InnsBest(sc.t1Inn, 'bat') >= 120) add(t1, 1, '120+ innings', true);
+  if (s10InnsBest(sc.t2Inn, 'bat') >= 120) add(t2, 1, '120+ innings', true);
+  if (mar.kind === 'wickets' && winOvers > 0 && winOvers <= 15) add(win, 1, 'Chased in 15 overs', true);
+  if (mar.kind === 'wickets' && mar.n >= 10) {
+    add(win, 2, 'Won by 10 wickets', true);
+    add(lose, -1, 'Lost by 10 wickets', true);
+  } else if (mar.kind === 'wickets' && mar.n >= 8) {
+    add(win, 1, 'Won by 8+ wickets', true);
+  }
+  if (mar.kind === 'runs' && mar.n >= 100) add(lose, -1, 'Lost by 100+ runs', true);
+  if (r.score2) {
+    if (s2.runs < 120) add(t1, 2, 'Kept under 120', true);
+    else if (s2.runs < 160) add(t1, 1, 'Kept under 160', true);
+    if (s2.wkts >= 10) add(t1, 1, 'Bowled opposition out', true);
+  }
+  if (r.score1) {
+    if (s1.runs < 120) add(t2, 2, 'Kept under 120', true);
+    else if (s1.runs < 160) add(t2, 1, 'Kept under 160', true);
+    if (s1.wkts >= 10) add(t2, 1, 'Bowled opposition out', true);
+  }
+  if (s10InnsBest(sc.t2Inn, 'bowl') >= 5) add(t1, 1, 'Five-for', true);
+  if (s10InnsBest(sc.t1Inn, 'bowl') >= 5) add(t2, 1, 'Five-for', true);
+  return out;
+}
+function s10NrrOvers(score, overs) {
+  const { wkts } = parseScoreParts(score);
+  if (wkts >= 10) return S10_MAX_OVERS;
+  const o = parseOversBalls(overs);
+  return o > 0 ? o : S10_MAX_OVERS;
+}
+function s10StandingsFrom(db) {
+  const rows = TEAMS_S10.map(t => ({
+    id: t.id, m: 0, w: 0, l: 0, nr: 0, pts: 0, bp: 0, nrr: 0,
+    _rf: 0, _of: 0, _ra: 0, _oa: 0
+  }));
+  const by = Object.fromEntries(rows.map(r => [r.id, r]));
+  (db.results || []).filter(r => !r.match || r.match <= S10_LEAGUE_MATCH_MAX).forEach(r => {
+    const pts = s10MatchPoints(r);
+    const nr = s10IsNR(r);
+    [r.team1, r.team2].forEach(id => {
+      const row = by[id];
+      const p = pts[id];
+      if (!row || !p) return;
+      row.m += 1;
+      row.bp += p.bonus;
+      row.pts += p.base + p.bonus;
+      if (nr) row.nr += 1;
+      else if (r.winner === id) row.w += 1;
+      else row.l += 1;
+    });
+    if (!nr && r.score1 && r.score2) {
+      const a = by[r.team1], b = by[r.team2];
+      if (a && b) {
+        const s1 = parseScoreParts(r.score1).runs;
+        const s2 = parseScoreParts(r.score2).runs;
+        const o1 = s10NrrOvers(r.score1, r.overs1);
+        const o2 = s10NrrOvers(r.score2, r.overs2);
+        a._rf += s1; a._of += o1; a._ra += s2; a._oa += o2;
+        b._rf += s2; b._of += o2; b._ra += s1; b._oa += o1;
+      }
+    }
+  });
+  rows.forEach(row => {
+    const forR = row._of > 0 ? row._rf / row._of : 0;
+    const agR = row._oa > 0 ? row._ra / row._oa : 0;
+    row.nrr = forR - agR;
+    delete row._rf; delete row._of; delete row._ra; delete row._oa;
+  });
+  return rows;
+}
+function s10ResultPtsHtml(r) {
+  const p = s10MatchPoints(r);
+  const chip = id => {
+    const x = p[id];
+    if (!x) return '';
+    const total = x.base + x.bonus;
+    const t = byId(id);
+    const sign = total > 0 ? '+' : '';
+    const tips = x.items.map(i => `${i.n > 0 ? '+' : ''}${i.n} ${i.label}`).join(' · ');
+    const bp = x.bonus ? ` · ${x.bonus > 0 ? '+' : ''}${x.bonus} BP` : '';
+    return `<span class="s10-pts-chip" title="${tips}">${t?.id || id} ${sign}${total}${bp}</span>`;
+  };
+  return `<div class="s10-pts-row">${chip(r.team1)}${chip(r.team2)}</div>`;
+}
+
 // ── RENDER ────────────────────────────────────────────────────────────────────
 function renderAll(){
   renderTable(); renderResults(); renderSchedule(); renderSquads(); renderStats(); renderPlayoffs();
@@ -26429,16 +26715,27 @@ function getTeamForm(teamId, lDB) {
 
 function renderTable(){
   let lDB = getLocalDB("table");
-  const sorted=[...lDB.table].sort((a,b)=>b.pts-a.pts||b.nrr-a.nrr);
+  const isS10 = localFilters.table === 'season10';
+  const head = document.getElementById('tableHeadRow');
+  const rules = document.getElementById('s10PointsRules');
+  const bpLeg = document.getElementById('s10BpLegend');
+  if (head) head.innerHTML = isS10 ? TABLE_HEAD_S10 : TABLE_HEAD_CLASSIC;
+  if (rules) rules.hidden = !isS10;
+  if (bpLeg) bpLeg.hidden = !isS10;
+  const rows = isS10 ? s10StandingsFrom(lDB) : lDB.table;
+  if (isS10 && MULTI_DB.season10) MULTI_DB.season10.table = rows.map(({id,m,w,l,nr,pts,nrr,bp}) => ({id,m,w,l,nr,pts,nrr,bp}));
+  const sorted=[...rows].sort((a,b)=>b.pts-a.pts||b.nrr-a.nrr);
   document.getElementById('tableBody').innerHTML=sorted.map((row,i)=>{
     const t=byId(row.id);
     const formHtml = getTeamForm(row.id, lDB);
+    const bpCell = isS10 ? `<td class="bp-cell">${row.bp||0}</td>` : '';
     return `<tr>
       <td><span class="team-cell"><span class="rank">${i+1}</span><span class="qualify-bar${i<4?'':' off'}"></span>${teamIconSlot(t)}<strong>${t?.name}</strong></span></td>
       <td style="color:var(--muted)">${row.m}</td>
       <td style="color:var(--green);font-weight:600">${row.w}</td>
       <td style="color:var(--loss)">${row.l}</td>
       <td style="color:var(--muted)">${row.nr}</td>
+      ${bpCell}
       <td class="pts-cell">${row.pts}</td>
       <td class="${nrrClass(row.nrr)}">${nrrStr(row.nrr)}</td>
       <td>
@@ -26732,6 +27029,7 @@ function renderResults(){
         </div>
       </div>
       ${r.mom?`<div class="mom-row">⭐ <strong style="color:var(--acc)">MOM:</strong> ${r.mom}</div>`:''}
+      ${localFilters.results === 'season10' ? s10ResultPtsHtml(r) : ''}
       <div style="font-size:10px; color:var(--muted); text-align:right; margin-top:10px; font-weight: 500;">Click to view full scorecard ➔</div>
     </div>`;
   }).join('');
@@ -28475,11 +28773,12 @@ function bbBuildAiContext() {
   const payload = {
     league: 'Bromies Cricket League (BCL)',
     facts: {
-      calendar: 'Current season is Season 10 (no matches, no table). Last completed season is Season 9. “Last season” / “this past season” = S9.',
+      calendar: 'Current season is Season 10 (no matches yet). Last completed season is Season 9. “Last season” / “this past season” = S9.',
+      points: 'S7–S9: win = 2 points. S10: win = 3, NR = 1, loss = 0, plus bonus points. Bonuses stack except nested thresholds (10-wicket win +2 replaces 8+; restrict under 120 +2 replaces under 160). 250+ score, chase in 15 overs, 120+ innings, five-for, bowl out, and the −1 penalties all apply separately.',
       S7: 'Season 7 teams: HH, AS, AA, GB, TT, VV only (no SM, no UU).',
       S8: 'Season 8 teams: all eight including SM and UU. S8 table-topper AA 18pts (NRR). S8 Final M60 AA beat GB.',
       S9: 'Season 9 teams: seven — UU sat out. S9 league table: 1st GB 18pts 9-3, 2nd VV 14pts, 3rd AA 12pts. GB were table-toppers. S9 Final M60 AA beat VV — Aces are champions, not GB.',
-      S10: 'Season 10 has eight teams but no player stats, results, or squads yet. Do not invent an S10 table.',
+      S10: 'Season 10 has eight teams. No matches yet. New points: win +3, NR +1, loss 0, plus stacking bonuses (not the old 2-pts-per-win). 10-wicket win +2 (not also 8+). Restrict under 120 +2 (not also under 160). Do not invent an S10 table.',
       champions: 'S7 Final M46 AA beat VV; S8 Final M60 AA beat GB; S9 Final M60 AA beat VV. Aarnav Aces are champions of 7, 8 and 9.',
       UU: 'Urvaksh Uttamnagris played Season 8 only.',
       rule: 'bestBat and worstBat are different people. Champion is the Final winner, not the table-topper. For “who finished top of the table” use tableRanked pos 1, never the Final winner.'
@@ -28518,7 +28817,7 @@ async function bbAskOpenAI(userText) {
 
 Answer ANY cricket question from that JSON — tables, NRR, a player, a team, H2H, a match, MOM, form, playoffs, squads, comparisons, flops, records. Use the numbers. ${hate ? '2 short sentences.' : '1–2 short sentences. No preamble.'}
 
-Accuracy: never invent; never copy a stat into the wrong season; only mention seasons in clubSheet[ID].played for that club; UU = S8 only; S10 has no stats and no table; last season = S9; for table position use seasons[s].tableRanked (pts then NRR) — S9 pos1 is GB 18pts, not third; champion = Final winner not table-topper; for best/worst/flop use clubSheet best* vs worst* (never the same person); for a specific match end with [MATCH: season9:2] (season then match number).
+Accuracy: never invent; never copy a stat into the wrong season; only mention seasons in clubSheet[ID].played for that club; UU = S8 only; S10 has no results yet and uses a new 3-point win plus bonuses; last season = S9; for table position use seasons[s].tableRanked (pts then NRR) — S9 pos1 is GB 18pts, not third; champion = Final winner not table-topper; for best/worst/flop use clubSheet best* vs worst* (never the same person); for a specific match end with [MATCH: season9:2] (season then match number).
 
 IDs: UU Urvaksh Uttamnagris, TT Taran Tranquils, AA Aarnav Aces, AS Anagh Savants, GB Gauransh Blazers, HH Harshit Harmobiles, SM Shaurya Mavericks, VV Vivaan Victors.
 Keys: n=name, t=team, r=runs, w=wickets, m=match, mar=margin, sc=scorecard.
@@ -28671,12 +28970,21 @@ function getSmartResponse(text) {
     return `I couldn't find Match ${m} in my records.`;
   }
 
+  if (txt.includes('bonus') || txt.includes('point system') || txt.includes('points system') || txt.includes('new points') || (txt.includes('how many points') && (txt.includes('win') || txt.includes('season 10') || txt.includes('s10')))) {
+    return `Season 10: a win is 3, a no-result is 1, a loss is 0, then batting and bowling bonuses on top. Ten-wicket win is +2 extra. Keeping them under 120 is +2 extra. Last season was still 2 points for a win.`;
+  }
+
   if (txt.includes('points table') || txt.includes('standings') || txt.includes('leading') || txt.includes('top of the table') || txt.includes('best team')) {
-    const leader = bbPointsLeader(BB_CURRENT_SEASON);
+    const s10played = (MULTI_DB.season10?.table || []).some(t => t.m > 0);
+    if (BB_CURRENT_SEASON === 'season10' && !s10played) {
+      return `Season 10 hasn’t started. A win is worth 3 now, plus bonuses. Last season GB topped the table with 18 points.`;
+    }
+    const leader = bbPointsLeader(s10played ? BB_CURRENT_SEASON : 'season9');
     if (leader) {
       const t = byId(leader.id);
       const nrrStr = (leader.nrr > 0 ? '+' : '') + leader.nrr;
-      return `${t?.name || leader.id} are topping the Season 9 table with ${leader.pts} points from ${leader.m} matches (NRR ${nrrStr}).`;
+      const label = s10played ? 'Season 10' : 'Season 9';
+      return `${t?.name || leader.id} are topping the ${label} table with ${leader.pts} points from ${leader.m} matches (NRR ${nrrStr}).`;
     }
   }
 
