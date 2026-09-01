@@ -28579,7 +28579,9 @@ renderAll();
 
 // ── BCL BUDDY AI ─────────────────────────────────────────────────────────────
 function toggleBclBuddy() {
-  document.getElementById('bclBuddyPanel').classList.toggle('active');
+  const panel = document.getElementById('bclBuddyPanel');
+  panel.classList.toggle('active');
+  if (!panel.classList.contains('active')) bbStopShauryaAudio();
 }
 
 function appendBclMessage(sender, text, opts) {
@@ -29112,6 +29114,7 @@ function bbPlayThalaEgg() {
     clearTimeout(bbThalaTimer);
     bbThalaTimer = null;
   }
+  bbStopShauryaAudio();
   const overlay = document.getElementById('thalaEgg');
   const audio = document.getElementById('thalaAudio');
   if (overlay) overlay.classList.add('active');
@@ -29182,6 +29185,25 @@ function bbIsShauryaAsk(text) {
   return /\bshaurya\b|\bmavericks?\b/i.test(String(text));
 }
 
+function bbStopShauryaAudio() {
+  const audio = document.getElementById('shauryaAudio');
+  if (!audio) return;
+  audio.loop = false;
+  audio.pause();
+  try { audio.currentTime = 0; } catch (e) {}
+}
+
+function bbPlayShauryaAudio() {
+  const audio = document.getElementById('shauryaAudio');
+  if (!audio) return;
+  bbStopThalaEgg();
+  audio.loop = true;
+  if (!audio.paused) return;
+  try { audio.currentTime = 0; } catch (e) {}
+  const play = audio.play();
+  if (play && play.catch) play.catch(() => {});
+}
+
 function bbSobEmoji() {
   const emojis = ['😭', '😢', '😿', '💔', '😞', '😔', '😩', '🥺'];
   return emojis[Math.floor(Math.random() * emojis.length)];
@@ -29194,6 +29216,7 @@ function bbSobifyShauryaText(text) {
 
 function bbAppendAiReply(userText, reply) {
   if (bbIsShauryaAsk(userText)) {
+    bbPlayShauryaAudio();
     appendBclMessage('ai', bbSobifyShauryaText(reply), { leadImg: 'media/shaurya-son.png' });
     return;
   }
@@ -29207,6 +29230,7 @@ async function sendBclBuddyMessage() {
 
   inputEl.value = '';
   appendBclMessage('user', userText);
+  if (!bbIsShauryaAsk(userText)) bbStopShauryaAudio();
   if (bbHandleThalaEgg(userText)) return;
   appendTypingIndicator();
   bbBusy = true;
@@ -29258,6 +29282,7 @@ async function sendBclBuddyMessage() {
     <span class="thala-seven r">7</span>
   </div>
   <audio id="thalaAudio" src="media/thala.mp3" preload="auto"></audio>
+  <audio id="shauryaAudio" src="media/tf_nemesis.mp3" preload="auto"></audio>
 
 </body>
 </html>
