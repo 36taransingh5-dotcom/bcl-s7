@@ -29182,9 +29182,22 @@ function bbIsShauryaAsk(text) {
   return /\bshaurya\b|\bmavericks?\b/i.test(String(text));
 }
 
+function bbSobEmoji() {
+  const emojis = ['😭', '😢', '😿', '💔', '😞', '😔', '😩', '🥺'];
+  return emojis[Math.floor(Math.random() * emojis.length)];
+}
+
+function bbSobifyShauryaText(text) {
+  const wrap = chunk => chunk.replace(/[^\s]+/g, word => `${bbSobEmoji()} ${word} ${bbSobEmoji()}`);
+  return String(text).split(/(\[MATCH:[^\]]+\])/i).map(part => /^\[MATCH:/i.test(part) ? part : wrap(part)).join('');
+}
+
 function bbAppendAiReply(userText, reply) {
-  const opts = bbIsShauryaAsk(userText) ? { leadImg: 'media/shaurya-son.png' } : undefined;
-  appendBclMessage('ai', reply, opts);
+  if (bbIsShauryaAsk(userText)) {
+    appendBclMessage('ai', bbSobifyShauryaText(reply), { leadImg: 'media/shaurya-son.png' });
+    return;
+  }
+  appendBclMessage('ai', reply);
 }
 
 async function sendBclBuddyMessage() {
