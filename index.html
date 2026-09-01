@@ -1162,6 +1162,14 @@ input:focus, select:focus { border-color: var(--acc); box-shadow: 0 0 0 2px rgba
   align-self: flex-start;
   border-bottom-left-radius: 4px;
 }
+.bb-msg .bb-lead-img {
+  display: block;
+  width: 100%;
+  max-width: 240px;
+  height: auto;
+  border-radius: 8px;
+  margin: 0 0 10px;
+}
 .bb-msg-card-btn {
   display: inline-block;
   margin-top: 8px;
@@ -28574,7 +28582,7 @@ function toggleBclBuddy() {
   document.getElementById('bclBuddyPanel').classList.toggle('active');
 }
 
-function appendBclMessage(sender, text) {
+function appendBclMessage(sender, text, opts) {
   const container = document.getElementById('bclBuddyMessages');
   const typing = document.getElementById('bbTyping');
   if(typing) typing.remove();
@@ -28609,6 +28617,13 @@ function appendBclMessage(sender, text) {
     .replace(/>/g, '&gt;')
     .replace(/\n/g, '<br>');
   msgDiv.innerHTML = formattedText;
+  if (sender === 'ai' && opts && opts.leadImg) {
+    const img = document.createElement('img');
+    img.src = opts.leadImg;
+    img.alt = '';
+    img.className = 'bb-lead-img';
+    msgDiv.insertBefore(img, msgDiv.firstChild);
+  }
   
   if (matchIdFound) {
     const btn = document.createElement('div');
@@ -29163,6 +29178,15 @@ function bbHandleThalaEgg(userText) {
   return false;
 }
 
+function bbIsShauryaAsk(text) {
+  return /\bshaurya\b|\bmavericks?\b/i.test(String(text));
+}
+
+function bbAppendAiReply(userText, reply) {
+  const opts = bbIsShauryaAsk(userText) ? { leadImg: 'media/shaurya-son.png' } : undefined;
+  appendBclMessage('ai', reply, opts);
+}
+
 async function sendBclBuddyMessage() {
   const inputEl = document.getElementById('bclBuddyInput');
   const userText = inputEl.value.trim();
@@ -29176,13 +29200,13 @@ async function sendBclBuddyMessage() {
 
   try {
     const reply = bbMaybeRoast(userText, await bbAskOpenAI(userText));
-    appendBclMessage('ai', reply);
+    bbAppendAiReply(userText, reply);
   } catch (err) {
     const local = bbMaybeRoast(userText, getSmartResponse(userText));
     if (err && err.message === 'NO_KEY') {
-      appendBclMessage('ai', local);
+      bbAppendAiReply(userText, local);
     } else {
-      appendBclMessage('ai', (err && err.message ? err.message : 'Could not reach OpenAI.') + '\n\nFrom local stats:\n' + local);
+      bbAppendAiReply(userText, (err && err.message ? err.message : 'Could not reach OpenAI.') + '\n\nFrom local stats:\n' + local);
     }
   } finally {
     bbBusy = false;
