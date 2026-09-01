@@ -27547,15 +27547,15 @@ function openScorecardModal(matchNum, seasonHint) {
     sumWinner.style.background = `${win.color}22`;
     sumWinner.style.color = win.color;
     sumWinner.style.border = `1px solid ${win.color}33`;
-    sumWinner.innerText = `${teamIcon(win)} ${win.name} won by ${r.margin}`;
+    sumWinner.innerHTML = `${teamIconSlot(win)} ${win.name} won by ${r.margin}`;
   } else {
     sumWinner.style.display = 'none';
   }
   
-  document.getElementById('s-sum-t1-name').innerText = t1 ? `${teamIcon(t1)} ${t1.name}` : r.team1;
+  document.getElementById('s-sum-t1-name').innerHTML = t1 ? `${teamIconSlot(t1)} ${t1.name}` : r.team1;
   document.getElementById('s-sum-t1-score').innerHTML = `${r.score1} <span class="score-ov">(${r.overs1})</span>`;
   
-  document.getElementById('s-sum-t2-name').innerText = t2 ? `${teamIcon(t2)} ${t2.name}` : r.team2;
+  document.getElementById('s-sum-t2-name').innerHTML = t2 ? `${teamIconSlot(t2)} ${t2.name}` : r.team2;
   document.getElementById('s-sum-t2-score').innerHTML = `${r.score2} <span class="score-ov">(${r.overs2})</span>`;
   
   document.getElementById('s-sum-mom').innerHTML = r.mom ? `⭐ <strong style="color:var(--acc)">MOM:</strong> ${r.mom}` : '';
