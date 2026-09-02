@@ -2229,6 +2229,7 @@ body.theme-s10 #panel-playoffs > section > .st {
             <li><em>+2</em> keep them under 120</li>
             <li><em>+1</em> keep them under 160</li>
             <li><em>+1</em> a player takes a five-for</li>
+            <li><em>+1</em> bowl them out</li>
             <li class="is-neg"><em>−1</em> lose by 100+ runs</li>
           </ul>
         </div>
@@ -12969,7 +12970,7 @@ const SEED = {
   ]
 };
 
-const STORE_KEY_MULTI = "bcl_multi_v128"; // Cache bust 43 - S10 Match 11
+const STORE_KEY_MULTI = "bcl_multi_v129"; // Cache bust 44 - bowl-out +1 for bowling side
 
 let MULTI_DB = JSON.parse(localStorage.getItem(STORE_KEY_MULTI));
 if (!MULTI_DB) {
@@ -26838,14 +26839,20 @@ function s10MatchPoints(r) {
       if (s2.runs < 120) add(t1, 2, 'Kept under 120', true);
       else if (s2.runs < 160) add(t1, 1, 'Kept under 160', true);
     }
-    if (s2.wkts >= 10) add(t2, -1, 'Bowled out', true);
+    if (s2.wkts >= 10) {
+      add(t2, -1, 'Bowled out', true);
+      add(t1, 1, 'Bowled them out', true);
+    }
   }
   if (r.score1) {
     if (s10InnsClosed(r.score1, r.overs1)) {
       if (s1.runs < 120) add(t2, 2, 'Kept under 120', true);
       else if (s1.runs < 160) add(t2, 1, 'Kept under 160', true);
     }
-    if (s1.wkts >= 10) add(t1, -1, 'Bowled out', true);
+    if (s1.wkts >= 10) {
+      add(t1, -1, 'Bowled out', true);
+      add(t2, 1, 'Bowled them out', true);
+    }
   }
   if (s10InnsBest(sc.t2Inn, 'bowl') >= 5) add(t1, 1, 'Five-for', true);
   if (s10InnsBest(sc.t1Inn, 'bowl') >= 5) add(t2, 1, 'Five-for', true);
@@ -29142,11 +29149,11 @@ function bbBuildAiContext() {
     league: 'Bromies Cricket League (BCL)',
     facts: {
       calendar: 'Current season is Season 10 (Matches 1–11 played). Last completed season is Season 9. “Last season” / “this past season” = S9. S10 fixtures are drawn at random, not copied from S8.',
-      points: 'S7–S9: win = 2 points. S10: win = 3, NR = 1, loss = 0, plus bonus points. Bonuses stack except nested thresholds (10-wicket win +2 replaces 8+; restrict under 120 +2 replaces under 160). Restrict under 120/160 only counts a finished innings (all out or 20 overs) — a successful chase is not a restriction. Getting bowled out is −1 for that batting team, not +1 for the bowling side. 250+ score, chase in 15 overs, 120+ innings, five-for, and the −1 penalties (10-wicket loss, 100+ run loss, bowled out) all apply separately.',
+      points: 'S7–S9: win = 2 points. S10: win = 3, NR = 1, loss = 0, plus bonus points. Bonuses stack except nested thresholds (10-wicket win +2 replaces 8+; restrict under 120 +2 replaces under 160). Restrict under 120/160 only counts a finished innings (all out or 20 overs) — a successful chase is not a restriction. Getting bowled out is −1 for that batting team, and the bowling side gets +1 for taking all 10. 250+ score, chase in 15 overs, 120+ innings, five-for, and the −1 penalties (10-wicket loss, 100+ run loss, bowled out) all apply separately.',
       S7: 'Season 7 teams: HH, AS, AA, GB, TT, VV only (no SM, no UU).',
       S8: 'Season 8 teams: all eight including SM and UU. S8 table-topper AA 18pts (NRR). S8 Final M60 AA beat GB.',
       S9: 'Season 9 teams: seven — UU sat out. S9 league table: 1st GB 18pts 9-3, 2nd VV 14pts, 3rd AA 12pts. GB were table-toppers. S9 Final M60 AA beat VV — Aces are champions, not GB.',
-      S10: 'Season 10 has eight teams. Fixtures are drawn at random. M1 Queen’s Park Oval: VV 191/9, AA 192/6 — Aces won by 4 wickets (AA +3), MOM Jasprit Bumrah 4/28. M2 Chinnaswamy: VV 229/6, UU 129/9 — Victors won by 100 runs (VV +4, UU −1), MOM Vivaan Armstrong 30 & 2/32. M3 Lord’s: UU 185/7 (20.0), SM 186/6 (17.2) — Mavericks won by 4 wickets (SM +3), MOM Jason Holder 47* & 3/41. M4 Trent Bridge: GB 182/9 (20.0), AA 188/5 (13.2) — Aces won by 5 wickets (AA +4, chase inside 15), MOM Ben Stokes 20* & 3/28. M5 National Stadium, Karachi: AA 248/5 (20.0), HH 107/10 (16.0) — Aces won by 141 runs (AA +5, HH −2), MOM Travis Head 73 (38). M6 Kensington Oval: GB 246/5 (20.0), VV 212/8 (20.0) — Blazers won by 34 runs (GB +3), MOM Ellyse Perry 87* (46). M7 Trent Bridge: SM 143/10 (19.4), VV 147/4 (10.3) — Victors won by 6 wickets (VV +5, SM −1 bowled out), MOM Vivaan Armstrong 29* & 2/27. M8 Gabba: VV 246/5 (20.0), AA 234/7 (20.0) — Victors won by 12 runs (VV +3), MOM Vivaan Armstrong 35* & 1/34. M9 Headingley: SM 226/3 (20.0), AA 183/8 (20.0) — Mavericks won by 43 runs (SM +3), MOM Virender Sehwag 103 (49). M10 Harare Sports Club: HH 104/10 (17.0), GB 109/5 (9.3) — Blazers won by 5 wickets (GB +6, HH −1), MOM Marco Jansen 2/18. M11 The Oval: GB 133/10 (16.3), SM 135/4 (13.0) — Mavericks won by 6 wickets (SM +5, GB −1), MOM Andre Russell 3/25. After 11 games: AA 12 pts, VV 12, SM 10, GB 8, UU −1, HH −3. Do not invent further S10 results.',
+      S10: 'Season 10 has eight teams. Fixtures are drawn at random. M1 Queen’s Park Oval: VV 191/9, AA 192/6 — Aces won by 4 wickets (AA +3), MOM Jasprit Bumrah 4/28. M2 Chinnaswamy: VV 229/6, UU 129/9 — Victors won by 100 runs (VV +4, UU −1), MOM Vivaan Armstrong 30 & 2/32. M3 Lord’s: UU 185/7 (20.0), SM 186/6 (17.2) — Mavericks won by 4 wickets (SM +3), MOM Jason Holder 47* & 3/41. M4 Trent Bridge: GB 182/9 (20.0), AA 188/5 (13.2) — Aces won by 5 wickets (AA +4, chase inside 15), MOM Ben Stokes 20* & 3/28. M5 National Stadium, Karachi: AA 248/5 (20.0), HH 107/10 (16.0) — Aces won by 141 runs (AA +6, HH −2), MOM Travis Head 73 (38). M6 Kensington Oval: GB 246/5 (20.0), VV 212/8 (20.0) — Blazers won by 34 runs (GB +3), MOM Ellyse Perry 87* (46). M7 Trent Bridge: SM 143/10 (19.4), VV 147/4 (10.3) — Victors won by 6 wickets (VV +6, SM −1 bowled out), MOM Vivaan Armstrong 29* & 2/27. M8 Gabba: VV 246/5 (20.0), AA 234/7 (20.0) — Victors won by 12 runs (VV +3), MOM Vivaan Armstrong 35* & 1/34. M9 Headingley: SM 226/3 (20.0), AA 183/8 (20.0) — Mavericks won by 43 runs (SM +3), MOM Virender Sehwag 103 (49). M10 Harare Sports Club: HH 104/10 (17.0), GB 109/5 (9.3) — Blazers won by 5 wickets (GB +7, HH −1), MOM Marco Jansen 2/18. M11 The Oval: GB 133/10 (16.3), SM 135/4 (13.0) — Mavericks won by 6 wickets (SM +6, GB −1), MOM Andre Russell 3/25. After 11 games: AA 13 pts, VV 13, SM 11, GB 9, UU −1, HH −3. Do not invent further S10 results.',
       champions: 'S7 Final M46 AA beat VV; S8 Final M60 AA beat GB; S9 Final M60 AA beat VV. Aarnav Aces are champions of 7, 8 and 9.',
       UU: 'Urvaksh Uttamnagris played Season 8, sat out Season 9, and are back in Season 10.',
       playerIdentity: 'Same display name on two clubs = two different players. Never add their stats together. Don Bradman (AA / Aarnav Aces) is not Don Bradman (GB / Gauransh Blazers). Joe Root (VV / Vivaan Victors) is not Joe Root (AS / Anagh Savants). VV Root’s S8–S10 numbers stay on Victors only. Do not invent Bradman or AS Root stats that are not in the batting/bowling arrays.',
