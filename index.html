@@ -26097,7 +26097,19 @@ const FANTASY_S10 = [
     { name: 'Yuzvendra Chahal' }
   ]},
   { id: 'AS', players: [] },
-  { id: 'SM', players: [] },
+  { id: 'SM', players: [
+    { name: 'Virender Sehwag' },
+    { name: 'Ishan Kishan', role: 'WK' },
+    { name: 'Don Bradman', club: 'AA' },
+    { name: 'Virat Kohli' },
+    { name: 'Trevor Singh', role: 'VC' },
+    { name: 'Vivaan Armstrong', role: 'C' },
+    { name: 'Jason Holder' },
+    { name: 'Marcus Stoinis' },
+    { name: 'Josh Hazlewood' },
+    { name: 'Jasprit Bumrah' },
+    { name: 'Yuzvendra Chahal' }
+  ]},
   { id: 'UU', players: [] }
 ];
 
@@ -29157,7 +29169,7 @@ function bbBuildAiContext() {
       champions: 'S7 Final M46 AA beat VV; S8 Final M60 AA beat GB; S9 Final M60 AA beat VV. Aarnav Aces are champions of 7, 8 and 9.',
       UU: 'Urvaksh Uttamnagris played Season 8, sat out Season 9, and are back in Season 10.',
       playerIdentity: 'Same display name on two clubs = two different players. Never add their stats together. Don Bradman (AA / Aarnav Aces) is not Don Bradman (GB / Gauransh Blazers). Joe Root (VV / Vivaan Victors) is not Joe Root (AS / Anagh Savants). VV Root’s S8–S10 numbers stay on Victors only. Do not invent Bradman or AS Root stats that are not in the batting/bowling arrays.',
-      fantasy: 'S10 fantasy sidequest is on the Fantasy tab. Scoring matches MVP: 1 run=1, 1 wkt=20, 1 catch=10, MOM=25, fifty=+10, hundred=+25, 4W=+15. Captain ×2, VC ×1.5. Stats are Season 10 only. Don Bradman (Aarnav) is AA; Joe Root (Anagh) is AS. AS, SM and UU have not submitted an XI yet. GB have not named C/VC so every pick is ×1.',
+      fantasy: 'S10 fantasy sidequest is on the Fantasy tab. Scoring matches MVP: 1 run=1, 1 wkt=20, 1 catch=10, MOM=25, fifty=+10, hundred=+25, 4W=+15. Captain ×2, VC ×1.5. Stats are Season 10 only. Don Bradman (Aarnav) is AA; Joe Root (Anagh) is AS. AS and UU have not submitted an XI yet. GB have not named C/VC so every pick is ×1.',
       rule: 'bestBat and worstBat are different people. Champion is the Final winner, not the table-topper. For “who finished top of the table” use tableRanked pos 1, never the Final winner.'
     },
     clubSheet,
