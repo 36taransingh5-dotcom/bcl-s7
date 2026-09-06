@@ -13125,7 +13125,7 @@ const SEED = {
   ]
 };
 
-const STORE_KEY_MULTI = "bcl_multi_v151"; // Cache bust 66 - S10 Match 32
+const STORE_KEY_MULTI = "bcl_multi_v152"; // Cache bust 67 - Shoni context trim
 
 let MULTI_DB = JSON.parse(localStorage.getItem(STORE_KEY_MULTI));
 if (!MULTI_DB) {
@@ -29303,7 +29303,24 @@ function bbRankedTable(db) {
     .sort((a, b) => (b.pts || 0) - (a.pts || 0) || (b.nrr || 0) - (a.nrr || 0))
     .map((t, i) => ({ pos: i + 1, id: t.id, m: t.m, w: t.w, l: t.l, nr: t.nr, pts: t.pts, nrr: t.nrr }));
 }
-function bbSeasonPayload(season) {
+function bbSlimResult(r, withSc) {
+  const row = {
+    m: r.match, t1: r.team1, t2: r.team2, s1: r.score1, o1: r.overs1, s2: r.score2, o2: r.overs2,
+    w: r.winner, mar: r.margin, mom: r.mom
+  };
+  if (r.venue) row.v = r.venue;
+  if (!withSc || !r.scorecard) return row;
+  row.sc = { t1: bbCompactInn(r.scorecard.t1Inn), t2: bbCompactInn(r.scorecard.t2Inn) };
+  const so = r.scorecard.superOver;
+  if (so) {
+    row.sc.so = {
+      t1n: so.team1, t2n: so.team2, s1: so.score1, o1: so.overs1, s2: so.score2, o2: so.overs2,
+      t1: bbCompactInn(so.t1Inn), t2: bbCompactInn(so.t2Inn)
+    };
+  }
+  return row;
+}
+function bbSeasonPayload(season, withSc) {
   const db = MULTI_DB[season] || {};
   const squads = squadsFor(season) || {};
   const slimSquads = {};
@@ -29313,18 +29330,16 @@ function bbSeasonPayload(season) {
   const tableRanked = bbRankedTable(db);
   return {
     teams: (teamsFor(season) || []).map(t => ({ id: t.id, name: t.name })),
-    table: db.table || [],
     tableRanked,
     tableTop: tableRanked[0] || null,
     batting: (db.batting || []).map(bbSlimBat),
     bowling: (db.bowling || []).map(bbSlimBowl),
     teamLeaders: bbTeamLeaders(db),
     squads: slimSquads,
-    results: (db.results || []).map(r => ({
-      m: r.match, t1: r.team1, t2: r.team2, s1: r.score1, o1: r.overs1, s2: r.score2, o2: r.overs2,
-      w: r.winner, mar: r.margin, mom: r.mom,
-      sc: r.scorecard ? { t1: bbCompactInn(r.scorecard.t1Inn), t2: bbCompactInn(r.scorecard.t2Inn) } : null
-    }))
+    results: (db.results || []).map(r => {
+      const includeSc = withSc === true || (withSc && Number(withSc) === Number(r.match));
+      return bbSlimResult(r, includeSc);
+    })
   };
 }
 function bbClubCareerLeaders() {
@@ -29373,8 +29388,22 @@ function bbClubCareerLeaders() {
   });
   return out;
 }
-function bbBuildAiContext() {
+function bbBuildAiContext(userText) {
   const clubSheet = bbClubCareerLeaders();
+  const txt = String(userText || '');
+  const seasonHint = txt.match(/season\s*(7|8|9|10)/i);
+  const matchHint = txt.match(/match\s*#?\s*(\d+)/i);
+  let scSeason = null;
+  let scMatch = false;
+  if (matchHint) {
+    scMatch = Number(matchHint[1]);
+    if (seasonHint) {
+      scSeason = 'season' + seasonHint[1];
+    } else {
+      const found = bbFindMatchAnySeason(scMatch);
+      scSeason = found ? found.season : BB_CURRENT_SEASON;
+    }
+  }
   const payload = {
     league: 'Bromies Cricket League (BCL)',
     facts: {
@@ -29383,7 +29412,7 @@ function bbBuildAiContext() {
       S7: 'Season 7 teams: HH, AS, AA, GB, TT, VV only (no SM, no UU).',
       S8: 'Season 8 teams: all eight including SM and UU. S8 table-topper AA 18pts (NRR). S8 Final M60 AA beat GB.',
       S9: 'Season 9 teams: seven — UU sat out. S9 league table: 1st GB 18pts 9-3, 2nd VV 14pts, 3rd AA 12pts. GB were table-toppers. S9 Final M60 AA beat VV — Aces are champions, not GB.',
-      S10: 'Season 10 has eight teams. Fixtures are drawn at random. M1 Queen’s Park Oval: VV 191/9, AA 192/6 — Aces won by 4 wickets (AA +3), MOM Jasprit Bumrah 4/28. M2 Chinnaswamy: VV 229/6, UU 129/9 — Victors won by 100 runs (VV +4, UU −1), MOM Vivaan Armstrong 30 & 2/32. M3 Lord’s: UU 185/7 (20.0), SM 186/6 (17.2) — Mavericks won by 4 wickets (SM +3), MOM Jason Holder 47* & 3/41. M4 Trent Bridge: GB 182/9 (20.0), AA 188/5 (13.2) — Aces won by 5 wickets (AA +4, chase inside 15), MOM Ben Stokes 20* & 3/28. M5 National Stadium, Karachi: AA 248/5 (20.0), HH 107/10 (16.0) — Aces won by 141 runs (AA +6, HH −2), MOM Travis Head 73 (38). M6 Kensington Oval: GB 246/5 (20.0), VV 212/8 (20.0) — Blazers won by 34 runs (GB +3), MOM Ellyse Perry 87* (46). M7 Trent Bridge: SM 143/10 (19.4), VV 147/4 (10.3) — Victors won by 6 wickets (VV +6, SM −1 bowled out), MOM Vivaan Armstrong 29* & 2/27. M8 Gabba: VV 246/5 (20.0), AA 234/7 (20.0) — Victors won by 12 runs (VV +3), MOM Vivaan Armstrong 35* & 1/34. M9 Headingley: SM 226/3 (20.0), AA 183/8 (20.0) — Mavericks won by 43 runs (SM +3), MOM Virender Sehwag 103 (49). M10 Harare Sports Club: HH 104/10 (17.0), GB 109/5 (9.3) — Blazers won by 5 wickets (GB +7, HH −1), MOM Marco Jansen 2/18. M11 The Oval: GB 133/10 (16.3), SM 135/4 (13.0) — Mavericks won by 6 wickets (SM +6, GB −1), MOM Andre Russell 3/25. M12 Galle International Stadium: SM 174/7 (20.0), HH 175/5 (18.1) — Harmobiles won by 5 wickets (HH +3), MOM Jess Jonassen 3/27. M13 Dubai International Cricket Stadium: VV 239/7 (20.0), HH 159/9 (20.0) — Victors won by 80 runs (VV +4, kept under 160), MOM Vivaan Armstrong 88 & 4/39. M14 Adelaide Oval: AA 253/8 (20.0), GB 136/10 (18.3) — Aces won by 117 runs (AA +6, GB −2), MOM Will Jacks 20* & 3/26. M15 Providence Stadium: SM 119/10 (15.5), HH 122/4 (13.2) — Harmobiles won by 6 wickets (HH +7, SM −1), MOM Megan Schutt 4/43. M16 Rawalpindi Cricket Stadium: SM 200/9 (20.0), VV 205/4 (15.1) — Victors won by 6 wickets (VV +3), MOM KL Rahul 71 (29). M17 National Stadium, Karachi: GB 203/5 (20.0), VV 205/7 (19.2) — Victors won by 3 wickets (VV +3), MOM Rohit Sharma 49 (24). M18 Gaddafi Stadium: VV 240/8 (20.0), HH 240/7 (20.0) — Super Over (HH 14/1, VV 7/2), Harmobiles won (HH +3), MOM Megan Schutt 4/49. M19 Al Amerat Cricket Stadium: SM 176/8 (20.0), AA 177/3 (13.2) — Aces won by 7 wickets (AA +4, chase inside 15), MOM David Warner 71 (29). M20 Chinnaswamy: SM 124/10 (16.0), GB 129/8 (13.4) — Blazers won by 2 wickets (GB +6, SM −1), MOM Ravindra Jadeja 4/21. M21 The Oval: UU 192/6 (20.0), AA 153/10 (18.0) — Uttamnagris won by 39 runs (UU +5, AA −1), MOM Marcus Stoinis 21* & 3/33. M22 Chinnaswamy: TT 236/7 (20.0), VV 222/9 (20.0) — Tranquils won by 14 runs (TT +3), MOM Brendon McCullum 77 (32). M23 Sher-e-Bangla National Cricket Stadium: TT 166/9 (20.0), SM 167/5 (15.1) — Mavericks won by 5 wickets (SM +3), MOM Jason Holder 10* & 3/26. M24 Queen’s Park Oval: TT 135/9 (20.0), AA 138/6 (13.0) — Aces won by 4 wickets (AA +5, chase inside 15), MOM Will Jacks 9 & 3/35. M25 Old Trafford: AA 228/8 (20.0), HH 208/3 (20.0) — Aces won by 20 runs (AA +3), MOM Nat Sciver 50* (21). M26 Sydney Cricket Ground: UU 198/7 (20.0), HH 199/6 (19.2) — Harmobiles won by 4 wickets (HH +3), MOM Shubman Gill 59 (35). M27 Old Trafford: HH 213/7 (20.0), GB 213/8 (20.0) — Match tied (HH +1, GB +1), MOM Krunal Pandya 17* (9) & 3/42. M28 Rajiv Gandhi International Cricket Stadium: GB 157/8 (20.0), TT 160/2 (11.1) — Tranquils won by 8 wickets (TT +6), MOM Laura Wolvaardt 85* (32). M29 Arun Jaitley Stadium: SM 215/9 (20.0), TT 217/5 (17.3) — Tranquils won by 5 wickets (TT +3), MOM Tim Seifert 69 (31). M30 Seddon Park: AS 115/10 (15.5), TT 116/2 (6.1) — Tranquils won by 8 wickets (TT +8, AS −1), MOM Trevor Singh 31* & 3/9. M31 Rajiv Gandhi International Cricket Stadium: UU 189/5 (20.0), VV 190/4 (12.1) — Victors won by 6 wickets (VV +4), MOM Rohit Sharma 71* (28). M32 Pallekele International Cricket Stadium: TT 188/8 (20.0), UU 169/9 (20.0) — Tranquils won by 19 runs (TT +3), MOM Trevor Singh 52 & 2/27. After 32 games: AA 30 pts, VV 27, TT 23, GB 14, HH 14, SM 12, UU 4, AS −1. Do not invent further S10 results.',
+      S10: 'Season 10 has eight teams. Fixtures are drawn at random. Match scores live in seasons.season10.results. After 32 games: AA 30 pts, VV 27, TT 23, GB 14, HH 14, SM 12, UU 4, AS −1. Do not invent further S10 results.',
       champions: 'S7 Final M46 AA beat VV; S8 Final M60 AA beat GB; S9 Final M60 AA beat VV. Aarnav Aces are champions of 7, 8 and 9.',
       UU: 'Urvaksh Uttamnagris played Season 8, sat out Season 9, and are back in Season 10.',
       playerIdentity: 'Same display name on two clubs = two different players. Never add their stats together. Don Bradman (AA / Aarnav Aces) is not Don Bradman (GB / Gauransh Blazers). Joe Root (VV / Vivaan Victors) is not Joe Root (AS / Anagh Savants). Tom Latham (TT / Taran Tranquils) is not Tom Latham (AS / Anagh Savants). VV Root’s S8–S10 numbers stay on Victors only. Do not invent Bradman, AS Root, or Latham stats that are not in the batting/bowling arrays.',
@@ -29397,12 +29426,14 @@ function bbBuildAiContext() {
     leadersBySeason: {},
     seasons: {}
   };
-  BB_SEASON_ORDER.forEach(s => { payload.seasons[s] = bbSeasonPayload(s); });
+  BB_SEASON_ORDER.forEach(s => {
+    payload.seasons[s] = bbSeasonPayload(s, s === scSeason ? scMatch : false);
+  });
   ['season7', 'season8', 'season9'].forEach(s => {
     payload.leadersBySeason[s] = (payload.seasons[s] && payload.seasons[s].teamLeaders) || {};
   });
   let json = JSON.stringify(payload);
-  if (json.length > 350000) {
+  if (json.length > 220000) {
     BB_SEASON_ORDER.forEach(s => {
       payload.seasons[s].results = (payload.seasons[s].results || []).map(r => {
         const { sc, ...rest } = r;
@@ -29420,7 +29451,7 @@ async function bbAskOpenAI(userText) {
     throw new Error('NO_KEY');
   }
   const hate = bbIsBlazersHate(userText);
-  const system = `You are MD Shoni, the stats brain for the Bromies Cricket League. The JSON is the full league: clubSheet (best/worst per club + which seasons they played), leadersBySeason, and seasons.season7–season10 with every table, batter, bowler, squad, result and scorecard.
+  const system = `You are MD Shoni, the stats brain for the Bromies Cricket League. The JSON is the league: clubSheet (best/worst per club + which seasons they played), leadersBySeason, and seasons.season7–season10 with tables, batters, bowlers, squads and results. A scorecard (sc) is attached only for a match the user asked about.
 
 Answer ANY cricket question from that JSON — tables, NRR, a player, a team, H2H, a match, MOM, form, playoffs, squads, comparisons, flops, records. Use the numbers. ${hate ? '2 short sentences.' : '1–2 short sentences. No preamble.'}
 
@@ -29432,11 +29463,11 @@ ${hate ? `
 BLAZERS HATE MODE: the user asked about Gauransh / Gauransh Blazers / Blazers / GB. Roast Gauransh and the Blazers with profanity — but NEVER lie about the numbers. S9 they topped the league table (18 pts, 9-3) then bottled the trophy (AA are S9 champions). S8 they lost the Final to AA. Do not say they finished bottom, last, or third in S9. Do not invent an S10 table. Use real stats, then dunk on them.
 ` : ''}
 LEAGUE DATABASE:
-${bbBuildAiContext()}`;
+${bbBuildAiContext(userText)}`;
 
   const messages = [
     { role: 'system', content: system },
-    ...bbChatHistory.slice(-12),
+    ...bbChatHistory.slice(-6),
     { role: 'user', content: userText }
   ];
 
@@ -29609,6 +29640,15 @@ function getSmartResponse(text) {
   const twinReply = bbTwinLocalReply(txt);
   if (twinReply) return twinReply;
 
+  const oneTeam = bbTeamsMentioned(txt);
+  if (oneTeam.length === 1 && /\bbest\b|\bstar\b|\bmvp\b|\btop player\b/.test(txt) && !txt.includes('best team')) {
+    const team = oneTeam[0];
+    const leaders = bbTeamLeaders(MULTI_DB[BB_CURRENT_SEASON] || {})[team.id];
+    if (leaders && (leaders.bestBat || leaders.bestBowl)) {
+      return `${team.name} in ${bbSeasonLabel(BB_CURRENT_SEASON)}: ${leaders.bestBat || 'no batting numbers yet'}. With the ball: ${leaders.bestBowl || 'no bowling numbers yet'}.`;
+    }
+  }
+
   if (txt.includes('bonus') || txt.includes('point system') || txt.includes('points system') || txt.includes('new points') || (txt.includes('how many points') && (txt.includes('win') || txt.includes('season 10') || txt.includes('s10')))) {
     return `Season 10: a win is 3, a no-result is 1, a loss is 0, then batting and bowling bonuses on top. Ten-wicket win is +2 extra. Keeping them under 120 is +2 extra. Last season was still 2 points for a win.`;
   }
@@ -29639,12 +29679,12 @@ function getSmartResponse(text) {
 
   if (txt.includes('highest score') || txt.includes('highest individual')) {
     const best = bbHighestIndividualScore(BB_CURRENT_SEASON);
-    if (best) return `The highest individual score in Season 9 is ${best.name}'s ${best.runs} off ${best.balls} balls, in Match ${best.match}! [MATCH: ${best.match}]`;
+    if (best) return `The highest individual score in ${bbSeasonLabel(BB_CURRENT_SEASON)} is ${best.name}'s ${best.runs} off ${best.balls} balls, in Match ${best.match}! [MATCH: ${best.match}]`;
   }
 
   if (txt.includes('best bowling') || txt.includes('best figures')) {
     const best = bbBestBowlingFigures(BB_CURRENT_SEASON);
-    if (best) return `The best bowling figures in Season 9 are ${best.name}'s ${best.wkts}/${best.runs}, in Match ${best.match}! [MATCH: ${best.match}]`;
+    if (best) return `The best bowling figures in ${bbSeasonLabel(BB_CURRENT_SEASON)} are ${best.name}'s ${best.wkts}/${best.runs}, in Match ${best.match}! [MATCH: ${best.match}]`;
   }
 
   const teamsMentioned = bbTeamsMentioned(txt);
@@ -29653,9 +29693,9 @@ function getSmartResponse(text) {
     const meetings = bbHeadToHead(BB_CURRENT_SEASON, t1.id, t2.id);
     if (meetings.length) {
       const summary = meetings.map(m => `Match ${m.match}: ${byId(m.winner)?.name || m.winner} won by ${m.margin}`).join('. ');
-      return `${t1.name} and ${t2.name} have met ${meetings.length} time(s) in Season 9. ${summary}.`;
+      return `${t1.name} and ${t2.name} have met ${meetings.length} time(s) in ${bbSeasonLabel(BB_CURRENT_SEASON)}. ${summary}.`;
     }
-    return `${t1.name} and ${t2.name} haven't played each other yet in Season 9.`;
+    return `${t1.name} and ${t2.name} haven't played each other yet in ${bbSeasonLabel(BB_CURRENT_SEASON)}.`;
   }
 
   if (txt.includes('chase')) {
@@ -29669,7 +29709,7 @@ function getSmartResponse(text) {
     }
   }
 
-  return "I can answer questions about the Season 9 points table, top run scorers, top wicket takers, the highest individual score, the best bowling figures, head-to-head records (e.g. \"Aarnav Aces vs Vivaan Victors\"), or a specific match (e.g. \"match 12\"). What would you like to know?";
+  return "I can answer questions about the Season 10 points table, top run scorers, top wicket takers, a team's best batter or bowler, head-to-head records (e.g. \"Aarnav Aces vs Vivaan Victors\"), or a specific match (e.g. \"match 12\"). What would you like to know?";
 }
 
 let bbThalaWait = false;
