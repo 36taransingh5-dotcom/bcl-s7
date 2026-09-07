@@ -215,6 +215,7 @@ tbody tr:hover { background: #18181b; }
 td { padding: 16px 14px; text-align: center; vertical-align: middle; font-weight: 500; }
 td:first-child { text-align: left; padding-left: 20px; }
 .rank { color: var(--muted); font-size: 12px; margin-right: 8px; font-weight: 700; }
+.rank.rank-q { color: var(--green); }
 .team-logo-img {
   width: 1.2em;
   height: 1.2em;
@@ -1610,6 +1611,7 @@ body.theme-s10 .rank {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
+body.theme-s10 .rank.rank-q { color: var(--green); }
 body.theme-s10 .qualify-bar {
   display: block;
   width: 4px;
@@ -1905,6 +1907,7 @@ body.theme-s10 tbody tr:hover .nrr-neg,
 body.theme-s10 tbody tr:hover .nrr-zero,
 body.theme-s10 tbody tr:hover .form-dots,
 body.theme-s10 tbody tr:hover .form-dots span { color: #fff !important; }
+body.theme-s10 tbody tr:hover .rank.rank-q { color: var(--green) !important; }
 body.theme-s10 .match-row:hover { background: #161616; }
 body.theme-s10 .match-row:hover .m-team,
 body.theme-s10 .match-row:hover .score-sm { color: #fff; }
@@ -27111,6 +27114,34 @@ function s10ResultPtsHtml(r) {
   return `<div class="s10-pts-row">${chip(r.team1)}${chip(r.team2)}</div>`;
 }
 
+const S10_PLAYOFF_SPOTS = 4;
+function s10GamesEach() {
+  return Math.max(0, ((TEAMS_S10 || []).length - 1) * 2);
+}
+function s10QualifiedIds(rows) {
+  const gamesEach = s10GamesEach();
+  const list = (rows || []).map(r => {
+    const pts = r.pts || 0;
+    const left = Math.max(0, gamesEach - (r.m || 0));
+    return { id: r.id, pts, left, min: pts, max: pts + 3 * left };
+  });
+  const leagueDone = list.length > 0 && list.every(r => r.left === 0);
+  if (leagueDone) {
+    const sorted = [...rows].sort((a, b) => b.pts - a.pts || b.nrr - a.nrr);
+    return new Set(sorted.slice(0, S10_PLAYOFF_SPOTS).map(r => r.id));
+  }
+  const qualified = new Set();
+  for (const t of list) {
+    let canFinishAhead = 0;
+    for (const u of list) {
+      if (u.id === t.id) continue;
+      if (u.max >= t.min) canFinishAhead++;
+    }
+    if (canFinishAhead < S10_PLAYOFF_SPOTS) qualified.add(t.id);
+  }
+  return qualified;
+}
+
 // ── RENDER ────────────────────────────────────────────────────────────────────
 function renderAll(){
   renderTable(); renderFantasy(); renderResults(); renderSchedule(); renderSquads(); renderStats(); renderPlayoffs();
@@ -27164,12 +27195,18 @@ function renderTable(){
   const rows = isS10 ? s10StandingsFrom(lDB) : lDB.table;
   if (isS10 && MULTI_DB.season10) MULTI_DB.season10.table = rows.map(({id,m,w,l,nr,pts,nrr,bp}) => ({id,m,w,l,nr,pts,nrr,bp}));
   const sorted=[...rows].sort((a,b)=>b.pts-a.pts||b.nrr-a.nrr);
+  const qualified = isS10
+    ? s10QualifiedIds(sorted)
+    : new Set(sorted.slice(0, S10_PLAYOFF_SPOTS).map(r => r.id));
   document.getElementById('tableBody').innerHTML=sorted.map((row,i)=>{
     const t=byId(row.id);
     const formHtml = getTeamForm(row.id, lDB);
     const bpCell = isS10 ? `<td class="bp-cell">${row.bp||0}</td>` : '';
+    const locked = qualified.has(row.id);
+    const rankLabel = locked ? 'Q' : String(i+1);
+    const rankTitle = locked ? 'Qualified for playoffs' : `Position ${i+1}`;
     return `<tr>
-      <td><span class="team-cell"><span class="rank">${i+1}</span><span class="qualify-bar${i<4?'':' off'}"></span>${teamIconSlot(t)}<strong>${t?.name}</strong></span></td>
+      <td><span class="team-cell"><span class="rank${locked?' rank-q':''}" title="${rankTitle}">${rankLabel}</span><span class="qualify-bar${i<4?'':' off'}"></span>${teamIconSlot(t)}<strong>${t?.name}</strong></span></td>
       <td style="color:var(--muted)">${row.m}</td>
       <td style="color:var(--green);font-weight:600">${row.w}</td>
       <td style="color:var(--loss)">${row.l}</td>
