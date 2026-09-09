@@ -2301,7 +2301,6 @@ body.theme-s10 #panel-playoffs > section > .st {
           <ul>
             <li><em>1</em> per run</li>
             <li><em>20</em> per wicket</li>
-            <li><em>10</em> per catch</li>
             <li><em>25</em> MOM</li>
           </ul>
         </div>
@@ -2406,10 +2405,10 @@ body.theme-s10 #panel-playoffs > section > .st {
   <section id="stats-cat-mvp" style="display:none;">
     <div class="st">⭐ MVP Leaderboard</div>
     <div class="tbl-wrap"><table>
-      <thead><tr><th>#</th><th>Player</th><th>Team</th><th>Runs</th><th>Wkts</th><th>Catches</th><th>MOM</th><th>MVP Pts</th></tr></thead>
+      <thead><tr><th>#</th><th>Player</th><th>Team</th><th>Runs</th><th>Wkts</th><th>MOM</th><th>MVP Pts</th></tr></thead>
       <tbody id="mvpBody"></tbody>
     </table></div>
-    <div class="stats-note"><strong style="color:var(--text)">Scoring:</strong> 1 run = 1pt · 1 wkt = 20pts · 1 catch = 10pts · MOM = 25pts · 50 = 10pts · 100 = 25pts · 4W = 15pts</div>
+    <div class="stats-note"><strong style="color:var(--text)">Scoring:</strong> 1 run = 1pt · 1 wkt = 20pts · MOM = 25pts · 50 = 10pts · 100 = 25pts · 4W = 15pts</div>
   </section>
   <section id="stats-cat-milestones" style="display:none;">
     <div class="st">🏅 Season Milestones</div>
@@ -26856,7 +26855,7 @@ function teamPill(id){
   return `<span style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;background:${t.color}15;padding:2px 8px;border-radius:12px;border:1px solid ${t.color}22">${teamIcon(t)} <span style="color:${t.color};font-weight:600">${id}</span></span>`;
 }
 function fantasyBasePts(p){
-  return (p.runs||0)+(p.wkts||0)*20+(p.catches||0)*10+(p.mom||0)*25+(p.fifties||0)*10+(p.hundreds||0)*25+(p.fourW||0)*15;
+  return (p.runs||0)+(p.wkts||0)*20+(p.mom||0)*25+(p.fifties||0)*10+(p.hundreds||0)*25+(p.fourW||0)*15;
 }
 function playerStatMap(lDB){
   const map={};
@@ -27735,7 +27734,6 @@ function renderStats(){
     <td>${teamPill(p.team)}</td>
     <td style="color:var(--muted)">${p.runs}</td>
     <td style="color:var(--muted)">${p.wkts}</td>
-    <td style="color:var(--muted)">${p.catches}</td>
     <td style="color:var(--muted)">${p.mom}</td>
     <td style="color:${i===0?'var(--acc)':'var(--text)'};font-weight:${i===0?700:500};font-size:${i===0?15:13}px">${p.pts}</td>
   </tr>`).join('');
@@ -28029,14 +28027,13 @@ function openPlayerProfile(name, teamId) {
   
   let runs = batStats ? batStats.runs : 0;
   let wkts = bowlStats ? bowlStats.wkts : 0;
-  let catches = batStats ? batStats.catches : 0;
   let mom = (batStats ? batStats.mom : 0) || 0;
   if (bowlStats) mom += bowlStats.mom || 0;
   let fifties = batStats ? batStats.fifties : 0;
   let hundreds = batStats ? batStats.hundreds : 0;
   let fourW = bowlStats ? bowlStats.fourW : 0;
   
-  const mvpPts = runs + wkts * 20 + catches * 10 + mom * 25 + fifties * 10 + hundreds * 25 + fourW * 15;
+  const mvpPts = runs + wkts * 20 + mom * 25 + fifties * 10 + hundreds * 25 + fourW * 15;
   document.getElementById('p-card-mvp-pts').innerText = mvpPts + " pts";
   document.getElementById('p-card-mvp-mom').innerText = mom + " ★";
   
@@ -28720,7 +28717,7 @@ function renderAwards() {
   });
   const mvpPlayers = Object.values(map).map(p => ({
     ...p,
-    pts: p.runs * 1 + p.wkts * 20 + p.mom * 50 + p.fifties * 10 + p.hundreds * 25 + p.catches * 10 + p.fourW * 15
+    pts: p.runs * 1 + p.wkts * 20 + p.mom * 50 + p.fifties * 10 + p.hundreds * 25 + p.fourW * 15
   })).sort((a,b) => b.pts - a.pts);
   
   const mvp = mvpPlayers[0] || { name: "TBD", team: "AA", runs: 0, wkts: 0, mom: 0, pts: 0 };
@@ -29482,7 +29479,7 @@ function bbBuildAiContext(userText) {
       UU: 'Urvaksh Uttamnagris played Season 8, sat out Season 9, and are back in Season 10.',
       AS: 'Anagh Savants played Seasons 7–9 and withdrew from Season 10. Do not invent S10 Savants results, squads, or table rows.',
       playerIdentity: 'Same display name on two clubs = two different players. Never add their stats together. Don Bradman (AA / Aarnav Aces) is not Don Bradman (GB / Gauransh Blazers). Joe Root (VV / Vivaan Victors) is not Joe Root (AS / Anagh Savants). Tom Latham (TT / Taran Tranquils) is not Tom Latham (AS / Anagh Savants). VV Root’s S8–S10 numbers stay on Victors only. Do not invent Bradman, AS Root, or Latham stats that are not in the batting/bowling arrays.',
-      fantasy: 'S10 fantasy sidequest is on the Fantasy tab. Scoring matches MVP: 1 run=1, 1 wkt=20, 1 catch=10, MOM=25, fifty=+10, hundred=+25, 4W=+15. Captain ×2, VC ×1.5. Stats are Season 10 only. Don Bradman (Aarnav) is AA. Anagh withdrew so AS Root has no S10 numbers. GB have not named C/VC so every pick is ×1.',
+      fantasy: 'S10 fantasy sidequest is on the Fantasy tab. Scoring matches MVP: 1 run=1, 1 wkt=20, MOM=25, fifty=+10, hundred=+25, 4W=+15. Catches do not score. Captain ×2, VC ×1.5. Stats are Season 10 only. Don Bradman (Aarnav) is AA. Anagh withdrew so AS Root has no S10 numbers. GB have not named C/VC so every pick is ×1.',
       rule: 'bestBat and worstBat are different people. Champion is the Final winner, not the table-topper. For “who finished top of the table” use tableRanked pos 1, never the Final winner.'
     },
     clubSheet,
