@@ -2492,6 +2492,9 @@ body.theme-s11 footer { color: var(--muted); }
     <div class="tab-filters">
       <button class="filter-btn active" onclick="setLocalFilter('fantasy', 'season11', this)">Season 11</button>
       <button class="filter-btn" onclick="setLocalFilter('fantasy', 'season10', this)">Season 10</button>
+      <button class="filter-btn" onclick="setLocalFilter('fantasy', 'season9', this)">Season 9</button>
+      <button class="filter-btn" onclick="setLocalFilter('fantasy', 'season8', this)">Season 8</button>
+      <button class="filter-btn" onclick="setLocalFilter('fantasy', 'season7', this)">Season 7</button>
     </div>
     <div class="st">Fantasy Table</div>
     <div class="tbl-wrap"><table>
@@ -27068,23 +27071,14 @@ function updateThemeColor() {
   }
 }
 function setLocalFilter(panel, season, btn) {
-  localFilters[panel] = season;
-  // Update UI buttons
-  let parent = btn.parentElement;
-  parent.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  // Re-render specific panel
-  if (panel === 'table') renderTable();
-  if (panel === 'fantasy') renderFantasy();
-  if (panel === 'results') renderResults();
-  if (panel === 'schedule') renderSchedule();
-  if (panel === 'squads') renderSquads();
-  if (panel === 'stats') renderStats();
-  if (panel === 'playoffs') renderPlayoffs();
-  if (panel === 'compare') renderComparison();
-  if (panel === 'stories') renderStories();
-  if (panel === 'awards') renderAwards();
-  updateThemeColor();
+  Object.keys(localFilters).forEach(k => { localFilters[k] = season; });
+  document.querySelectorAll('.tab-filters .filter-btn').forEach(b => {
+    const oc = b.getAttribute('onclick') || '';
+    const m = oc.match(/setLocalFilter\('[^']+',\s*'([^']+)'/);
+    if (!m) return;
+    b.classList.toggle('active', m[1] === season);
+  });
+  renderAll();
 }
 function save(){ 
   if(activeSeason !== 'overall') {
@@ -27509,11 +27503,16 @@ function renderFantasy(){
   const note = document.getElementById('fantasyLegendNote');
   if (season !== 'season10') {
     if (rules) rules.hidden = true;
-    if (note) note.textContent = 'Season 11 · XIs not in yet';
+    const pending = season === 'season11';
+    if (note) note.textContent = pending ? 'Season 11 · XIs not in yet' : 'Fantasy was a Season 10 sidequest';
     const body = document.getElementById('fantasyBody');
     const xis = document.getElementById('fantasyXis');
-    if (body) body.innerHTML = '<tr><td colspan="4" style="padding:28px;color:var(--muted)">No fantasy XIs for Season 11 yet.</td></tr>';
-    if (xis) xis.innerHTML = '<div class="s10-empty" style="grid-column:1/-1"><div class="s10-soon-kicker">Fantasy</div><div class="s10-soon-title">XIs coming soon</div><div class="s10-soon-sub">Season 10 is still on the filter above.</div></div>';
+    if (body) body.innerHTML = pending
+      ? '<tr><td colspan="4" style="padding:28px;color:var(--muted)">No fantasy XIs for Season 11 yet.</td></tr>'
+      : '<tr><td colspan="4" style="padding:28px;color:var(--muted)">Fantasy XIs were a Season 10 sidequest.</td></tr>';
+    if (xis) xis.innerHTML = pending
+      ? '<div class="s10-empty" style="grid-column:1/-1"><div class="s10-soon-kicker">Fantasy</div><div class="s10-soon-title">XIs coming soon</div><div class="s10-soon-sub">Season 10 is on the filter above.</div></div>'
+      : '<div class="s10-empty" style="grid-column:1/-1"><div class="s10-soon-kicker">Fantasy</div><div class="s10-soon-title">Season 10 sidequest</div><div class="s10-soon-sub">Open Season 10 to see those XIs.</div></div>';
     return;
   }
   if (rules) rules.hidden = false;
@@ -28641,6 +28640,15 @@ function buildInningsHTML(batTeamId, bowlTeamId, innData) {
 
 function renderComparison() {
   let lDB = getLocalDB("compare");
+  const cmpTeams = localFilters.compare === 'overall' ? ALL_TEAMS : teamsFor(localFilters.compare);
+  ['c-team1','c-team2'].forEach((id, idx) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const prev = el.value;
+    el.innerHTML = cmpTeams.map(t => `<option value="${t.id}">${t.emoji} ${t.name}</option>`).join('');
+    const fallback = cmpTeams[idx] || cmpTeams[0];
+    el.value = cmpTeams.some(t => t.id === prev) ? prev : (fallback ? fallback.id : '');
+  });
   const id1 = document.getElementById('c-team1').value;
   const id2 = document.getElementById('c-team2').value;
   if (!id1 || !id2) return;
